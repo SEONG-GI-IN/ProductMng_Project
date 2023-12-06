@@ -5,11 +5,15 @@
 
 <tiles-definitions>
 
-    <definition name=".contents" template="/WEB-INF/views/layouts/tiles-layout.jsp"></definition>
+    <definition name=".contents" template="/WEB-INF/views/layouts/defaultLayout.jsp"></definition>
 
     <!-- main layout -->
     <definition name="/*" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
+    </definition>
+
+    <definition name="/test/*" extends=".contents">
+        <put-attribute name="body" value="/WEB-INF/views/test/{1}.jsp"></put-attribute>
     </definition>
 
 </tiles-definitions>
