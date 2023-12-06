@@ -1,6 +1,6 @@
 plugins {
 	id 'java'
-	id 'org.springframework.boot' version '3.2.0'
+	id 'org.springframework.boot' version '2.7.9'
 	id 'io.spring.dependency-management' version '1.1.4'
 }
 
@@ -22,8 +22,6 @@ repositories {
 }
 
 dependencies {
-	/* https://mvnrepository.com/ */
-
 	/* WEB */
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
@@ -35,7 +33,14 @@ dependencies {
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
 
-	/* DB(MYSQL) */
+	/* tiles */
+	implementation 'org.apache.tiles:tiles-jsp:3.0.8'
+	implementation 'org.apache.tiles:tiles-servlet:3.0.8'
+	implementation 'org.apache.tiles:tiles-core:3.0.8'
+	implementation 'org.apache.tiles:tiles-api:3.0.8'
+
+
+
 
 	/* TEST */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
