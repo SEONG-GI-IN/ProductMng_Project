@@ -14,7 +14,7 @@
 <div class="tiles-all">
     <tiles:insertAttribute name="nav-top"/>
     <div class="tiles-middle">
-        <div>
+        <div class="sb-nav-fixed">
         <tiles:insertAttribute name="nav-left"/>
         </div>
         <div>

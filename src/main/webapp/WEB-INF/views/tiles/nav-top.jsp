@@ -1,4 +1,3 @@
-<body>
 <nav class="navbar navbar-expand navbar-dark bg-dark">
     <!-- Navbar Brand-->
     <a class="navbar-brand ps-3" href="/">Start Bootstrap</a>
@@ -24,4 +23,3 @@
         </li>
     </ul>
 </nav>
-</body>
