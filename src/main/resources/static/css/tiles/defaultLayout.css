@@ -1,4 +1,16 @@
-.tiles-all{
+
+
+/* Tiles 전체 */
+
+.tiles-all {
+    display: flex;
+    flex-direction: column;
+    height : 100%;
+}
+
+/* Tiles 왼쪽 영역 (네비) */
+
+.sb-nav-fixed {
     height : 100%;
 }
 
@@ -13,11 +25,6 @@
     display: flex;
 }
 
-.tiles-all {
-    display: flex;
-    flex-direction: column;
-
-}
 .tiles-middle .sb-sidenav-footer {
     margin-bottom : auto;
 }
@@ -33,3 +40,5 @@
 #layoutSidenav_nav .sb-sidenav-menu-nested{
     min-width: 126px;
 }
+
+/* Tiles 오른쪽 영역 (메인) */
