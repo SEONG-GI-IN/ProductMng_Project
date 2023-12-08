@@ -17,7 +17,7 @@
         <div class="sb-nav-fixed">
         <tiles:insertAttribute name="nav-left"/>
         </div>
-        <div>
+        <div class="tiles-main">
         <tiles:insertAttribute name="body"/>
         </div>
     </div>
