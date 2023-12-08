@@ -1,0 +1,35 @@
+.tiles-all{
+    height : 100%;
+}
+
+#layoutSidenav_nav {
+    height : 100%;
+    overflow: hidden;
+    max-width : 200px;
+}
+
+.tiles-middle {
+    flex: 1;
+    display: flex;
+}
+
+.tiles-all {
+    display: flex;
+    flex-direction: column;
+
+}
+.tiles-middle .sb-sidenav-footer {
+    margin-bottom : auto;
+}
+
+#layoutSidenav_nav .sb-sidenav-footer {
+     min-width: 135px;
+}
+
+#layoutSidenav_nav #collapseLayouts {
+    min-width: 155px;
+}
+
+#layoutSidenav_nav .sb-sidenav-menu-nested{
+    min-width: 126px;
+}

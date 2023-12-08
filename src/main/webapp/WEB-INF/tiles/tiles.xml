@@ -4,12 +4,20 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-
-    <definition name=".contents" template="/WEB-INF/views/layouts/tiles-layout.jsp"></definition>
+    <definition name=".contents" template="/WEB-INF/views/tiles/defaultLayout.jsp">
+        <put-attribute name="css" expression="/WEB-INF/views/tiles/css.jsp" />
+        <put-attribute name="script" expression="/WEB-INF/views/tiles/script.jsp" />
+        <put-attribute name="nav-top" value="/WEB-INF/views/tiles/nav-top.jsp" />
+        <put-attribute name="nav-left" value="/WEB-INF/views/tiles/nav-left.jsp"/>
+        <put-attribute name="body" value=""/>
+    </definition>
 
     <!-- main layout -->
-    <definition name="/*" extends=".contents">
+    <definition name="*" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
     </definition>
 
+    <definition name="*/*" extends=".contents">
+        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+    </definition>
 </tiles-definitions>

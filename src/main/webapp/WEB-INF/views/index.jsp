@@ -7,6 +7,6 @@
     <title> index </title>
 </head>
 <body>
-<%--    <%=getServletInfo()%>--%>
+    <%=getServletInfo()%>
 </body>
 </html>
