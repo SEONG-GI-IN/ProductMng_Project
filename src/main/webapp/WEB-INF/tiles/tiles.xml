@@ -4,7 +4,6 @@
         "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 
 <tiles-definitions>
-
     <definition name=".contents" template="/WEB-INF/views/tiles/defaultLayout.jsp">
         <put-attribute name="css" expression="/WEB-INF/views/tiles/css.jsp" />
         <put-attribute name="script" expression="/WEB-INF/views/tiles/script.jsp" />
@@ -21,5 +20,4 @@
     <definition name="*/*" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
     </definition>
-
 </tiles-definitions>
