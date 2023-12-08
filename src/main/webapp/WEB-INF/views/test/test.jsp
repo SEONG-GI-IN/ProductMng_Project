@@ -9,6 +9,9 @@
     <title>Title</title>
 </head>
 <body>
-z
+    <div id="grid"></div>
 </body>
 </html>
+
+<script type="text/javascript" src="/js/test/init.js"></script>
+<script type="text/javascript" src="/js/test/grid.js"></script>
