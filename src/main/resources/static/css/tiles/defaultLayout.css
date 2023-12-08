@@ -42,3 +42,9 @@
 }
 
 /* Tiles 오른쪽 영역 (메인) */
+.tiles-main {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding : 30px 10px 0px 10px;
+}
