@@ -1,3 +1,7 @@
+.list-search {
+    padding : 20px;
+}
+
 
 /* ul li 영역 */
 .list-search li {
@@ -6,6 +10,7 @@
 }
 /* table */
 .list-search-table {
+    font-size: 12px;
     border : 1px solid gray;
     width: 100%;
 }
@@ -38,13 +43,13 @@
     .list-search-table  #list-search-product-class select{
         min-width: 18px;
         width: 100%;
-        min-height: 28px;
+        min-height: 24px;
 
     }
 
     /* 전체 박스 설정 */
     .list-search-table input {
-        min-height: 30px;
+        min-height: 26px;
     }
 
 /* 검색 박스 영역 */
@@ -54,4 +59,13 @@
 
 .list-search-table td:last-child input{
     
+}
+
+/* toast-grid custom */
+.grid-class {
+    padding : 20px;
+}
+
+.tui-grid-container {
+    min-width: 600px;
 }

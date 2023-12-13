@@ -3,27 +3,18 @@
 /* Tiles 전체 */
 
 .tiles-all {
-    display: flex;
-    flex-direction: column;
-    height : 100%;
+
 }
 
-/* Tiles 왼쪽 영역 (네비) */
-
-.sb-nav-fixed {
-    z-index: 1;
-    height : 100%;
-}
-
-#layoutSidenav_nav {
-    height : 100%;
-    overflow: hidden;
-    max-width : 200px;
-}
 
 .tiles-middle {
-    flex: 1;
-    display: flex;
+    position: absolute;
+    /* 각각 페이지별로 width 고정 사용을 안하기 위해 flex로 설정 */
+    display : flex;
+    width : 100%;
+    top: 56px;
+    bottom : 0;
+    overflow: hidden;
 }
 
 .tiles-middle .sb-sidenav-footer {
@@ -44,8 +35,23 @@
 
 /* Tiles 오른쪽 영역 (메인) */
 .tiles-main {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    padding : 30px 10px 0px 10px;
+    /* ! grid 영역 relative 사용을 위한 block relative 처리 */
+    display: block;
+    position: relative;
+    min-width: 300px;
+    height : 100%;
+    width : 100%;
+    padding : 0;
+    overflow : auto;
+}
+
+/* Tiles 왼쪽 영역 (네비) */
+
+.sb-nav-fixed {
+}
+
+#layoutSidenav_nav {
+    height : 100%;
+    overflow: hidden;
+    max-width : 200px;
 }
