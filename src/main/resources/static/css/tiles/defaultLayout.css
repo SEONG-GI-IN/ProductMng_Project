@@ -11,6 +11,7 @@
 /* Tiles 왼쪽 영역 (네비) */
 
 .sb-nav-fixed {
+    z-index: 1;
     height : 100%;
 }
 

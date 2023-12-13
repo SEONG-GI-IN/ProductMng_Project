@@ -1,0 +1,57 @@
+
+/* ul li 영역 */
+.list-search li {
+    padding : 10px 0px 10px 0px;
+
+}
+/* table */
+.list-search-table {
+    border : 1px solid gray;
+    width: 100%;
+}
+
+/* 전체 td 영역 */
+.list-search-table td {
+    background-color: lightgray;
+    padding : 5px 10px 5px 10px;
+}
+
+/* input 박스를 제외한 영역 (추가할 시 자동 적용을 위해) */
+.list-search-table td:nth-last-child(2n+3){
+
+    border-left : 1px solid gray;
+    min-width : 100px;
+    text-align: center;
+}
+
+
+/* 각각 인풋박스 설정 */
+    /* 날짜 박스 설정 */
+    .list-search-table #list-search-date{
+        min-width: 300px;
+    }
+    .list-search-table #list-search-date input {
+        max-width : 120px;
+    }
+
+    /* 분류 박스 설정 */
+    .list-search-table  #list-search-product-class select{
+        min-width: 18px;
+        width: 100%;
+        min-height: 28px;
+
+    }
+
+    /* 전체 박스 설정 */
+    .list-search-table input {
+        min-height: 30px;
+    }
+
+/* 검색 박스 영역 */
+.list-search-table td:last-child {
+    text-align: right;
+}
+
+.list-search-table td:last-child input{
+    
+}
