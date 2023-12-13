@@ -35,15 +35,13 @@ dependencies {
 	/* JSP */
 	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
 	implementation group: 'javax.servlet', name: 'jstl', version: '1.2'
+	implementation 'org.springframework.boot:spring-boot-devtools'
 
 	/* tiles */
 	implementation 'org.apache.tiles:tiles-jsp:3.0.8'
 	implementation 'org.apache.tiles:tiles-servlet:3.0.8'
 	implementation 'org.apache.tiles:tiles-core:3.0.8'
 	implementation 'org.apache.tiles:tiles-api:3.0.8'
-
-
-
 
 	/* TEST */
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

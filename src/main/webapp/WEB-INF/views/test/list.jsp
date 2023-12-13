@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+
 <head>
     <link rel="stylesheet" type="text/css" href="/css/list.css" />
     <script src="/js/list.js"></script>
