@@ -1,11 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+
  <div id="layoutSidenav_nav" class="sb-toggle">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="index.html">
+                    <div class="sb-sidenav-menu-heading">TEST</div>
+                    <a class="nav-link" href="/test/list">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        list.jsp
+                    </a>
+                    <a class="nav-link" href="/test/test">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
+                        test.jsp
                     </a>
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
