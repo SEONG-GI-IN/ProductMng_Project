@@ -28,6 +28,7 @@
             $.ajax({
                 url : "/product/search",
                 method : "GET",
+                contentType:"application/json; charset=utf-8",
                 data : {
                     date1 : date1,
                     date2 : date2,
@@ -35,7 +36,7 @@
                 },
                 success : function(data){
                     console.log(data);
-                    // grid.resetData(data);
+                    grid.resetData(data);
                 }
             });
         });
@@ -151,9 +152,9 @@
                 <td> 상품구분 </td>
                 <td id="list-search-product-class">
                     <select id="productCategories">
-                        <option value="1"> 구분1 </option>
-                        <option value="2"> 구분2 </option>
-                        <option value="3"> 구분3 </option>
+                        <option value="구분1"> 구분1 </option>
+                        <option value="구분2"> 구분2 </option>
+                        <option value="구분3"> 구분3 </option>
                     </select>
                 </td>
                 <td> <input type="button" id="btn_search" value="검색"/></td>
