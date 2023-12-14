@@ -27,7 +27,7 @@
 
             $.ajax({
                 url : "/product/search",
-                method : "POST",
+                method : "GET",
                 data : {
                     date1 : date1,
                     date2 : date2,
