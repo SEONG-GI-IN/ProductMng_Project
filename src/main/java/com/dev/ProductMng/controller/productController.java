@@ -18,7 +18,7 @@ public class productController {
         return "list";
     }
 
-    @RequestMapping(value = ("/product/search"), method = {RequestMethod.POST})
+    @RequestMapping(value = ("/product/search"), method = {RequestMethod.GET})
     @ResponseBody
     public String productSearch(
             @RequestParam(value = "date1", required=false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date1,
