@@ -1,7 +1,9 @@
 
 $(document).ready(function(){
     <!-- SEARCH Calendar 날짜 설정 -->
-    $('.list-date').val(new Date().toISOString().substring(0,10));
+    //$('.list-date').val(new Date().toISOString().substring(0,10));
+    // moment.js 사용
+    $('.list-date').val(moment().format('YYYY-MM-DD'));
     <!-- SEARCH AJAX -->
     $("#btn_search").click(function(){
         $.ajax({

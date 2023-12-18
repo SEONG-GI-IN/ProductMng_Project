@@ -32,6 +32,12 @@
                 <td> <input type="button" id="btn_search" value="검색"/></td>
             </tr>
         </table>
+
+    <div class="right-btn">
+        <input type="button" id="addBtn" value="등록" />
+        <input type="button" id="deleteBtn" value="삭제" />
+        <input type="button" id="updateBtn" value="수정" />
+    </div>
 </div>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
