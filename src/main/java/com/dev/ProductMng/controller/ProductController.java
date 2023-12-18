@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-public class productController {
+public class ProductController {
     @GetMapping("/product/list")
     public String productList() {
 
