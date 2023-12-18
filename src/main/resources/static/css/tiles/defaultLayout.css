@@ -21,15 +21,15 @@
     margin-bottom : auto;
 }
 
-#layoutSidenav_nav .sb-sidenav-footer {
+#layoutSidenav-nav .sb-sidenav-footer {
      min-width: 135px;
 }
 
-#layoutSidenav_nav #collapseLayouts {
+#layoutSidenav-nav #collapseLayouts {
     min-width: 155px;
 }
 
-#layoutSidenav_nav .sb-sidenav-menu-nested{
+#layoutSidenav-nav .sb-sidenav-menu-nested{
     min-width: 126px;
 }
 
@@ -50,8 +50,30 @@
 .sb-nav-fixed {
 }
 
-#layoutSidenav_nav {
+#layoutSidenav-nav {
     height : 100%;
     overflow: hidden;
     max-width : 200px;
+}
+
+.sb-nav-fixed {
+    display: inline-block;
+    width: 200px;
+    height: 100%;
+    left: 0;
+    top: 100px;
+    background: gray;
+    font-size: 14px;
+    z-index: 100;
+    margin-left: -200px;
+    transform: translate3d(-200px, 0, 0);
+    transition: all 0.2s;
+
+}
+
+.sb-nav-fixed.sb-toggle {
+    background: gray;
+    transform: translate3d(0, 0, 0);
+    margin-left: 0px;
+    transition: all 0.2s;
 }

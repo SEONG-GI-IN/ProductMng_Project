@@ -14,7 +14,7 @@
 <div class="tiles-all">
     <tiles:insertAttribute name="nav-top"/>
     <div class="tiles-middle">
-        <div class="sb-nav-fixed">
+        <div class="sb-nav-fixed sb-toggle">
         <tiles:insertAttribute name="nav-left"/>
         </div>
         <div class="tiles-main">
