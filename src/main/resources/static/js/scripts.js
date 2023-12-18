@@ -13,15 +13,7 @@ window.addEventListener('DOMContentLoaded', event => {
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
     if (sidebarToggle) {
         sidebarToggle.addEventListener('click', event => {
-            var leftNav = $('#layoutSidenav_nav');
-            if(leftNav.hasClass('sb-toggle')){
-                leftNav.removeClass('sb-toggle');
-                leftNav.animate({maxWidth : "-=200px"});
-            } else {
-                leftNav.addClass('sb-toggle');
-                leftNav.animate({maxWidth : "+=200px"});
-            }
-
+            $(".sb-nav-fixed").toggleClass("sb-toggle");
         });
     }
 
