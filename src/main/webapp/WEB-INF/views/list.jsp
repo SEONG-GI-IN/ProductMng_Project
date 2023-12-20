@@ -3,10 +3,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
 
 <head>
     <link rel="stylesheet" type="text/css" href="/css/list.css" />
-    <script src="/js/list.js"></script>
     <link rel="stylesheet" href="/css/tui-grid.css" type="text/css" />
     <script src="/js/tui-grid.js"></script>
 </head>
@@ -41,4 +41,28 @@
 </div>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Vertically Centered Scrollable Modal</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Scrollable content goes here -->
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...</p>
+                <!-- Add more content as needed -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!-- Additional buttons if needed -->
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
+<%--<script src="/js/list.js"></script>--%>
+<script src="/js/list/grid.js?ver=${currentTime}"></script>
+<script src="/js/list/init.js?ver=${currentTime}"></script>

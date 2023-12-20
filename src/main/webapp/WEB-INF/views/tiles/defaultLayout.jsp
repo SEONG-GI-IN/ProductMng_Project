@@ -7,6 +7,15 @@
 <html>
 <head>
 <tiles:insertAttribute name="css"/>
+    <%
+        response.setHeader("Cache-Control", "no-cache");
+        response.setHeader("pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMddHHmmss");
+        request.setAttribute("currentTime", dateFormat.format(new java.util.Date()));
+        request.setAttribute("host", request.getServerName());
+    %>
 </head>
 <body>
 <tiles:insertAttribute name="script"/>
