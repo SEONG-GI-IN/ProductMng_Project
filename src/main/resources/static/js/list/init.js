@@ -11,6 +11,7 @@ function eventbing(){
 
     //addBtn 눌렀을 때 dialog 띄우기
     $('#addBtn').click(function(){
-        $('#exampleModal').modal('show');
+        $('#addDialog').modal('show');
     });
+
 }

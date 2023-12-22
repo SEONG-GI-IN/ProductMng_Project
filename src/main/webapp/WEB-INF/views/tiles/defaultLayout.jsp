@@ -17,6 +17,10 @@
         request.setAttribute("host", request.getServerName());
     %>
 </head>
+
+<script>
+    var _g_contextPath_ = "${pageContext.request.contextPath}";
+</script>
 <body>
 <tiles:insertAttribute name="script"/>
 

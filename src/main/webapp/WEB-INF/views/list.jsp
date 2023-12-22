@@ -42,25 +42,58 @@
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Vertically Centered Scrollable Modal</h5>
+                <h5 class="modal-title">상품 등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- Scrollable content goes here -->
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. ...</p>
-                <!-- Add more content as needed -->
+                <!-- 상품명 입력 -->
+                <div class="mb-3 row">
+                    <label for="productName" class="col-sm-4 col-form-label">상품명</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" id="productName" />
+                    </div>
+                </div>
+                <!-- 상품가격 입력 -->
+                <div class="mb-3 row">
+                    <label for="productPrice" class="col-sm-4 col-form-label">판매가격</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" id="productPrice" />
+                    </div>
+                </div>
+                <!-- 상품분류 입력 -->
+                <div class="mb-3 row">
+                    <label for="productCategory" class="col-sm-4 col-form-label">상품분류</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" id="productCategory" />
+                    </div>
+                </div>
+                <!-- 거래처 입력 -->
+                <div class="mb-3 row">
+                    <label for="supplier" class="col-sm-4 col-form-label">거래처</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" id="supplier" />
+                    </div>
+                </div>
+                <!-- 매입가 입력 -->
+                <div class="mb-3 row">
+                    <label for="purchasePrice" class="col-sm-4 col-form-label">매입가</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" id="purchasePrice" />
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <!-- Additional buttons if needed -->
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" class="btn btn-primary">저장</button>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 <%--<script src="/js/list.js"></script>--%>

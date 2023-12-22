@@ -7720,6 +7720,22 @@ textarea.form-control-lg {
   margin-left: auto !important;
 }
 
+.ml-60 {
+  margin-left: -60px !important;
+}
+
+.ml-70 {
+  margin-left: -70px !important;
+}
+
+.ml-80 {
+  margin-left: -80px !important;
+}
+
+.ml-90 {
+  margin-left: -90px !important;
+}
+
 .p-0 {
   padding: 0 !important;
 }
