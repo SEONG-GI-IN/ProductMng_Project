@@ -16,6 +16,15 @@
         request.setAttribute("currentTime", dateFormat.format(new java.util.Date()));
         request.setAttribute("host", request.getServerName());
     %>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery-ui.min.js"></script>
+    <!--[if IE]>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/bluebird.js"></script>
+    <![endif]-->
+
+    <!-- commonUtil js -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/commonUtil/commonUtil.js?ver=${application.version}"></script>
+
 </head>
 
 <script>

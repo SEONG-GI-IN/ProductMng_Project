@@ -5,7 +5,7 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">TEST</div>
-                    <a class="nav-link" href="/product/list">
+                    <a class="nav-link" href="/product/productListForm">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         list.jsp
                     </a>

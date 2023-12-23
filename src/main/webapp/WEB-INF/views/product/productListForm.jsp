@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+         pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 
 <head>
     <link rel="stylesheet" type="text/css" href="/css/list.css" />
@@ -94,8 +94,7 @@
     </div>
 </div>
 
-
 </body>
-<%--<script src="/js/list.js"></script>--%>
-<script src="/js/list/grid.js?ver=${currentTime}"></script>
-<script src="/js/list/init.js?ver=${currentTime}"></script>
+
+<script type="text/javascript" src="/js/product/productListForm/grid.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/product/productListForm/init.js?ver=${currentTime}"></script>

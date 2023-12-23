@@ -1,22 +1,32 @@
-package com.dev.ProductMng.controller;
+package com.dev.ProductMng.product.controller;
 
-import org.json.simple.JSONObject;
+import com.dev.ProductMng.product.service.ProductService;
 import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class ProductController {
-    @GetMapping("/product/list")
-    public String productList() {
 
+    @Autowired
+    ProductService productService;
 
-        return "list";
+    /**
+     * 상품관리 조회 페이지
+     * @return
+     */
+    @GetMapping("/product/productListForm")
+    public String productListForm() {
+        return "product/productListForm";
     }
 
     @RequestMapping(value = ("/product/search"), method = {RequestMethod.GET})
@@ -53,4 +63,14 @@ public class ProductController {
 
         return array;
         }
+
+    /**
+     * 상품 등록
+     */
+    @RequestMapping(value = ("/product/insertProduct"), method = {RequestMethod.POST})
+    public ModelAndView insertProduct(@RequestParam Map<String, Object> params, ModelAndView mv){
+        productService.insertProduct(params);
+        mv.setViewName("jsonView");
+        return mv;
+    }
 }
