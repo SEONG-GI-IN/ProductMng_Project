@@ -14,7 +14,11 @@ public class ProductServiceImpl implements ProductService {
     ProductDAO productDAO;
 
     @Override
-    public void insertProduct(Map<String, Object> params) {
-        productDAO.insertProduct(params);
+    public void insertProduct(Map<String, Object> params) throws Exception{
+        try{
+            productDAO.insertProduct(params);
+        } catch (Exception e){
+            throw new Exception(e);
+        }
     }
 }

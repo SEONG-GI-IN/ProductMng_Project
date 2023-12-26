@@ -15,7 +15,7 @@ function eventbing() {
     });
 
     //addDialog에서 저장 눌렀을 때
-    $('#addSaveBtn').click(function () {
+    $('#saveBtn').click(function () {
         if (confirm("상품을 등록하시겠습니까?")) {
             var array = [];
             var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
