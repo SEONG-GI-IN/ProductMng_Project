@@ -14,6 +14,11 @@ function eventbing() {
         $('#addDialog').modal('show');
     });
 
+    //dialog 가 닫힐 경우 input 모든값 제거
+    $('#addDialog').on('hidden.bs.modal',  () => {
+        $('#addDialog').find("form")[0].reset();
+    });
+
     //addDialog에서 저장 눌렀을 때
     $('#saveBtn').click(function () {
         if (confirm("상품을 등록하시겠습니까?")) {
