@@ -25,4 +25,19 @@
             NOW()
         )
     </insert>
+
+    <select id="getProductList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            BAR_CODE,
+            PRODUCT_NAME,
+            PRODUCT_PRICE,
+            PRODUCT_TYPE_NM,
+            PRODUCT_TYPE_CD,
+            SUPPLIER,
+            PURCHASE_PRICE,
+            UPDATE_DT,
+            CREATE_DT
+        FROM T_PRODUCT_DTL
+        ORDER BY CREATE_DT DESC
+    </select>
 </mapper>

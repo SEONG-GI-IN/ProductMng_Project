@@ -21,4 +21,13 @@ public class ProductServiceImpl implements ProductService {
             throw new Exception(e);
         }
     }
+
+    @Override
+    public Map<String, Object> getProductList(Map<String, Object> params) {
+        try {
+            return productDAO.getProductList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

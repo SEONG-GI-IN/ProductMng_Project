@@ -1,12 +1,21 @@
 function grid() {
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
+        data:{
+            api: {
+                readData: {
+                    url: '/product/getProductList',
+                    method: 'GET',
+                }
+            }
+        },
         scrollX: false,
         scrollY: false,
+        rowHeaders: ['rowNum'],
         columns: [
             {
-                header: 'boardNum',
-                name: 'boardNum',
+                header: '바코드번호',
+                name: 'barCode',
             },
             {
                 header: 'spaceName',
