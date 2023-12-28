@@ -11,8 +11,15 @@
     <script src="/js/tui-grid.js"></script>
 </head>
 <body>
+<!-- 등록 삭제 수정 -->
+<div class="right-btn">
+    <input type="button" id="addBtn" value="등록" />
+    <input type="button" id="deleteBtn" value="삭제" />
+    <input type="button" id="updateBtn" value="수정" />
+</div>
+<!-- 검색 -->
+<li> 상품등록 및 검색 </li>
 <div class="list-search">
-    <li> 상품검색 </li>
         <table class="list-search-table">
             <tr>
                 <td> 등록일 </td>
@@ -29,19 +36,18 @@
                         <option value="구분3"> 구분3 </option>
                     </select>
                 </td>
+                <td> 상품명 </td>
+                <td> <input type="text" id="product-name"/> </td>
                 <td> <input type="button" id="btn_search" value="검색"/></td>
             </tr>
         </table>
-
-    <div class="right-btn">
-        <input type="button" id="addBtn" value="등록" />
-        <input type="button" id="deleteBtn" value="삭제" />
-        <input type="button" id="updateBtn" value="수정" />
-    </div>
 </div>
+<li> 상품조회 </li>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
 
+
+<!-- MODAL -->
 <div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content">
