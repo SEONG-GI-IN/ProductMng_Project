@@ -29,7 +29,7 @@ public class ProductController {
      */
     @GetMapping("/productListForm")
     public String productListForm() {
-        return "product/productListForm";
+        return "product/productListForm.tiles";
     }
 
     @RequestMapping(value = ("/search"), method = {RequestMethod.GET})

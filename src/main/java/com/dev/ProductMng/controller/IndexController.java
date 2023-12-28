@@ -10,11 +10,11 @@ public class IndexController {
 
     @GetMapping("/")
     public String indexMapping() {
-        return "index";
+        return "index.tiles";
     }
 
     @RequestMapping(value = ("/test/test"), method = {RequestMethod.GET})
     public String test() {
-        return "test/test";
+        return "test/test.tiles";
     }
 }

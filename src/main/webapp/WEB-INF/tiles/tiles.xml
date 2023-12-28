@@ -13,11 +13,11 @@
     </definition>
 
     <!-- main layout -->
-    <definition name="*" extends=".contents">
+    <definition name="*.tiles" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
     </definition>
 
-    <definition name="*/*" extends=".contents">
+    <definition name="*/*.tiles" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
     </definition>
 </tiles-definitions>
