@@ -34,8 +34,8 @@ function eventbing() {
 
             // 유효성 검사
             if (validation()) {
-                CommonUtil.postAjax("/product/insertProduct", array).then(function (data) {
-                    if (data.result == "success") {
+                CommonUtil.postAjax("/product/insertProduct", array).then(function (result) {
+                    if (result) {
                         alert("상품이 등록되었습니다.");
                         $('#addDialog').modal('hide');
                         grid();

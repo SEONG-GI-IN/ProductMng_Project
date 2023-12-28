@@ -71,11 +71,14 @@ public class ProductController {
      * 상품 등록
      */
     @RequestMapping(value = ("/insertProduct"), method = {RequestMethod.POST})
-    public void insertProduct(@RequestParam Map<String, Object> params) {
+    @ResponseBody
+    public boolean insertProduct(@RequestParam Map<String, Object> params) {
         try {
             productService.insertProduct(params);
+            return true;
         }catch (Exception e){
             e.printStackTrace();
+            return false;
         }
     }
 
