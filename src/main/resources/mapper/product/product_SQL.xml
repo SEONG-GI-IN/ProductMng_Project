@@ -2,8 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dev.ProductMng.product.dao.ProductDAO">
     <!-- 상품 정보 저장 -->
-    <insert id="insertProduct" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="BAR_CODE">
+    <insert id="insertProduct" parameterType="java.util.Map">
         INSERT INTO T_PRODUCT_DTL (
+            BAR_CODE,
             PRODUCT_NAME,
             PRODUCT_PRICE,
             PRODUCT_TYPE_NM,
@@ -13,6 +14,7 @@
             UPDATE_DT,
             CREATE_DT
         ) VALUES (
+             '1',
              #{productName},
              #{productPrice},
              'TEST',
