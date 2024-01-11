@@ -11,14 +11,10 @@
     <script src="/js/tui-grid.js"></script>
 </head>
 <body>
-<!-- 등록 삭제 수정 -->
-<div class="right-btn">
-    <input type="button" id="addBtn" value="등록" />
-    <input type="button" id="deleteBtn" value="삭제" />
-    <input type="button" id="updateBtn" value="수정" />
+<div class="page-title">
+    <h4>[상품관리화면]</h4>
 </div>
-<!-- 검색 -->
-<li> 상품등록 및 검색 </li>
+
 <div class="list-search">
         <table class="list-search-table">
             <tr>
@@ -41,8 +37,14 @@
                 <td> <input type="button" id="btn_search" value="검색"/></td>
             </tr>
         </table>
+
+    <!-- 등록 삭제 수정 -->
+    <div class="right-btn">
+        <input type="button" id="addBtn" value="등록" />
+        <input type="button" id="deleteBtn" value="삭제" />
+        <input type="button" id="updateBtn" value="수정" />
+    </div>
 </div>
-<li> 상품조회 </li>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
 

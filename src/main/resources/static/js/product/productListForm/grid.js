@@ -5,7 +5,7 @@ function createGrid(data) {
         el: document.getElementById('grid'),
         scrollX: false,
         scrollY: false,
-        rowHeaders: ['rowNum'],
+        rowHeaders: ['rowNum', 'checkbox'],
         columns: [
             {
                 header: '바코드번호',

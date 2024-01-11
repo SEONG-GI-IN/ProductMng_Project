@@ -9,8 +9,16 @@ $(function () {
 
 function eventbing() {
 
+    /* 검색버튼 눌렀을 때 */
     $('#btn_search').click(function(){
         refreshGrid();
+    });
+
+    /* 엔터 키 눌렀을 때 */
+    $('#productName').keydown(function(key) {
+        if (key.keyCode == 13) {
+            refreshGrid();
+        }
     });
 
     //addBtn 눌렀을 때 dialog 띄우기
