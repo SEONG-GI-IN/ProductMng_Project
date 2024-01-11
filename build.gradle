@@ -23,7 +23,8 @@ repositories {
 
 dependencies {
 	/* Starter */
-	implementation 'org.springframework.boot:spring-boot-starter'
+	//implementation 'org.springframework.boot:spring-boot-starter'
+	developmentOnly 'org.springframework.boot:spring-boot-starter'
 
 	/* WEB */
 	implementation 'org.springframework.boot:spring-boot-starter-web'

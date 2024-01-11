@@ -5,6 +5,7 @@ import com.dev.ProductMng.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -23,7 +24,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Map<String, Object> getProductList(Map<String, Object> params) {
+    public List<Map<String, Object>> getProductList(Map<String, Object> params) {
         try {
             return productDAO.getProductList(params);
         } catch (Exception e) {

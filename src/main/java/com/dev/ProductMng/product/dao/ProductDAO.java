@@ -19,7 +19,7 @@ public class ProductDAO {
         sqlSession.insert("com.dev.ProductMng.product.dao.ProductDAO.insertProduct", params);
     }
 
-    public Map<String, Object> getProductList(Map<String, Object> params) {
-        return sqlSession.selectOne("com.dev.ProductMng.product.dao.ProductDAO.getProductList", params);
+    public List<Map<String, Object>> getProductList(Map<String, Object> params) {
+        return sqlSession.selectList("com.dev.ProductMng.product.dao.ProductDAO.getProductList", params);
     }
 }

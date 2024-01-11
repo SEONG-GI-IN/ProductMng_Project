@@ -86,9 +86,13 @@ public class ProductController {
      * 상품 조회
      */
     @RequestMapping(value = ("/getProductList"), method = {RequestMethod.GET ,RequestMethod.POST})
-    public ModelAndView getProductList(@RequestParam Map<String, Object> params, ModelAndView mv){
-        mv.addAllObjects(productService.getProductList(params));
-        mv.setViewName("jsonView");
-        return mv;
+    @ResponseBody
+    public List<Map<String, Object>> getProductList(@RequestBody Map<String, Object> params) {
+        try {
+            return productService.getProductList(params);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -1,6 +1,6 @@
 $(function () {
 
-    grid();
+    initializeGrid();
 
     $('.list-date').val(moment().format('YYYY-MM-DD'));
 
@@ -8,6 +8,10 @@ $(function () {
 });
 
 function eventbing() {
+
+    $('#btn_search').click(function(){
+        refreshGrid();
+    });
 
     //addBtn 눌렀을 때 dialog 띄우기
     $('#addBtn').click(function () {

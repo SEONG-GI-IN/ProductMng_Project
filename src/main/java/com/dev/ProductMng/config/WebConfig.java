@@ -2,7 +2,9 @@ package com.dev.ProductMng.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
+import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import org.springframework.web.servlet.view.tiles3.TilesConfigurer;
 import org.springframework.web.servlet.view.tiles3.TilesView;
 
@@ -30,5 +32,12 @@ public class WebConfig {
         // 뷰 리졸버의 우선순위를 설정 (숫자가 낮을수록 우선순위가 높음)
         resolver.setOrder(1);
         return resolver;
+    }
+
+    //jsonView
+    // setViewName("jsonView")로 설정한 경우
+    @Bean
+    public View jsonView() {
+        return new MappingJackson2JsonView();
     }
 }

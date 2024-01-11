@@ -38,6 +38,8 @@
             UPDATE_DT,
             CREATE_DT
         FROM T_PRODUCT_DTL
+        WHERE 1=1
+        AND PRODUCT_NAME LIKE CONCAT('%', #{productName}, '%')
         ORDER BY CREATE_DT DESC
     </select>
 </mapper>

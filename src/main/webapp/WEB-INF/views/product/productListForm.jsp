@@ -37,7 +37,7 @@
                     </select>
                 </td>
                 <td> 상품명 </td>
-                <td> <input type="text" id="product-name"/> </td>
+                <td> <input type="text" id="productName"/> </td>
                 <td> <input type="button" id="btn_search" value="검색"/></td>
             </tr>
         </table>
@@ -101,6 +101,49 @@
 </div>
 
 </body>
+
+<%--<script type="text/javascript">--%>
+<%--    window.onload = function (){--%>
+<%--        const grid = new tui.Grid({--%>
+<%--            el: document.getElementById('grid'),--%>
+<%--            //data: gridData,--%>
+<%--            scrollX: false,--%>
+<%--            scrollY: false,--%>
+
+<%--            rowHeaders:['rowNum'],--%>
+<%--            columns: [--%>
+<%--                {--%>
+<%--                    header: '바코드번호',--%>
+<%--                    name: 'BAR_CODE'--%>
+<%--                }--%>
+<%--            ]--%>
+<%--        });--%>
+
+
+<%--        $('#btn_search').click(function(){--%>
+<%--            if(document.querySelector('#btn_search').innerHTML == '초기화'){--%>
+<%--                $('#btn_search').html('검색');--%>
+<%--                grid.clear();--%>
+<%--                return;--%>
+<%--            }--%>
+
+<%--            $.ajax({--%>
+<%--                url : '/product/getProductList',--%>
+<%--                method: 'post',--%>
+<%--                dataType : 'json',--%>
+<%--                success: function(result){--%>
+
+<%--                    console.log(result);--%>
+<%--                    grid.resetData(result);--%>
+
+<%--                },--%>
+<%--                error : function(result){--%>
+<%--                    console.log('ajax error!');--%>
+<%--                }--%>
+<%--            })--%>
+<%--        })--%>
+<%--    }--%>
+<%--</script>--%>
 
 <script type="text/javascript" src="/js/product/productListForm/grid.js?ver=${currentTime}"></script>
 <script type="text/javascript" src="/js/product/productListForm/init.js?ver=${currentTime}"></script>
