@@ -60,6 +60,13 @@
             <div class="modal-body">
                 <!-- 상품명 입력 -->
                 <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">바코드</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="productBarCode" />
+                    </div>
+                </div>
+                <!-- 상품명 입력 -->
+                <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label">상품명</label>
                     <div class="col-sm-9 ml-60">
                         <input type="text" class="form-control" name="productName" />

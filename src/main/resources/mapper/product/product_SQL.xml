@@ -14,7 +14,7 @@
             UPDATE_DT,
             CREATE_DT
         ) VALUES (
-             '1',
+             #{productBarCode},
              #{productName},
              #{productPrice},
              'TEST',
