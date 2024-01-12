@@ -4,11 +4,13 @@ import com.dev.ProductMng.product.dao.ProductDAO;
 import com.dev.ProductMng.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class ProductServiceImpl implements ProductService {
 
     @Autowired
@@ -24,6 +26,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductList(Map<String, Object> params) {
         try {
             return productDAO.getProductList(params);

@@ -26,6 +26,9 @@ dependencies {
 	//implementation 'org.springframework.boot:spring-boot-starter'
 	developmentOnly 'org.springframework.boot:spring-boot-starter'
 
+	/* AOP */
+	implementation 'org.springframework.boot:spring-boot-starter-aop'
+
 	/* WEB */
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
