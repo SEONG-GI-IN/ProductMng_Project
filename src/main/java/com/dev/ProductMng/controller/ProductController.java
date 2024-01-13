@@ -1,14 +1,12 @@
-package com.dev.ProductMng.product.controller;
+package com.dev.ProductMng.controller;
 
-import com.dev.ProductMng.product.service.ProductService;
+import com.dev.ProductMng.service.ProductService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 
 import java.time.LocalDate;

@@ -19,13 +19,13 @@
         <table class="list-search-table">
             <tr>
                 <td> 등록일 </td>
-                <td id="list-search-date">
+                <td id="listSearchDate">
                     <input type="date" id="date1" class="list-date"/>
                     <span> ~ </span>
                     <input type="date" id="date2" class="list-date"/>
                 </td>
                 <td> 상품구분 </td>
-                <td id="list-search-product-class">
+                <td id="listSearchProductClass">
                     <select id="productCategories">
                         <option value="구분1"> 구분1 </option>
                         <option value="구분2"> 구분2 </option>
@@ -34,15 +34,15 @@
                 </td>
                 <td> 상품명 </td>
                 <td> <input type="text" id="productName"/> </td>
-                <td> <input type="button" id="btn_search" value="검색"/></td>
+                <td> <input type="button" id="searchBtn" value="검색"/></td>
             </tr>
         </table>
 
     <!-- 등록 삭제 수정 -->
     <div class="right-btn">
-        <input type="button" id="addBtn" value="등록" />
-        <input type="button" id="deleteBtn" value="삭제" />
-        <input type="button" id="updateBtn" value="수정" />
+        <input type="button" id="addProductBtn" value="등록" />
+        <input type="button" id="deleteProductBtn" value="삭제" />
+        <input type="button" id="updateProductBtn" value="수정" />
     </div>
 </div>
 <!-- toast grid -->
@@ -50,7 +50,7 @@
 
 
 <!-- MODAL -->
-<div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="addProductDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content">
             <div class="modal-header">
@@ -103,7 +103,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" id="saveBtn" class="btn btn-primary">저장</button>
+                <button type="button" id="saveProductBtn" class="btn btn-primary">저장</button>
             </div>
         </form>
     </div>
@@ -130,7 +130,7 @@
 
 
 <%--        $('#btn_search').click(function(){--%>
-<%--            if(document.querySelector('#btn_search').innerHTML == '초기화'){--%>
+<%--            if(document.querySelector('#btnSearch').innerHTML == '초기화'){--%>
 <%--                $('#btn_search').html('검색');--%>
 <%--                grid.clear();--%>
 <%--                return;--%>
