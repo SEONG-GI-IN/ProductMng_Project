@@ -1,4 +1,4 @@
-package com.dev.ProductMng.service;
+package com.dev.ProductMng.product;
 
 import java.util.List;
 import java.util.Map;

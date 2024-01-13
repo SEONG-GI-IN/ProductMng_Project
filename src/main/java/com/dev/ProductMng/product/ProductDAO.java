@@ -1,4 +1,4 @@
-package com.dev.ProductMng.dao;
+package com.dev.ProductMng.product;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +16,10 @@ public class ProductDAO {
     }
 
     public void insertProduct(Map<String, Object> params) throws Exception{
-        sqlSession.insert("com.dev.ProductMng.dao.ProductDAO.insertProduct", params);
+        sqlSession.insert("com.dev.ProductMng.product.ProductDAO.insertProduct", params);
     }
 
     public List<Map<String, Object>> getProductList(Map<String, Object> params) {
-        return sqlSession.selectList("com.dev.ProductMng.dao.ProductDAO.getProductList", params);
+        return sqlSession.selectList("com.dev.ProductMng.product.ProductDAO.getProductList", params);
     }
 }

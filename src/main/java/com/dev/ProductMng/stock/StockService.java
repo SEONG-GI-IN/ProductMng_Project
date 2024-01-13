@@ -1,4 +1,4 @@
-package com.dev.ProductMng.service;
+package com.dev.ProductMng.stock;
 
 import java.util.Map;
 

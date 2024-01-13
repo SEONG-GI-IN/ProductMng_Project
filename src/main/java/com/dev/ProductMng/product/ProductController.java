@@ -1,6 +1,5 @@
-package com.dev.ProductMng.controller;
+package com.dev.ProductMng.product;
 
-import com.dev.ProductMng.service.ProductService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

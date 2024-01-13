@@ -1,4 +1,4 @@
-package com.dev.ProductMng.dao;
+package com.dev.ProductMng.stock;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;

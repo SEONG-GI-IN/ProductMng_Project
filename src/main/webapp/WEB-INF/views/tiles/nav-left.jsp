@@ -4,14 +4,14 @@
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">TEST</div>
+                    <div class="sb-sidenav-menu-heading">PRODUCT</div>
                     <a class="nav-link" href="/product/productListForm">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        list.jsp
+                        LIST
                     </a>
-                    <a class="nav-link" href="/test/test">
+                    <a class="nav-link" href="#">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        test.jsp
+                        -
                     </a>
                     <div class="sb-sidenav-menu-heading">Interface</div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">

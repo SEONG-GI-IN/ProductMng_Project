@@ -1,4 +1,4 @@
-package com.dev.ProductMng.controller;
+package com.dev.ProductMng.index;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
