@@ -10,7 +10,7 @@ $(function () {
 function eventbing() {
 
     /* 검색버튼 눌렀을 때 */
-    $('#btn_search').click(function(){
+    $('#searchBtn').click(function(){
         refreshGrid();
     });
 
@@ -22,20 +22,20 @@ function eventbing() {
     });
 
     //addBtn 눌렀을 때 dialog 띄우기
-    $('#addBtn').click(function () {
-        $('#addDialog').modal('show');
+    $('#addProductBtn').click(function () {
+        $('#addProductDialog').modal('show');
     });
 
     //dialog 가 닫힐 경우 input 모든값 제거
-    $('#addDialog').on('hidden.bs.modal',  () => {
-        $('#addDialog').find("form")[0].reset();
+    $('#addProductDialog').on('hidden.bs.modal',  () => {
+        $('#addProductDialog').find("form")[0].reset();
     });
 
     //addDialog에서 저장 눌렀을 때
-    $('#saveBtn').click(function () {
+    $('#saveProductBtn').click(function () {
         if (confirm("상품을 등록하시겠습니까?")) {
             var array = [];
-            var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
+            var objArr = $("#addProductDialog").find("input[type='text'], select, input[type='radio']:checked");
 
             // 객체 배열에 데이터 저장
             objArr.each(function (i, obj) {
@@ -49,7 +49,7 @@ function eventbing() {
                 CommonUtil.postAjax("/product/insertProduct", array).then(function (result) {
                     if (result) {
                         alert("상품이 등록되었습니다.");
-                        $('#addDialog').modal('hide');
+                        $('#addProductDialog').modal('hide');
                         grid();
                     } else {
                         alert("상품 등록에 실패하였습니다.");
@@ -63,7 +63,7 @@ function eventbing() {
 function validation() {
     // 저장 할 때 유효성 검사
     var result = true;
-    var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
+    var objArr = $("#addProductDialog").find("input[type='text'], select, input[type='radio']:checked");
 
     objArr.each(function (i, obj) {
         var name = $(obj).attr("name");

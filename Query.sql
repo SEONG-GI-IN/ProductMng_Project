@@ -16,12 +16,12 @@ create table T_PRODUCT_DTL
 );
 
 /* CREATE TABLE [STOCK] */ /* 재고 */
-create table T_STCK_DTL
+create table T_STOCK_DTL
 (
     BAR_CODE        int      not null,
     REGISTRATION_DT DATETIME null, /* 등록 날짜 */
     PRODUCT_QTY     int      null, /* 수량 */
-    constraint t_stck_dtl-t_product_dtl-BAR_CODE_fk
+    constraint t_stock_dtl-t_product_dtl-BAR_CODE_fk
         foreign key (BAR_CODE) references t_product_dtl (BAR_CODE)
             on update cascade
 );

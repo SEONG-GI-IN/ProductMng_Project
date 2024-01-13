@@ -1,7 +1,5 @@
-package com.dev.ProductMng.product.service.impl;
+package com.dev.ProductMng.product;
 
-import com.dev.ProductMng.product.dao.ProductDAO;
-import com.dev.ProductMng.product.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

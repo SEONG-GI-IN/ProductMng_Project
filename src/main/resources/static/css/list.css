@@ -33,16 +33,16 @@ li {
 
 /* 각각 인풋박스 설정 */
     /* 날짜 박스 설정 */
-    .list-search-table #list-search-date{
+    .list-search-table #listSearchDate{
         min-width: 300px;
     }
-    .list-search-table #list-search-date input {
+    .list-search-table #listSearchDate input {
         max-width : 140px;
         text-align: center;
     }
 
     /* 분류 박스 설정 */
-    .list-search-table  #list-search-product-class select{
+    .list-search-table  #listSearchProductClass select{
         min-width: 18px;
         width: 100%;
         min-height: 24px;
