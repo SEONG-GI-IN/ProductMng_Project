@@ -4,3 +4,15 @@
     margin-right : 20px;
     text-align: right;
 }
+
+.grid-container {
+    display: flex;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    margin: 5px;
+}
+
+.btn_div {overflow:hidden;margin:10px 0;}
+.btn_div .left_div{float:left;}
+.btn_div .right_div{float:right;}
+.twinbox{border:solid #eaeaea;border-width: 0 1px;}

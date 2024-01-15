@@ -21,6 +21,9 @@
                     </a>
                     <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/common/codeMngForm">공통코드관리화면</a>
+                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/item/itemListForm">상품관리화면</a>
                         </nav>
                     </div>
