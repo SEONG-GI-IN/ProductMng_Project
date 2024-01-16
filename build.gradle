@@ -39,6 +39,7 @@ dependencies {
 	/* mysql */
 	implementation 'mysql:mysql-connector-java:8.0.27'
 	runtimeOnly 'mysql:mysql-connector-java:8.0.27'
+	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4', version: '1.16'
 
 	/* LOMBOK */
 	compileOnly 'org.projectlombok:lombok'
