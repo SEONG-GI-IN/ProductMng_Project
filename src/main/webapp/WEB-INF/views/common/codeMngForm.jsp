@@ -47,60 +47,84 @@
 </div>
 
 <!-- MODAL -->
-<div class="modal fade" id="addProductDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">상품 등록</h5>
+                <h5 class="modal-title">그룹 코드 등록</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- 상품명 입력 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">바코드</label>
+                    <label class="col-sm-4 col-form-label">그룹코드</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="productBarCode" />
+                        <input type="text" class="form-control" name="upCodeCd" />
                     </div>
                 </div>
-                <!-- 상품명 입력 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">상품명</label>
+                    <label class="col-sm-4 col-form-label">그룹명</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="productName" />
+                        <input type="text" class="form-control" name="upCodeNm" />
                     </div>
                 </div>
-                <!-- 상품가격 입력 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">판매가격</label>
+                    <label class="col-sm-4 col-form-label">비고</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="productPrice" />
+                        <input type="text" class="form-control" name="remark" />
                     </div>
                 </div>
-                <!-- 상품분류 입력 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">상품분류</label>
+                    <label class="col-sm-4 col-form-label">정렬</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="productCategory" />
-                    </div>
-                </div>
-                <!-- 거래처 입력 -->
-                <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">거래처</label>
-                    <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="supplier" />
-                    </div>
-                </div>
-                <!-- 매입가 입력 -->
-                <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">매입가</label>
-                    <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="purchasePrice" />
+                        <input type="text" class="form-control" name="orderBy" />
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                <button type="button" id="saveProductBtn" class="btn btn-primary">저장</button>
+                <button type="button" id="saveBtn" class="btn btn-primary">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- SUB MODAL -->
+<div class="modal fade" id="subDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">코드 등록</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">코드</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="codeCd" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">코드명</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="codeNm" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">비고</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="codeRemark" />
+                    </div>
+                </div>
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">정렬</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="codeOrderBy" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="saveSubBtn" class="btn btn-primary">저장</button>
             </div>
         </form>
     </div>

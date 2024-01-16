@@ -1,42 +1,49 @@
+const CodeMngForm = {};
+
 $(function () {
 
     initializeGrid();
     initializeSubGrid();
-
-    $('.list-date').val(moment().format('YYYY-MM-DD'));
 
     eventbing();
 });
 
 function eventbing() {
 
-    /* 검색버튼 눌렀을 때 */
-    $('#searchBtn').click(function(){
-        refreshGrid();
-    });
+    //grid에서 특정 row 클릭했을 때
+    $("#grid").on("click", "tbody tr", function (e) {
+        const clickedRow = $(this);
+        const rowIndex = clickedRow.index();
+        const rowData = grid.getRow(rowIndex);
+        const codeCd = rowData.CODE_CD;
+        const codeNm = rowData.UP_CODE_NM;
+        CodeMngForm.codeCd = codeCd;
+        CodeMngForm.codeNm = codeNm;
 
-    /* 엔터 키 눌렀을 때 */
-    $('#productName').keydown(function(key) {
-        if (key.keyCode == 13) {
-            refreshGrid();
+        var params = {
+            UP_CODE_CD: codeCd
         }
+
+        CommonUtil.postAjax("/common/getCodeList", params).then(function (result) {
+            subGrid.resetData(result);
+        });
     });
 
     //addBtn 눌렀을 때 dialog 띄우기
-    $('#addProductBtn').click(function () {
-        $('#addProductDialog').modal('show');
+    $('#addBtn').click(function () {
+        $('#addDialog').modal('show');
     });
 
     //dialog 가 닫힐 경우 input 모든값 제거
-    $('#addProductDialog').on('hidden.bs.modal',  () => {
-        $('#addProductDialog').find("form")[0].reset();
+    $('#addDialog').on('hidden.bs.modal',  () => {
+        $('#addDialog').find("form")[0].reset();
     });
 
     //addDialog에서 저장 눌렀을 때
-    $('#saveProductBtn').click(function () {
-        if (confirm("상품을 등록하시겠습니까?")) {
+    $('#saveBtn').click(function () {
+        if (confirm("코드를 등록하시겠습니까?")) {
             var array = [];
-            var objArr = $("#addProductDialog").find("input[type='text'], select, input[type='radio']:checked");
+            var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
 
             // 객체 배열에 데이터 저장
             objArr.each(function (i, obj) {
@@ -47,51 +54,112 @@ function eventbing() {
 
             // 유효성 검사
             if (validation()) {
-                CommonUtil.postAjax("/product/insertProduct", array).then(function (result) {
+                CommonUtil.postAjax("/common/insertCode", array).then(function (result) {
                     if (result) {
-                        alert("상품이 등록되었습니다.");
-                        $('#addProductDialog').modal('hide');
-                        grid();
+                        alert("코드가 등록되었습니다.");
+                        $('#addDialog').modal('hide');
+                        grid.resetData(result);
                     } else {
-                        alert("상품 등록에 실패하였습니다.");
+                        alert("코드 등록에 실패하였습니다.");
                     }
                 });
             }
         }
     });
-}
 
-function validation() {
-    // 저장 할 때 유효성 검사
-    var result = true;
-    var objArr = $("#addProductDialog").find("input[type='text'], select, input[type='radio']:checked");
+    //subAddBtn 눌렀을 때 dialog 띄우기
+    $('#addSubBtn').click(function () {
+        // 그룹코드가 선택되어있는지 확인
+        var selectedRow = grid.getFocusedCell();
+        if (selectedRow.rowKey == null) {
+            alert("그룹코드를 선택해주세요.");
+            return false;
+        }
 
-    objArr.each(function (i, obj) {
-        var name = $(obj).attr("name");
-        var value = $(obj).val();
+        $('#subDialog').modal('show');
+    });
 
-        if (name == "productName" && value == "") {
-            alert("상품명을 입력해주세요.");
-            result = false;
-            return false;
-        } else if (name == "productPrice" && value == "") {
-            alert("판매가격을 입력해주세요.");
-            result = false;
-            return false;
-        } else if (name == "productCategory" && value == "") {
-            alert("상품분류를 선택해주세요.");
-            result = false;
-            return false;
-        } else if (name == "supplier" && value == "") {
-            alert("거래처를 입력해주세요.");
-            result = false;
-            return false;
-        } else if (name == "purchasePrice" && value == "") {
-            alert("매입가를 입력해주세요.");
-            result = false;
-            return false;
+    //subDialog 가 닫힐 경우 input 모든값 제거
+    $('#subDialog').on('hidden.bs.modal',  () => {
+        $('#subDialog').find("form")[0].reset();
+    });
+
+    //subDialog에서 저장 눌렀을 때
+    $('#saveSubBtn').click(function () {
+        if (confirm("코드를 등록하시겠습니까?")) {
+            var array = [];
+            var objArr = $("#subDialog").find("input[type='text'], select, input[type='radio']:checked");
+
+            // 객체 배열에 데이터 저장
+            objArr.each(function (i, obj) {
+                var name = $(obj).attr("name");
+                var value = $(obj).val();
+                array.push({ name: name, value: value });
+            });
+
+            // array에 그룹코드 추가
+            array.push(
+                { name: "upCodeCd", value: CodeMngForm.codeCd },
+                { name: "upCodeNm", value: CodeMngForm.codeNm}
+            );
+
+            // 유효성 검사
+            if (validation()) {
+                CommonUtil.postAjax("/common/insertCode", array).then(function (result) {
+                    if (result) {
+                        alert("코드가 등록되었습니다.");
+                        $('#subDialog').modal('hide');
+                        refreshSubGrid();
+                    } else {
+                        alert("코드 등록에 실패하였습니다.");
+                    }
+                });
+            }
         }
     });
 
-    return result;
+    function validation(){
+        // 저장 할 때 유효성 검사
+        var result = true;
+        var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
+        var subObjArr = $("#subDialog").find("input[type='text'], select, input[type='radio']:checked");
+
+        // 유효성 검사
+        // grid dialog와 sub dialog 분기
+        if(objArr.length > 0){
+            objArr.each(function (i, obj) {
+                var name = $(obj).attr("name");
+                var value = $(obj).val();
+                if (name == "codeCd" && value == "") {
+                    alert("코드를 입력해주세요.");
+                    result = false;
+                    return false;
+                } else if (name == "codeNm" && value == "") {
+                    alert("코드명을 입력해주세요.");
+                    result = false;
+                    return false;
+                }
+            });
+
+        }
+
+        if(subObjArr.length > 0){
+            subObjArr.each(function (i, obj) {
+                var name = $(obj).attr("name");
+                var value = $(obj).val();
+                if (name == "codeCd" && value == "") {
+                    alert("코드를 입력해주세요.");
+                    result = false;
+                    return false;
+                } else if (name == "codeNm" && value == "") {
+                    alert("코드명을 입력해주세요.");
+                    result = false;
+                    return false;
+                }
+            });
+        }
+
+        return result;
+    }
 }
+

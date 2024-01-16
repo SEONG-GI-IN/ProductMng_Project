@@ -6,10 +6,11 @@ function createGrid(data) {
         scrollX: false,
         scrollY: false,
         rowHeaders: ['checkbox'],
+
         columns: [
             {
                 header: '그룹코드',
-                name: 'UP_CODE_CD'
+                name: 'CODE_CD'
             },
             {
                 header: '그룹명',
@@ -48,11 +49,8 @@ function fetchData(url, params) {
 
 function initializeGrid() {
 
-    var params = {
-        productName: $("#productName").val(),
-    }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/common/getUpCodeList', '')
         .then(result => {
             console.log(result);
             grid = createGrid(result);
@@ -63,11 +61,8 @@ function initializeGrid() {
 }
 
 function refreshGrid() {
-    var params = {
-        productName: $("#productName").val(),
-    }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/product/getUpCodeList', '')
         .then(result => {
             console.log(result);
             grid.resetData(result);
@@ -94,11 +89,11 @@ function createSubGrid(data) {
             },
             {
                 header: '비고',
-                name: 'REMARK'
+                name: 'CODE_REMARK'
             },
             {
                 header: '정렬',
-                name: 'ORDER_BY'
+                name: 'CODE_ORDER_BY'
             }
 
         ],
@@ -126,10 +121,10 @@ function fetchData(url, params) {
 function initializeSubGrid() {
 
     var params = {
-        productName: $("#productName").val(),
+        upCodeCd: CodeMngForm.codeCd
     }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/common/getCodeList', params)
         .then(result => {
             console.log(result);
             subGrid = createSubGrid(result);
@@ -141,10 +136,10 @@ function initializeSubGrid() {
 
 function refreshSubGrid() {
     var params = {
-        productName: $("#productName").val(),
+        upCodeCd: CodeMngForm.codeCd
     }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/common/getCodeList', params)
         .then(result => {
             console.log(result);
             subGrid.resetData(result);
