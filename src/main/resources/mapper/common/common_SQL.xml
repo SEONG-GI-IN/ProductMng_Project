@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dev.ProductMng.common.CommonDAO">
+
+    <select id="getUpCodeList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            UP_CODE_CD,
+            UP_CODE_NM,
+            CODE_CD,
+            REMARK,
+            ORDER_BY,
+            CREATE_DT,
+            UPDATE_DT
+        FROM T_CODE_MST
+        WHERE UP_CODE_CD = '0'
+        ORDER BY ORDER_BY
+    </select>
+
+    <insert id="insertUpCode" parameterType="java.util.Map">
+        INSERT INTO T_CODE_MST (
+            UP_CODE_CD,
+            UP_CODE_NM,
+            REMARK,
+            ORDER_BY,
+            CODE_CD,
+            CODE_NM,
+            CODE_REMARK,
+            CODE_ORDER_BY,
+            CREATE_DT,
+            UPDATE_DT
+        ) VALUES (
+            '0',
+            #{upCodeNm},
+            #{remark},
+            CASE WHEN #{orderBy} IS NULL OR #{orderBy} = '' THEN 0 ELSE #{orderBy} END,
+            #{codeCd},
+            #{codeNm},
+            #{codeRemark},
+            CASE WHEN #{codeOrderBy} IS NULL OR #{codeOrderBy} = '' THEN 0 ELSE #{codeOrderBy} END,
+            NOW(),
+            NOW()
+        )
+    </insert>
+
+    <select id="getCodeList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            UP_CODE_CD,
+            UP_CODE_NM,
+            REMARK,
+            ORDER_BY,
+            CODE_CD,
+            CODE_NM,
+            CODE_REMARK,
+            CODE_ORDER_BY,
+            CREATE_DT,
+            UPDATE_DT
+        FROM T_CODE_MST
+        WHERE UP_CODE_CD = #{UP_CODE_CD}
+        ORDER BY CODE_ORDER_BY
+    </select>
+
+    <insert id="insertCode" parameterType="java.util.Map">
+        INSERT INTO T_CODE_MST (
+            UP_CODE_CD,
+            UP_CODE_NM,
+            REMARK,
+            ORDER_BY,
+            CODE_CD,
+            CODE_NM,
+            CODE_REMARK,
+            CODE_ORDER_BY,
+            CREATE_DT,
+            UPDATE_DT
+        ) VALUES (
+            #{upCodeCd},
+            #{upCodeNm},
+            #{remark},
+            #{orderBy},
+            #{codeCd},
+            #{codeNm},
+            #{codeRemark},
+            #{codeOrderBy},
+            NOW(),
+            NOW()
+        )
+    </insert>
+</mapper>

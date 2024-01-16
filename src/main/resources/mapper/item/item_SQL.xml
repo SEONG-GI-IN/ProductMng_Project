@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dev.ProductMng.product.ProductDAO">
+<mapper namespace="com.dev.ProductMng.item.ItemDAO">
     <!-- 상품 정보 저장 -->
-    <insert id="insertProduct" parameterType="java.util.Map">
-        INSERT INTO T_PRODUCT_DTL (
+    <insert id="insertItem" parameterType="java.util.Map">
+        INSERT INTO T_ITEM_DTL (
             BAR_CODE,
             PRODUCT_NAME,
             PRODUCT_PRICE,
@@ -27,7 +27,7 @@
     </insert>
 
     <!-- 상품 조회 -->
-    <select id="getProductList" parameterType="java.util.Map" resultType="java.util.Map">
+    <select id="getItemList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
             BAR_CODE,
             PRODUCT_NAME,

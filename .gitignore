@@ -1,6 +1,9 @@
 ### memo FILE ###
 memo
 
+### test ###
+/src/test/
+
 ###ELK + SETTING###
 memo_run
 
