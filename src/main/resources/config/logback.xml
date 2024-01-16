@@ -9,11 +9,21 @@
         </layout>
     </appender>
 
-    <!-- JDBC LOGGER -->
+    <appender name="JDBC_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %clr(%-5level){} %C{100} - %n%n %clr(%msg){cyan} %n</Pattern>
+        </layout>
+    </appender>
 
-    <logger name="jdbc.sqlonly" level="OFF"/>
-    <logger name="jdbc.sqltiming" level="INFO"/>
-    <logger name="jdbc.resultsettable" level="OFF"/>
+    <!-- JDBC LOGGER -->
+    <logger name="jdbc.sqlonly" level="INFO" additivity="false">
+        <appender-ref ref="JDBC_CONSOLE"/>
+    </logger>
+    <logger name="jdbc.resultsettable" level="INFO" additivity="false">
+        <appender-ref ref="JDBC_CONSOLE"/>
+    </logger>
+
+    <logger name="jdbc.sqltiming" level="OFF"/>
     <logger name="jdbc.audit" level="OFF"/>
     <logger name="jdbc.resultset" level="OFF"/>
     <logger name="jdbc.connection" level="OFF"/>
