@@ -6,7 +6,7 @@ function createGrid(data) {
         scrollX: false,
         scrollY: false,
         rowHeaders: ['checkbox'],
-
+        bodyHeight: 500,
         columns: [
             {
                 header: '그룹코드',
@@ -78,6 +78,7 @@ function createSubGrid(data) {
         scrollX: false,
         scrollY: false,
         rowHeaders: ['checkbox'],
+        bodyHeight: 500,
         columns: [
             {
                 header: '코드',

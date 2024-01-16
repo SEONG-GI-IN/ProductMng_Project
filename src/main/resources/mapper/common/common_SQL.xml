@@ -29,14 +29,14 @@
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
-            #{upCodeCd},
+            '0',
             #{upCodeNm},
             #{remark},
-            #{orderBy},
+            CASE WHEN #{orderBy} IS NULL OR #{orderBy} = '' THEN 0 ELSE #{orderBy} END,
             #{codeCd},
             #{codeNm},
             #{codeRemark},
-            #{codeOrderBy},
+            CASE WHEN #{codeOrderBy} IS NULL OR #{codeOrderBy} = '' THEN 0 ELSE #{codeOrderBy} END,
             NOW(),
             NOW()
         )
@@ -56,7 +56,7 @@
             UPDATE_DT
         FROM T_CODE_MST
         WHERE UP_CODE_CD = #{UP_CODE_CD}
-        ORDER BY ORDER_BY
+        ORDER BY CODE_ORDER_BY
     </select>
 
     <insert id="insertCode" parameterType="java.util.Map">

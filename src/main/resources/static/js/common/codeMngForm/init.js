@@ -54,7 +54,7 @@ function eventbing() {
 
             // 유효성 검사
             if (validation()) {
-                CommonUtil.postAjax("/common/insertCode", array).then(function (result) {
+                CommonUtil.postAjax("/common/insertUpCode", array).then(function (result) {
                     if (result) {
                         alert("코드가 등록되었습니다.");
                         $('#addDialog').modal('hide');
@@ -104,12 +104,12 @@ function eventbing() {
             );
 
             // 유효성 검사
-            if (validation()) {
+            if (subValidation()) {
                 CommonUtil.postAjax("/common/insertCode", array).then(function (result) {
                     if (result) {
                         alert("코드가 등록되었습니다.");
                         $('#subDialog').modal('hide');
-                        refreshSubGrid();
+                        subGrid.resetData(result);
                     } else {
                         alert("코드 등록에 실패하였습니다.");
                     }
@@ -118,46 +118,86 @@ function eventbing() {
         }
     });
 
+    // 그룹코드 삭제 버튼 눌렀을 때
+    $('#delBtn').click(function () {
+        var selectedRow = grid.getCheckedRows();
+
+        if (selectedRow.length == 0) {
+            alert("삭제할 코드를 선택해주세요.");
+            return false;
+        }
+
+        if (confirm("코드를 삭제하시겠습니까?")) {
+
+            // 하위코드가 존재하면 삭제 불가
+            if (subGrid.getData().length > 0) {
+                alert("하위코드가 존재하면 삭제 할 수 없습니다.");
+                return false;
+            }
+
+            var params = {
+                CODE_CD: selectedRow.rowKey
+            }
+
+            CommonUtil.postAjax("/common/deleteUpCode", params).then(function (result) {
+                if (result) {
+                    alert("코드가 삭제되었습니다.");
+                    grid.resetData(result);
+                } else {
+                    alert("코드 삭제에 실패하였습니다.");
+                }
+            });
+        }
+    });
+
     function validation(){
         // 저장 할 때 유효성 검사
         var result = true;
         var objArr = $("#addDialog").find("input[type='text'], select, input[type='radio']:checked");
-        var subObjArr = $("#subDialog").find("input[type='text'], select, input[type='radio']:checked");
 
-        // 유효성 검사
-        // grid dialog와 sub dialog 분기
-        if(objArr.length > 0){
-            objArr.each(function (i, obj) {
-                var name = $(obj).attr("name");
-                var value = $(obj).val();
-                if (name == "codeCd" && value == "") {
+        objArr.each(function (i, obj) {
+            var name = $(obj).attr("name");
+            var value = $(obj).val();
+            if (name == "CODE_CD") {
+                if (value == "") {
                     alert("코드를 입력해주세요.");
                     result = false;
                     return false;
-                } else if (name == "codeNm" && value == "") {
+                }
+            } else if (name == "CODE_NM") {
+                if (value == "") {
                     alert("코드명을 입력해주세요.");
                     result = false;
                     return false;
                 }
-            });
+            }
+        });
 
-        }
+        return result;
+    }
 
-        if(subObjArr.length > 0){
-            subObjArr.each(function (i, obj) {
-                var name = $(obj).attr("name");
-                var value = $(obj).val();
-                if (name == "codeCd" && value == "") {
+    function subValidation(){
+        // 저장 할 때 유효성 검사
+        var result = true;
+        var objArr = $("#subDialog").find("input[type='text'], select, input[type='radio']:checked");
+
+        objArr.each(function (i, obj) {
+            var name = $(obj).attr("name");
+            var value = $(obj).val();
+            if (name == "CODE_CD") {
+                if (value == "") {
                     alert("코드를 입력해주세요.");
                     result = false;
                     return false;
-                } else if (name == "codeNm" && value == "") {
+                }
+            } else if (name == "CODE_NM") {
+                if (value == "") {
                     alert("코드명을 입력해주세요.");
                     result = false;
                     return false;
                 }
-            });
-        }
+            }
+        });
 
         return result;
     }

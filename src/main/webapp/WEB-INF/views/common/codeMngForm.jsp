@@ -28,7 +28,7 @@
                 <div class="btn_div">
                     <div class="right_div">
                         <input type="button" id="addBtn" value="추가" />
-                        <input type="button" id="delete" value="삭제" />
+                        <input type="button" id="delBtn" value="삭제" />
                     </div>
                 </div>
                 <div id="grid" class="grid-class"></div>
@@ -37,7 +37,7 @@
                 <div class="btn_div">
                     <div class="right_div">
                         <input type="button" id="addSubBtn" value=추가 />
-                        <input type="button" id="deleteSubBtn" value="삭제" />
+                        <input type="button" id="delSubBtn" value="삭제" />
                     </div>
                 </div>
                 <div id="subGrid" class="grid-class"></div>
@@ -58,7 +58,7 @@
                 <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label">그룹코드</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="upCodeCd" />
+                        <input type="text" class="form-control" name="codeCd" />
                     </div>
                 </div>
                 <div class="mb-3 row">
