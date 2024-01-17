@@ -30,4 +30,12 @@ public class CommonDAO {
     public void insertCode(Map<String, Object> params) {
         sqlSession.insert("com.dev.ProductMng.common.CommonDAO.insertCode", params);
     }
+
+    public void deleteUpCode(Map<String, Object> params) {
+        sqlSession.delete("com.dev.ProductMng.common.CommonDAO.deleteUpCode", params);
+    }
+
+    public void deleteCode(Map<String, Object> params) {
+        sqlSession.delete("com.dev.ProductMng.common.CommonDAO.deleteCode", params);
+    }
 }

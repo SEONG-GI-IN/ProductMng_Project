@@ -13,4 +13,7 @@ public interface CommonService {
 
     void insertCode(Map<String, Object> params) throws Exception;
 
+    void deleteUpCode(Map<String, Object> params) throws Exception;
+
+    void deleteCode(List<Map<String, Object>> list) throws Exception;
 }

@@ -12,9 +12,7 @@ function eventbing() {
 
     //grid에서 특정 row 클릭했을 때
     $("#grid").on("click", "tbody tr", function (e) {
-        const clickedRow = $(this);
-        const rowIndex = clickedRow.index();
-        const rowData = grid.getRow(rowIndex);
+        const rowData = grid.getRow($(this).index());
         const codeCd = rowData.CODE_CD;
         const codeNm = rowData.UP_CODE_NM;
         CodeMngForm.codeCd = codeCd;
@@ -58,7 +56,7 @@ function eventbing() {
                     if (result) {
                         alert("코드가 등록되었습니다.");
                         $('#addDialog').modal('hide');
-                        grid.resetData(result);
+                        refreshGrid();
                     } else {
                         alert("코드 등록에 실패하였습니다.");
                     }
@@ -109,7 +107,7 @@ function eventbing() {
                     if (result) {
                         alert("코드가 등록되었습니다.");
                         $('#subDialog').modal('hide');
-                        subGrid.resetData(result);
+                        refreshSubGrid(CodeMngForm.codeCd);
                     } else {
                         alert("코드 등록에 실패하였습니다.");
                     }
@@ -120,29 +118,44 @@ function eventbing() {
 
     // 그룹코드 삭제 버튼 눌렀을 때
     $('#delBtn').click(function () {
-        var selectedRow = grid.getCheckedRows();
+        // grid에서 선택된 row가 있는지 확인
+        var selectedRow = grid.getFocusedCell();
+        if (selectedRow.rowKey == null) {
+            alert("삭제할 그룹코드를 선택해주세요.");
+            return false;
+        }
 
-        if (selectedRow.length == 0) {
+        if (confirm("코드를 삭제하시겠습니까?")) {
+            var params = {
+                codeCd: CodeMngForm.codeCd
+            }
+
+            CommonUtil.postAjax("/common/deleteUpCode", params).then(function (result) {
+                if (result) {
+                    alert("코드가 삭제되었습니다.");
+                    refreshGrid();
+                } else {
+                    alert("코드 삭제에 실패하였습니다.");
+                }
+            });
+        }
+    });
+
+    // subGrid 삭제 버튼 눌렀을 때
+    $('#delSubBtn').click(function () {
+        // check된 row가 있는지 확인
+        var array = subGrid.getCheckedRows();
+        if (array.length == 0) {
             alert("삭제할 코드를 선택해주세요.");
             return false;
         }
 
         if (confirm("코드를 삭제하시겠습니까?")) {
 
-            // 하위코드가 존재하면 삭제 불가
-            if (subGrid.getData().length > 0) {
-                alert("하위코드가 존재하면 삭제 할 수 없습니다.");
-                return false;
-            }
-
-            var params = {
-                CODE_CD: selectedRow.rowKey
-            }
-
-            CommonUtil.postAjax("/common/deleteUpCode", params).then(function (result) {
+            CommonUtil.postAjax("/common/deleteCode", {list : JSON.stringify(array)}).then(function (result) {
                 if (result) {
                     alert("코드가 삭제되었습니다.");
-                    grid.resetData(result);
+                    refreshSubGrid(CodeMngForm.codeCd);
                 } else {
                     alert("코드 삭제에 실패하였습니다.");
                 }

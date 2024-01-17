@@ -75,13 +75,25 @@
             #{upCodeCd},
             #{upCodeNm},
             #{remark},
-            #{orderBy},
+            CASE WHEN #{orderBy} IS NULL OR #{orderBy} = '' THEN 0 ELSE #{orderBy} END,
             #{codeCd},
             #{codeNm},
             #{codeRemark},
-            #{codeOrderBy},
+            CASE WHEN #{codeOrderBy} IS NULL OR #{codeOrderBy} = '' THEN 0 ELSE #{codeOrderBy} END,
             NOW(),
             NOW()
         )
     </insert>
+
+    <delete id="deleteUpCode" parameterType="java.util.Map">
+        DELETE FROM T_CODE_MST
+        WHERE UP_CODE_CD = '0'
+        AND CODE_CD = #{codeCd}
+    </delete>
+
+    <delete id="deleteCode" parameterType="java.util.Map">
+        DELETE FROM T_CODE_MST
+        WHERE UP_CODE_CD = #{UP_CODE_CD}
+        AND CODE_CD = #{CODE_CD}
+    </delete>
 </mapper>

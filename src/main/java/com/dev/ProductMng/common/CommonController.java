@@ -1,5 +1,7 @@
 package com.dev.ProductMng.common;
 
+import com.dev.ProductMng.util.JsonUtil;
+import com.dev.ProductMng.util.MapUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -73,6 +75,37 @@ public class CommonController {
     public boolean insertCode(@RequestParam Map<String, Object> params) {
         try {
             commonService.insertCode(params);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 그룹코드 삭제
+     */
+    @RequestMapping(value = ("/deleteUpCode"), method = {RequestMethod.POST})
+    @ResponseBody
+    public boolean deleteUpCode(@RequestParam Map<String, Object> params) {
+        try {
+            commonService.deleteUpCode(params);
+            return true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * 하위코드 삭제
+     */
+    @RequestMapping(value = ("/deleteCode"), method = {RequestMethod.POST})
+    @ResponseBody
+    public boolean deleteCode(@RequestParam Map<String, Object> params) {
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            commonService.deleteCode(list);
             return true;
         }catch (Exception e){
             e.printStackTrace();

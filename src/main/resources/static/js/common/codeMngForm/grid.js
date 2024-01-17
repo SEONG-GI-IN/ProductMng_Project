@@ -5,7 +5,6 @@ function createGrid(data) {
         el: document.getElementById('grid'),
         scrollX: false,
         scrollY: false,
-        rowHeaders: ['checkbox'],
         bodyHeight: 500,
         columns: [
             {
@@ -62,7 +61,7 @@ function initializeGrid() {
 
 function refreshGrid() {
 
-    fetchData('/product/getUpCodeList', '')
+    fetchData('/common/getUpCodeList', '')
         .then(result => {
             console.log(result);
             grid.resetData(result);
@@ -135,9 +134,9 @@ function initializeSubGrid() {
         });
 }
 
-function refreshSubGrid() {
+function refreshSubGrid(_codeCd) {
     var params = {
-        upCodeCd: CodeMngForm.codeCd
+        UP_CODE_CD: _codeCd
     }
 
     fetchData('/common/getCodeList', params)

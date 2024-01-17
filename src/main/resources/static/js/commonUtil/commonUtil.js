@@ -30,3 +30,11 @@ CommonUtil.postAjax = function( _path, _params ) {
         datatype : "json"
     });
 };
+
+/**
+ * Grid에서 선택된 Row의 데이터를 가져온다.
+ */
+CommonUtil.getClickedRowData = function (_this) {
+    const rowIndex = _this.index();
+    return grid.getRow(rowIndex);
+};
