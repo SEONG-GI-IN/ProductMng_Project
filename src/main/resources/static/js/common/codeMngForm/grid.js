@@ -139,12 +139,11 @@ function refreshSubGrid(_codeCd) {
         UP_CODE_CD: _codeCd
     }
 
-    fetchData('/common/getCodeList', params)
-        .then(result => {
-            console.log(result);
+    CommonUtil.postAjax("/common/getCodeList", params).then(function (result) {
+        if (result) {
             subGrid.resetData(result);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+        } else {
+            alert("코드 조회에 실패하였습니다.");
+        }
+    });
 }
