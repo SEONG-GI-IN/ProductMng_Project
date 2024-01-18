@@ -32,4 +32,24 @@ public class ItemServiceImpl implements ItemService {
             throw new RuntimeException(e);
         }
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getItemTypeList(Map<String, Object> params) {
+        try {
+            return itemDAO.getItemTypeList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getSupplierList(Map<String, Object> params) {
+        try {
+            return itemDAO.getSupplierList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

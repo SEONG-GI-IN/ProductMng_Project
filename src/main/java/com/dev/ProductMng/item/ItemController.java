@@ -2,6 +2,7 @@ package com.dev.ProductMng.item;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,9 @@ public class ItemController {
      * @return
      */
     @GetMapping("/itemListForm")
-    public String itemListForm() {
+    public String itemListForm(Model model, @RequestParam Map<String, Object> params) throws Exception {
+        model.addAttribute("itemTypeList", itemService.getItemTypeList(params));
+        model.addAttribute("supplierList", itemService.getSupplierList(params));
         return "item/itemListForm.tiles";
     }
 

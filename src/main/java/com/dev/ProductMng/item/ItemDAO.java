@@ -15,10 +15,18 @@ public class ItemDAO {
     }
 
     public void insertItem(Map<String, Object> params) throws Exception{
-        sqlSession.insert("com.dev.ItemMng.item.ItemDAO.insertItem", params);
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.insertItem", params);
     }
 
     public List<Map<String, Object>> getItemList(Map<String, Object> params) {
-        return sqlSession.selectList("com.dev.ItemMng.item.ItemDAO.getItemList", params);
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemList", params);
+    }
+
+    public List<Map<String, Object>> getItemTypeList(Map<String, Object> params) {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemTypeList", params);
+    }
+
+    public List<Map<String, Object>> getSupplierList(Map<String, Object> params) {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getSupplierList", params);
     }
 }

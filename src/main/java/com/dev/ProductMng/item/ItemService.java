@@ -6,5 +6,9 @@ import java.util.Map;
 public interface ItemService {
     void insertItem(Map<String, Object> params) throws Exception;
 
-    List<Map<String, Object>> getItemList(Map<String, Object> params);
+    List<Map<String, Object>> getItemList(Map<String, Object> params) throws Exception;
+
+    List<Map<String, Object>> getItemTypeList(Map<String, Object> params) throws Exception;
+
+    List<Map<String, Object>> getSupplierList(Map<String, Object> params) throws Exception;
 }

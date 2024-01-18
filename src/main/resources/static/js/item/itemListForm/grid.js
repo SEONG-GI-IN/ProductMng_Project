@@ -13,7 +13,7 @@ function createGrid(data) {
             },
             {
                 header: '상품명',
-                name: 'PRODUCT_NAME'
+                    name: 'ITEM_NM'
             }
 
         ],
@@ -41,10 +41,10 @@ function fetchData(url, params) {
 function initializeGrid() {
 
     var params = {
-        productName: $("#productName").val(),
+        itemNm: $("#itemNm").val(),
     }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/item/getItemList', params)
         .then(result => {
             console.log(result);
             grid = createGrid(result);
@@ -56,10 +56,10 @@ function initializeGrid() {
 
 function refreshGrid() {
     var params = {
-        productName: $("#productName").val(),
+        itemNm: $("#itemNm").val(),
     }
 
-    fetchData('/product/getProductList', params)
+    fetchData('/item/getItemList', params)
         .then(result => {
             console.log(result);
             grid.resetData(result);

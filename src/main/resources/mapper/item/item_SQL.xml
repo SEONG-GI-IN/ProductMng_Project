@@ -5,24 +5,20 @@
     <insert id="insertItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
             BAR_CODE,
-            PRODUCT_NAME,
-            PRODUCT_PRICE,
-            PRODUCT_TYPE_NM,
-            PRODUCT_TYPE_CD,
-            SUPPLIER,
+            SUPPLIER_CD,
+            ITEM_NM,
+            ITEM_TYPE_CD,
             PURCHASE_PRICE,
-            UPDATE_DT,
-            CREATE_DT
+            CREATE_DT,
+            UPDATE_DT
         ) VALUES (
-             #{productBarCode},
-             #{productName},
-             #{productPrice},
-             'TEST',
-             'TEST',
-             #{supplier},
-             #{purchasePrice},
-             NOW(),
-             NOW()
+            #{barCode},
+            #{supplierCd},
+            #{itemNm},
+            #{itemTypeCd},
+            #{purchasePrice},
+            NOW(),
+            NOW()
         )
     </insert>
 
@@ -30,19 +26,30 @@
     <select id="getItemList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
             BAR_CODE,
-            PRODUCT_NAME,
-            PRODUCT_PRICE,
-            PRODUCT_TYPE_NM,
-            PRODUCT_TYPE_CD,
-            SUPPLIER,
-            PURCHASE_PRICE,
-            UPDATE_DT,
-            CREATE_DT
-        FROM T_PRODUCT_DTL
+            SUPPLIER_CD,
+            ITEM_NM,
+            ITEM_TYPE_CD,
+            PURCHASE_PRICE
+        FROM T_ITEM_DTL
         WHERE 1=1
-        AND PRODUCT_NAME LIKE CONCAT('%', #{productName}, '%')
-        ORDER BY CREATE_DT DESC
+        AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
     </select>
 
+    <select id="getItemTypeList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            *
+        FROM T_CODE_MST
+        WHERE 1=1
+        AND UP_CODE_CD = 'ITEM_TYPE'
+        ORDER BY CODE_ORDER_BY DESC
+    </select>
 
+    <select id="getSupplierList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            *
+        FROM T_CODE_MST
+        WHERE 1=1
+        AND UP_CODE_CD = 'SUPPLIER'
+        ORDER BY CODE_ORDER_BY DESC
+    </select>
 </mapper>
