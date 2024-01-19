@@ -4,18 +4,20 @@
     <!-- 상품 정보 저장 -->
     <insert id="insertItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
-            BAR_CODE,
             SUPPLIER_CD,
             ITEM_NM,
+            SUPPLIER,
             ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
             PURCHASE_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
-            #{barCode},
             #{supplierCd},
             #{itemNm},
+            #{supplier},
             #{itemTypeCd},
+            #{itemTypeNm},
             #{purchasePrice},
             NOW(),
             NOW()
@@ -25,10 +27,11 @@
     <!-- 상품 조회 -->
     <select id="getItemList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
-            BAR_CODE,
             SUPPLIER_CD,
             ITEM_NM,
+            SUPPLIER,
             ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
             PURCHASE_PRICE
         FROM T_ITEM_DTL
         WHERE 1=1
@@ -53,23 +56,39 @@
         ORDER BY CODE_ORDER_BY DESC
     </select>
 
-    <insert id="itemUpload" parameterType="java.util.Map">
+    <insert id="uploadItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
-            BAR_CODE,
             SUPPLIER_CD,
             ITEM_NM,
+            SUPPLIER,
             ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
             PURCHASE_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
-            #{BAR_CODE},
-            #{SUPPLIER_CD},
-            #{ITEM_NM},
-            #{ITEM_TYPE_CD},
-            #{PURCHASE_PRICE},
-            NOW(),
-            NOW()
-        )
+             #{SUPPLIER_CD},
+             #{ITEM_NM},
+             #{SUPPLIER},
+             #{ITEM_TYPE_CD},
+             #{ITEM_TYPE_NM},
+             #{PURCHASE_PRICE},
+             NOW(),
+             NOW()
+         ) ON DUPLICATE KEY UPDATE
+            ITEM_TYPE_CD = #{ITEM_TYPE_CD},
+            ITEM_TYPE_NM = #{ITEM_TYPE_NM},
+            PURCHASE_PRICE = #{PURCHASE_PRICE},
+            UPDATE_DT = NOW()
     </insert>
+
+
+    <delete id="deleteItem" parameterType="java.util.List">
+        DELETE FROM T_ITEM_DTL
+        WHERE 1=1
+        <foreach collection="list" item="item" separator=" OR " open=" AND (" close=")">
+            (SUPPLIER_CD = #{item.SUPPLIER_CD} AND ITEM_NM = #{item.ITEM_NM})
+        </foreach>
+    </delete>
+
 </mapper>

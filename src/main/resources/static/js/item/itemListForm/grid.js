@@ -8,12 +8,24 @@ function createGrid(data) {
         rowHeaders: ['rowNum', 'checkbox'],
         columns: [
             {
-                header: '바코드번호',
-                name: 'BAR_CODE'
+                header: '상품명',
+                name: 'ITEM_NM',
+                align: 'center',
             },
             {
-                header: '상품명',
-                    name: 'ITEM_NM'
+                header: '거래처',
+                name: 'SUPPLIER',
+                align: 'center',
+            },
+            {
+                header: '상품분류',
+                name: 'ITEM_TYPE_NM',
+                align: 'center',
+            },
+            {
+                header: '매입가',
+                name: 'PURCHASE_PRICE',
+                align: 'center',
             }
 
         ],

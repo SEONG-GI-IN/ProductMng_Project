@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 import java.util.Map;
@@ -67,18 +68,36 @@ public class ItemController {
      * static/assets/templates/itemUploadFormTemplate.xlsx
      * poi 라이브러리 사용
      */
-    @RequestMapping(value = ("/itemUpload"), method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = ("/uploadItem"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public boolean itemUpload (MultipartHttpServletRequest multi) throws Exception {
+    public boolean uploadItem (MultipartHttpServletRequest multi) throws Exception {
         Map<String, MultipartFile> fileMap = multi.getFileMap();
         List<Map<String, Object>> list = fileUtil.getExcelContents(fileMap);
         List<Map<String, Object>> dataList = itemService.uploadExcel(list);
 
         for (Map<String, Object> rowData : dataList) {
-            itemService.itemUpload(rowData);
+            itemService.uploadItem(rowData);
         }
 
         return true;
 
+    }
+
+    /**
+     * 상품 List 삭제
+     */
+    @RequestMapping(value = ("/deleteItem"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView deleteItem (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.deleteItem(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
     }
 }

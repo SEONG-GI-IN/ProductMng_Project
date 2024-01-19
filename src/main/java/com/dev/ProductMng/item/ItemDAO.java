@@ -30,7 +30,11 @@ public class ItemDAO {
         return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getSupplierList", params);
     }
 
-    public void itemUpload(Map<String, Object> params) {
-        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.itemUpload", params);
+    public void uploadItem(Map<String, Object> params) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.uploadItem", params);
+    }
+
+    public void deleteItem(List<Map<String, Object>> list) {
+        sqlSession.delete("com.dev.ProductMng.item.ItemDAO.deleteItem", list);
     }
 }

@@ -40,9 +40,56 @@ function eventbing() {
             // 객체 배열에 데이터 저장
             objArr.each(function (i, obj) {
                 var name = $(obj).attr("name");
+                var id = $(obj).attr("id");
                 var value = $(obj).val();
-                array.push({ name: name, value: value });
+
+                // itemTypeCdDiv select box의 경우 value값을 가져오지 못하므로 따로 처리
+                // 예를들어 value가 "1"이면 ITEM_TYPE_CD = "1"이고 ITEM_TYPE_NM = "식품"이다.
+                if (id == "itemTypeCdDiv") {  // id에서 name으로 변경
+                    var itemTypeCd = value;
+                    var itemTypeNm = $(obj).find("option:selected").text();
+                    array.push({
+                        name: "itemTypeCd",  // id에서 name으로 변경
+                        value: itemTypeCd
+                    });
+                    array.push({
+                        name: "itemTypeNm",  // id에서 name으로 변경
+                        value: itemTypeNm
+                    });
+                    return true;
+                }
+
+                if (id == "supplierCdDiv") {  // id에서 name으로 변경
+                    var supplierCd = value;
+                    var supplier = $(obj).find("option:selected").text();
+                    array.push({
+                        name: "supplierCd",  // id에서 name으로 변경
+                        value: supplierCd
+                    });
+                    array.push({
+                        name: "supplier",  // id에서 name으로 변경
+                        value: supplier
+                    });
+                    return true;
+                }
+
+                // 기존에 해당 name이 이미 있는지 확인
+                var existingItem = array.find(function(item) {
+                    return item.name === name;  // id에서 name으로 변경
+                });
+
+                // 이미 해당 name이 있다면 배열로 유지하도록 처리
+                if (existingItem) {
+                    existingItem.value = [existingItem.value, value];
+                } else {
+                    array.push({
+                        name: name,  // id에서 name으로 변경
+                        value: value
+                    });
+                }
             });
+
+            console.log(array);
 
             // 유효성 검사
             if (validation()) {
@@ -50,7 +97,7 @@ function eventbing() {
                     if (result) {
                         alert("상품이 등록되었습니다.");
                         $('#addDialog').modal('hide');
-                        grid();
+                        refreshGrid();
                     } else {
                         alert("상품 등록에 실패하였습니다.");
                     }
@@ -82,13 +129,29 @@ function eventbing() {
             var formData = new FormData();
             formData.append("excelFile", $('#file')[0].files[0]);
 
-            CommonUtil.fileUpload("/item/itemUpload", formData).then(function (result) {
+            CommonUtil.fileUpload("/item/uploadItem", formData).then(function (result) {
                 if (result) {
                     alert("업로드 되었습니다.");
                     $('#uploadDialog').modal('hide');
                     refreshGrid();
                 } else {
                     alert("업로드에 실패하였습니다.");
+                }
+            });
+        }
+    });
+
+    // 삭제버튼 눌렀을 때
+    $('#delBtn').click(function () {
+        if (confirm("삭제하시겠습니까?")) {
+            var array = grid.getCheckedRows();
+
+            CommonUtil.postAjax("/item/deleteItem", {list : JSON.stringify(array)}).then(function (result) {
+                if (result) {
+                    alert("삭제되었습니다.");
+                    refreshGrid();
+                } else {
+                    alert("삭제에 실패하였습니다.");
                 }
             });
         }
