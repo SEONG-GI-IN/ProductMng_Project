@@ -29,4 +29,8 @@ public class ItemDAO {
     public List<Map<String, Object>> getSupplierList(Map<String, Object> params) {
         return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getSupplierList", params);
     }
+
+    public void itemUpload(Map<String, Object> params) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.itemUpload", params);
+    }
 }

@@ -96,4 +96,12 @@
         WHERE UP_CODE_CD = #{UP_CODE_CD}
         AND CODE_CD = #{CODE_CD}
     </delete>
+
+    <select id="getCodeCd" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            CODE_CD
+        FROM T_CODE_MST
+        WHERE UP_CODE_CD = #{UP_CODE_CD}
+        AND CODE_NM = #{CODE_NM}
+    </select>
 </mapper>

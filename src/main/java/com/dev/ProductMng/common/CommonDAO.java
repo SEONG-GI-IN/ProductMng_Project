@@ -38,4 +38,8 @@ public class CommonDAO {
     public void deleteCode(Map<String, Object> params) {
         sqlSession.delete("com.dev.ProductMng.common.CommonDAO.deleteCode", params);
     }
+
+    public Map<String, Object> getCodeCd(Map<String, Object> params) {
+        return sqlSession.selectOne("com.dev.ProductMng.common.CommonDAO.getCodeCd", params);
+    }
 }

@@ -58,6 +58,42 @@ function eventbing() {
             }
         }
     });
+
+    // 업로드 버튼 눌렀을 때
+    $('#uploadBtn').click(function () {
+        // ItemUploadForm modal 띄우기
+        $('#uploadDialog').modal('show');
+    });
+
+    // 업로드 다이얼로그 닫힐 때
+    $('#uploadDialog').on('hidden.bs.modal',  () => {
+        $('#uploadDialog').find("form")[0].reset();
+    });
+
+    // uploadDialog에서 파일 선택 시
+    $('#file').change(function () {
+        var file = $('#file')[0].files[0];
+        $('#fileName').val(file.name);
+    });
+
+    // 업로드 다이얼로그에서 저장 눌렀을 때
+    $('#uploadDialog #uploadBtn').click(function () {
+        if (confirm("업로드 하시겠습니까?")) {
+            var formData = new FormData();
+            formData.append("excelFile", $('#file')[0].files[0]);
+
+            CommonUtil.fileUpload("/item/itemUpload", formData).then(function (result) {
+                if (result) {
+                    alert("업로드 되었습니다.");
+                    $('#uploadDialog').modal('hide');
+                    refreshGrid();
+                } else {
+                    alert("업로드에 실패하였습니다.");
+                }
+            });
+        }
+    });
+
 }
 
 function validation() {

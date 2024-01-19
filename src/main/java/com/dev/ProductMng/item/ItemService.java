@@ -11,4 +11,8 @@ public interface ItemService {
     List<Map<String, Object>> getItemTypeList(Map<String, Object> params) throws Exception;
 
     List<Map<String, Object>> getSupplierList(Map<String, Object> params) throws Exception;
+
+    void itemUpload(Map<String, Object> params) throws Exception;
+
+    List<Map<String, Object>> uploadExcel(List<Map<String, Object>> list) throws Exception;
 }

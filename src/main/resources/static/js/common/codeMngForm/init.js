@@ -171,13 +171,13 @@ function eventbing() {
         objArr.each(function (i, obj) {
             var name = $(obj).attr("name");
             var value = $(obj).val();
-            if (name == "CODE_CD") {
+            if (name == "codeCd") {
                 if (value == "") {
                     alert("코드를 입력해주세요.");
                     result = false;
                     return false;
                 }
-            } else if (name == "CODE_NM") {
+            } else if (name == "upCodeNm") {
                 if (value == "") {
                     alert("코드명을 입력해주세요.");
                     result = false;
@@ -197,13 +197,13 @@ function eventbing() {
         objArr.each(function (i, obj) {
             var name = $(obj).attr("name");
             var value = $(obj).val();
-            if (name == "CODE_CD") {
+            if (name == "codeCd") {
                 if (value == "") {
                     alert("코드를 입력해주세요.");
                     result = false;
                     return false;
                 }
-            } else if (name == "CODE_NM") {
+            } else if (name == "codeNm") {
                 if (value == "") {
                     alert("코드명을 입력해주세요.");
                     result = false;

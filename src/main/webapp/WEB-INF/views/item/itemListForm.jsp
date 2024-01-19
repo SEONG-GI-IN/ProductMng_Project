@@ -55,6 +55,8 @@
         <input type="button" id="addBtn" value="등록" />
         <input type="button" id="delBtn" value="삭제" />
         <input type="button" id="updateBtn" value="수정" />
+        <input type="button" id="uploadBtn" value="엑셀업로드" />
+        <input type="button" id="excelBtn" value="엑셀다운" />
     </div>
 </div>
 <!-- toast grid -->
@@ -119,6 +121,37 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                 <button type="button" id="saveBtn" class="btn btn-primary">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal fade" id="uploadDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <form class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">상품 업로드</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                    <!-- 엑셀파일 업로드 -->
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">엑셀파일</label>
+                        <div class="col-sm-9 ml-60">
+                            <input type="file" class="form-control" name="excelFile" id="file" />
+                        </div>
+                    </div>
+                    <!-- 업로드 결과 -->
+                    <div class="mb-3 row">
+                        <label class="col-sm-4 col-form-label">업로드 결과</label>
+                        <div class="col-sm-9 ml-60">
+                            <textarea id="uploadResult" class="form-control" rows="5" readonly></textarea>
+                        </div>
+                    </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                <button type="button" id="uploadBtn" class="btn btn-primary">업로드</button>
             </div>
         </form>
     </div>
