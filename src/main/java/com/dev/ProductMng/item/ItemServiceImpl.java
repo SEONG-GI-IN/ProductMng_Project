@@ -3,12 +3,6 @@ package com.dev.ProductMng.item;
 import com.dev.ProductMng.common.CommonDAO;
 import com.dev.ProductMng.config.APIException;
 import com.dev.ProductMng.util.FileUtil;
-import com.dev.ProductMng.util.StrUtil;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Map<String, Object>> getItemList(Map<String, Object> params) {
+    public Map<String, Object> getItemList(Map<String, Object> params) {
         try {
             return itemDAO.getItemList(params);
         } catch (Exception e) {
@@ -78,7 +72,7 @@ public class ItemServiceImpl implements ItemService {
 }
 
     @Override
-    public List<Map<String, Object>> uploadExcel(List<Map<String, Object>> dataList) throws Exception {
+    public List<Map<String, Object>> uploadExcel(List<Map<String, Object>> dataList) {
         List<Map<String, Object>> result = new ArrayList();
 
         for(int i = 0; i <= dataList.size(); ++i) {

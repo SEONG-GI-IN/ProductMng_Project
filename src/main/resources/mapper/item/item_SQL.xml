@@ -35,7 +35,35 @@
             PURCHASE_PRICE
         FROM T_ITEM_DTL
         WHERE 1=1
-        AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="page != null and pageSize != null">
+            LIMIT #{page}, #{pageSize}
+        </if>
+    </select>
+
+    <!-- 상품 총 개수 조회 -->
+    <select id="getItemListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_DTL
+        WHERE 1=1
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
     </select>
 
     <select id="getItemTypeList" parameterType="java.util.Map" resultType="java.util.Map">

@@ -25476,6 +25476,7 @@ and limitations under the License.
                     }
                 }
                 function readData(config, page, data, resetData) {
+                    debugger;
                     if (data === void 0) { data = {}; }
                     if (resetData === void 0) { resetData = false; }
                     var store = config.store, getLastRequiredData = config.getLastRequiredData;

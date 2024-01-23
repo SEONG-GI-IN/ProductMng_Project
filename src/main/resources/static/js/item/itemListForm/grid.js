@@ -1,82 +1,74 @@
-let grid;
-
-function createGrid(data) {
-    return new tui.Grid({
-        el: document.getElementById('grid'),
-        scrollX: false,
-        scrollY: false,
-        rowHeaders: ['rowNum', 'checkbox'],
-        columns: [
-            {
-                header: '상품명',
-                name: 'ITEM_NM',
-                align: 'center',
-            },
-            {
-                header: '거래처',
-                name: 'SUPPLIER',
-                align: 'center',
-            },
-            {
-                header: '상품분류',
-                name: 'ITEM_TYPE_NM',
-                align: 'center',
-            },
-            {
-                header: '매입가',
-                name: 'PURCHASE_PRICE',
-                align: 'center',
-            }
-
-        ],
-        data: data
-    });
+const params = {
+    itemNm: $("input#itemNm").val(),
+    itemTypeCd: $("#itemTypeCd").val(),
+    supplierCd: $("#supplierCd").val(),
+    perPage: 20,
+    page: 1,
 }
 
-function fetchData(url, params) {
-    return fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json', // 설정에 따라 다를 수 있음
+const dataSource = {
+    api: {
+        readData: {
+            url: '/item/getItemList',
+            method: 'get',
+            params: params,
         },
-        body: JSON.stringify(params),
-    })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
+        contentType: 'application/json',
+        headers: { 'x-custom-header': 'custom-header' },
+    }
+}
+
+
+const grid = new tui.Grid({
+    el: document.getElementById('grid'),
+    scrollX: false,
+    scrollY: false,
+    rowHeaders: ['checkbox'],
+    pageOptions: {
+        perPage: 20,
+        useClient: false,
+    },
+    data: dataSource,
+    columns: [
+        { header: '거래처', name: 'SUPPLIER', align: 'center' },
+        { header: '품목명', name: 'ITEM_NM', align: 'center' },
+        { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
+        { header: '매입가', align: 'center',
+            formatter: function (data) {
+                return data.row.PURCHASE_PRICE + "원";
             }
-            return response.json();
-        });
-}
+        },
+    ]
+});
 
+const currentPage = grid.getPagination()._currentPage;
 
-function initializeGrid() {
+// 검색 버튼 클릭 이벤트
+$("#searchBtn").click(function () {
+    // 검색 조건을 가져오기
+    const itemNm = $("input#itemNm").val();
+    const itemTypeCd = $("#itemTypeCd").val();
+    const supplierCd = $("#supplierCd").val();
 
-    var params = {
-        itemNm: $("#itemNm").val(),
-    }
+    // AJAX 요청
+    $.ajax({
+        url: '/item/getItemList',
+        method: 'GET',
+        contentType: 'application/json',
+        data: {
+            itemNm: itemNm,
+            itemTypeCd: itemTypeCd,
+            supplierCd: supplierCd,
+            perPage: 20,
+            page: 1,
+        },
+        success: function(result) {
+            grid.resetData(result.data.contents, { pageState: { page: currentPage, totalCount: result.data.pagination.totalCount, perPage: 3} });
+        },
+        error: function(error) {
+            // 오류 시 처리
+            console.error(error);
+        }
+    });
+});
 
-    fetchData('/item/getItemList', params)
-        .then(result => {
-            console.log(result);
-            grid = createGrid(result);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-}
-
-function refreshGrid() {
-    var params = {
-        itemNm: $("#itemNm").val(),
-    }
-
-    fetchData('/item/getItemList', params)
-        .then(result => {
-            console.log(result);
-            grid.resetData(result);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-}

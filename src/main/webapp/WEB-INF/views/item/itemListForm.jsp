@@ -119,7 +119,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="uploadDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="uploadDialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content">
             <div class="modal-header">
@@ -127,7 +127,15 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                    <!-- 엑셀파일 업로드 -->
+                <!-- 엑셀 양식 다운로드 링크 추가 -->
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">양식 다운로드</label>
+                    <div class="col-sm-9 ml-60"> <!-- text-align 스타일 직접 적용 -->
+                        <input type="button" class="form-control" name="downTemplate" value="양식다운로드" />
+                    </div>
+                </div>
+
+                <!-- 엑셀파일 업로드 -->
                     <div class="mb-3 row">
                         <label class="col-sm-4 col-form-label">엑셀파일</label>
                         <div class="col-sm-9 ml-60">
@@ -154,3 +162,4 @@
 
 <script type="text/javascript" src="/js/item/itemListForm/grid.js?ver=${currentTime}"></script>
 <script type="text/javascript" src="/js/item/itemListForm/init.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemListForm/excel.js?ver=${currentTime}"></script>

@@ -25,6 +25,11 @@
     <!-- commonUtil js -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/commonUtil/commonUtil.js?ver=${application.version}"></script>
 
+    <!-- excel -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/excel/jexcel-1.0.5.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/excel/jszip-3.1.5.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/excel/FileSaver-1.2.2_1.js"></script>
+
 </head>
 
 <script>

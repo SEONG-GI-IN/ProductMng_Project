@@ -12,6 +12,8 @@
   },
   "private": true,
   "dependencies": {
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "node": "^21.6.0",
+    "tui-grid": "^4.21.22"
   }
 }

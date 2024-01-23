@@ -1,5 +1,6 @@
 package com.dev.ProductMng.item;
 
+import com.dev.ProductMng.util.MapUtil;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,8 +19,13 @@ public class ItemDAO {
         sqlSession.insert("com.dev.ProductMng.item.ItemDAO.insertItem", params);
     }
 
-    public List<Map<String, Object>> getItemList(Map<String, Object> params) {
-        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemList", params);
+    public Map<String, Object> getItemList(Map<String, Object> params) {
+        //return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemList", params);
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{
+                "list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemListTotal", params)
+        });
+        return result;
     }
 
     public List<Map<String, Object>> getItemTypeList(Map<String, Object> params) {

@@ -3,14 +3,6 @@
 var CommonUtil = {};
 
 $(function(){
-    /** 숫자만 입력 **/
-    // $(document).on("keydown", "input[type='text'].numberFormat", function(e){
-    // 	var available = [1,2,3,4,5,6,7,8,9,0, 69, 49];
-    // 	if(available.filter((a) => {return a == e.key}).length < 1){
-    // 		e.preventDefault();
-    // 		e.stopPropagation();
-    // 	}
-    // });
     $(document).on("keyup", "input[type='text'].numberFormat", function(){
         var number = $(this).val().replace(/[^-\.0-9]/g, "");
         $(this).val(number);

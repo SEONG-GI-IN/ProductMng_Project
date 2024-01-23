@@ -1,17 +1,12 @@
 $(function () {
-
-    initializeGrid();
-
-    $('.list-date').val(moment().format('YYYY-MM-DD'));
-
     eventbing();
 });
 
 function eventbing() {
 
-    /* 검색버튼 눌렀을 때 */
-    $('#searchBtn').click(function(){
-        refreshGrid();
+    // 검색 버튼 눌렀을 때
+    $('#searchBtn').click(function () {
+        //refreshGrid();
     });
 
     /* 엔터 키 눌렀을 때 */
@@ -106,6 +101,11 @@ function eventbing() {
         }
     });
 
+    // 양식다운로드 버튼 눌렀을 때
+    $("input[name='downTemplate']").click(function () {
+        excel();
+    });
+
     // 업로드 버튼 눌렀을 때
     $('#uploadBtn').click(function () {
         // ItemUploadForm modal 띄우기
@@ -129,14 +129,28 @@ function eventbing() {
             var formData = new FormData();
             formData.append("excelFile", $('#file')[0].files[0]);
 
+            // 파일이 없을 때
+            if ($('#file')[0].files[0] == null) {
+                alert("파일을 선택해주세요.");
+                return;
+            }
+
             CommonUtil.fileUpload("/item/uploadItem", formData).then(function (result) {
-                if (result) {
+                if (result == "success") {
                     alert("업로드 되었습니다.");
                     $('#uploadDialog').modal('hide');
                     refreshGrid();
                 } else {
                     alert("업로드에 실패하였습니다.");
                 }
+            }).fail(function(response) {
+               try {
+                   alert( JSON.parse(response.responseText).message );
+               } catch (e) {
+                   $("#file").val("");
+                   $("#fileName").val("");
+                   alert("파일을 다시 선택한 후 업로드해주세요.");
+               }
             });
         }
     });
