@@ -3,6 +3,7 @@ package com.dev.ProductMng.stock;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -14,6 +15,10 @@ public class StockDAO {
     }
 
     public void insertStock(Map<String, Object> params) throws Exception{
-        sqlSession.insert("com.dev.ProductMng.product.dao.StockDAO.insertStock", params);
+        sqlSession.insert("com.dev.ProductMng.stock.StockDAO.insertStock", params);
+    }
+
+    public List<Map<String, Object>> findByBarCodeList(String barCode) {
+        return sqlSession.selectList("com.dev.ProductMng.stock.StockDAO.findByBarCodeList", barCode);
     }
 }

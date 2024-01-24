@@ -2,11 +2,9 @@ package com.dev.ProductMng.stock;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -16,7 +14,11 @@ public class StockController {
     @Autowired
     private StockService stockService;
 
-    @RequestMapping(value = ("/insertStock"), method = {RequestMethod.POST})
+    /**
+     * 재고 입력
+     */
+
+    @RequestMapping(value = ("/insert"), method = {RequestMethod.POST})
     @ResponseBody
     public boolean insertStock(@RequestParam Map<String, Object> params){
         try {
@@ -28,4 +30,17 @@ public class StockController {
         return false;
     }
 
+    /**
+     * 재고 조회 (상품의 BARCODE로 조회)
+     */
+    @RequestMapping(value = ("/getFindBarCodeList"), method = {RequestMethod.POST, RequestMethod.GET})
+    @ResponseBody
+    public List<Map<String, Object>> findByBarCodeList(@RequestBody String barCode) {
+        try {
+            return stockService.findByBarCodeList(barCode);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

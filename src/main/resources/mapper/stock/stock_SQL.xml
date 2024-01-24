@@ -3,7 +3,7 @@
 <mapper namespace="com.dev.ProductMng.stock.StockDAO">
     <!-- 재고 저장 -->
     <insert id="insertStock" parameterType="java.util.Map">
-        INSERT INTO T_PRODUCT_DTL (
+        INSERT INTO T_STOCK_DTL (
         BAR_CODE,
         REGISTRATION_DT,
         PRODUCT_QTY
@@ -13,4 +13,17 @@
         #{productQuantity}
         )
     </insert>
+
+    <!-- 재고 조회 (바코드로 조회) -->
+    <select id="findByBarCodeList" parameterType="string" resultType="java.util.Map">
+        SELECT
+            BAR_CODE,
+            REGISTRATION_DT,
+            PRODUCT_QTY
+        FROM T_STOCK_DTL
+        WHERE 1=1
+          AND BAR_CODE = #{barCode}
+        ORDER BY REGISTRATION_DT DESC
+    </select>
+
 </mapper>

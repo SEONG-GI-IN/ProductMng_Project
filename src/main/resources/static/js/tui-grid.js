@@ -1,6 +1,6 @@
 /*!
  * TOAST UI Grid
- * @version 4.21.20 | Wed Dec 13 2023
+ * @version 4.21.22 | Wed Jan 10 2024
  * @author NHN Cloud. FE Development Lab
  * @license MIT
  */
@@ -2058,7 +2058,7 @@ and limitations under the License.
                     }
                     // get index based on whole data(not filtered data)
                     var index = filteredIndex ? filteredIndex[rowIndex] : rowIndex;
-                    data_3.makeObservable(store, index, true);
+                    data_3.makeObservable({ store: store, rowIndex: index, silent: true });
                     var _a = filteredViewData[rowIndex].valueMap[columnName], disabled = _a.disabled, editable = _a.editable;
                     return !column_1.isHiddenColumn(column, columnName) && editable && !disabled;
                 }
@@ -2277,7 +2277,7 @@ and limitations under the License.
                     var rowIndex = findIndexByRowKey(data, column, id, rowKey, false);
                     var viewData = data.viewData;
                     if (rowIndex !== -1) {
-                        data_3.makeObservable(store, rowIndex);
+                        data_3.makeObservable({ store: store, rowIndex: rowIndex });
                         var viewCell = viewData[rowIndex].valueMap[columnName];
                         return viewCell ? viewCell.formattedValue : null;
                     }
@@ -2909,19 +2909,20 @@ and limitations under the License.
                         : filteredRawData.map(function (row) { return data_2.getRowHeight(row, rowHeight); });
                 }
                 exports.updateHeights = updateHeights;
-                function makeObservable(store, rowIndex, silent, lazyObservable) {
-                    if (silent === void 0) { silent = false; }
-                    if (lazyObservable === void 0) { lazyObservable = false; }
+                function makeObservable(_a) {
+                    var store = _a.store, rowIndex = _a.rowIndex, _b = _a.silent, silent = _b === void 0 ? false : _b, _c = _a.lazyObservable, lazyObservable = _c === void 0 ? false : _c, _d = _a.forced, forced = _d === void 0 ? false : _d;
                     var data = store.data, column = store.column, id = store.id;
                     var rawData = data.rawData, viewData = data.viewData;
                     var treeColumnName = column.treeColumnName;
                     var rawRow = rawData[rowIndex];
-                    if (observable_1.isObservable(rawRow)) {
+                    if (!forced && observable_1.isObservable(rawRow)) {
                         return;
                     }
                     if (treeColumnName) {
                         var parentRow = data_2.findRowByRowKey(data, column, id, rawRow._attributes.tree.parentRowKey);
-                        rawData[rowIndex] = tree_2.createTreeRawRow(id, rawRow, parentRow || null, column, { lazyObservable: lazyObservable });
+                        rawData[rowIndex] = tree_2.createTreeRawRow(id, rawRow, parentRow || null, column, {
+                            lazyObservable: lazyObservable,
+                        });
                     }
                     else {
                         rawData[rowIndex] = data_1.createRawRow(id, rawRow, rowIndex, column, { lazyObservable: lazyObservable });
@@ -2945,7 +2946,7 @@ and limitations under the License.
                         return;
                     }
                     if (checkCellState) {
-                        makeObservable(store, rowIndex);
+                        makeObservable({ store: store, rowIndex: rowIndex });
                         var _a = viewData[rowIndex].valueMap[columnName], disabled = _a.disabled, editable = _a.editable;
                         if (disabled || !editable) {
                             return;
@@ -3295,7 +3296,7 @@ and limitations under the License.
                     var inserted = at !== rawData.length;
                     common_1.silentSplice(rawData, at, 0, rawRow);
                     common_1.silentSplice(viewData, at, 0, viewRow);
-                    makeObservable(store, at);
+                    makeObservable({ store: store, rowIndex: at });
                     pagination_1.updatePageOptions(store, { totalCount: pageOptions.totalCount + 1 });
                     updateHeights(store);
                     if (inserted) {
@@ -3500,7 +3501,7 @@ and limitations under the License.
                     var _a = data_2.getCreatedRowInfo(store, rowIndex, row, orgRow.rowKey), rawRow = _a.rawRow, viewRow = _a.viewRow, prevRow = _a.prevRow;
                     common_1.silentSplice(rawData, rowIndex, 1, rawRow);
                     common_1.silentSplice(viewData, rowIndex, 1, viewRow);
-                    makeObservable(store, rowIndex);
+                    makeObservable({ store: store, rowIndex: rowIndex });
                     sort_1.sortByCurrentState(store);
                     if (prevRow && rowSpan_1.isRowSpanEnabled(sortState, column)) {
                         rowSpan_2.updateRowSpanWhenAppending(rawData, prevRow, false);
@@ -3566,7 +3567,7 @@ and limitations under the License.
                         })
                         .forEach(function (_a) {
                             var rowIndex = _a.rowIndex;
-                            return makeObservable(store, rowIndex, false, true);
+                            return makeObservable({ store: store, rowIndex: rowIndex, silent: false, lazyObservable: true });
                         });
                     if (rowSpan_1.isRowSpanEnabled(sortState, column)) {
                         createdRowInfos
@@ -4353,7 +4354,7 @@ and limitations under the License.
                         return;
                     }
                     // makes the data observable to judge editable, disable of the cell
-                    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
+                    data_2.makeObservable({ store: store, rowIndex: data_1.findIndexByRowKey(data, column, id, rowKey, false) });
                     if (!data_1.isEditableCell(store, foundIndex, columnName)) {
                         return;
                     }
@@ -4460,7 +4461,7 @@ and limitations under the License.
                     }
                     var rowKey = editingAddress.rowKey, columnName = editingAddress.columnName;
                     // makes the data observable to judge editable, disable of the cell.
-                    data_2.makeObservable(store, data_1.findIndexByRowKey(data, column, id, rowKey, false));
+                    data_2.makeObservable({ store: store, rowIndex: data_1.findIndexByRowKey(data, column, id, rowKey, false) });
                     // if value is 'undefined', editing result is saved and finished.
                     if (common_1.isUndefined(value)) {
                         focus.forcedDestroyEditing = true;
@@ -4533,26 +4534,26 @@ and limitations under the License.
                     },
                     pt: {
                         display: {
-                            noData: 'Nenhuma informa챌찾o.',
-                            loadingData: 'Carregando informa챌천es.',
-                            resizeHandleGuide: 'Voc챗 pode alterar a largura da coluna arrastando o mouse e inicializar a largura clicando duas vezes.',
+                            noData: 'Nenhuma informaÃ§Ã£o.',
+                            loadingData: 'Carregando informaÃ§Ãµes.',
+                            resizeHandleGuide: 'VocÃª pode alterar a largura da coluna arrastando o mouse e inicializar a largura clicando duas vezes.',
                         },
                         net: {
                             confirmCreate: 'Tem certeza que deseja criar {{count}} dados?',
                             confirmUpdate: 'Tem ceretza que deseja atualizar {{count}} dados?',
                             confirmDelete: 'Tem certeza que deseja apagar {{count}} dados?',
                             confirmModify: 'Tem certeza que deseja modificar {{count}} dados?',
-                            noDataToCreate: 'N찾o h찼 informa챌찾o a criar.',
-                            noDataToUpdate: 'N찾o h찼 informa챌찾o a atualizar.',
-                            noDataToDelete: 'N찾o h찼 informa챌찾o a apagar.',
-                            noDataToModify: 'N찾o h찼 informa챌찾o a modificar.',
-                            failResponse: 'Um erro ocorreu euquanto processava sua solicita챌찾o.\nPor favor, tente novamente.',
+                            noDataToCreate: 'NÃ£o hÃ¡ informaÃ§Ã£o a criar.',
+                            noDataToUpdate: 'NÃ£o hÃ¡ informaÃ§Ã£o a atualizar.',
+                            noDataToDelete: 'NÃ£o hÃ¡ informaÃ§Ã£o a apagar.',
+                            noDataToModify: 'NÃ£o hÃ¡ informaÃ§Ã£o a modificar.',
+                            failResponse: 'Um erro ocorreu euquanto processava sua solicitaÃ§Ã£o.\nPor favor, tente novamente.',
                         },
                         filter: {
-                            contains: 'Cont챕m',
+                            contains: 'ContÃ©m',
                             eq: 'Igual',
                             ne: 'Diferente de',
-                            start: 'Come챌a com',
+                            start: 'ComeÃ§a com',
                             end: 'Termina com',
                             after: 'Depois',
                             afterEq: 'Depois ou igual',
@@ -4561,7 +4562,7 @@ and limitations under the License.
                             apply: 'Aplicar',
                             clear: 'Limpar',
                             selectAll: 'Selecionar tudo',
-                            emptyValue: 'Est찼 vazio',
+                            emptyValue: 'EstÃ¡ vazio',
                         },
                         contextMenu: {
                             copy: 'Copiar',
@@ -4575,19 +4576,19 @@ and limitations under the License.
                     },
                     es: {
                         display: {
-                            noData: 'No hay informaci처n.',
-                            loadingData: 'Cargando informaci처n.',
-                            resizeHandleGuide: 'Puedes cambiar el ancho de la columna arrastrando el rat처n e inicializar el ancho haciendo doble clic.',
+                            noData: 'No hay informaciÃ³n.',
+                            loadingData: 'Cargando informaciÃ³n.',
+                            resizeHandleGuide: 'Puedes cambiar el ancho de la columna arrastrando el ratÃ³n e inicializar el ancho haciendo doble clic.',
                         },
                         net: {
-                            confirmCreate: '쩔Est찼s seguro que quieres crear {{count}} filas?',
-                            confirmUpdate: '쩔Est찼s seguro que quieres actualizar {{count}} filas?',
-                            confirmDelete: '쩔Est찼s seguro que quieres eliminar {{count}} filas?',
-                            confirmModify: '쩔Est찼s seguro que quieres modificar {{count}} filas?',
-                            noDataToCreate: 'No hay informaci처n para crear.',
-                            noDataToUpdate: 'No hay informaci처n para actualizar.',
-                            noDataToDelete: 'No hay informaci처n para eliminar.',
-                            noDataToModify: 'No hay informaci처n para modificar.',
+                            confirmCreate: 'Â¿EstÃ¡s seguro que quieres crear {{count}} filas?',
+                            confirmUpdate: 'Â¿EstÃ¡s seguro que quieres actualizar {{count}} filas?',
+                            confirmDelete: 'Â¿EstÃ¡s seguro que quieres eliminar {{count}} filas?',
+                            confirmModify: 'Â¿EstÃ¡s seguro que quieres modificar {{count}} filas?',
+                            noDataToCreate: 'No hay informaciÃ³n para crear.',
+                            noDataToUpdate: 'No hay informaciÃ³n para actualizar.',
+                            noDataToDelete: 'No hay informaciÃ³n para eliminar.',
+                            noDataToModify: 'No hay informaciÃ³n para modificar.',
                             failResponse: 'Se produjo un error al solicitar datos. \nVuelve a intentarlo.',
                         },
                         filter: {
@@ -4596,8 +4597,8 @@ and limitations under the License.
                             ne: 'Distinto',
                             start: 'Empieza con',
                             end: 'Termina en',
-                            after: 'Despu챕s',
-                            afterEq: 'Despu챕s o Igual',
+                            after: 'DespuÃ©s',
+                            afterEq: 'DespuÃ©s o Igual',
                             before: 'Antes',
                             beforeEq: 'Antes o Igual',
                             apply: 'Aplicar',
@@ -4617,20 +4618,20 @@ and limitations under the License.
                     },
                     ko: {
                         display: {
-                            noData: '�곗씠�곌� 議댁옱�섏� �딆뒿�덈떎.',
-                            loadingData: '�곗씠�곕� 遺덈윭�ㅻ뒗 以묒엯�덈떎.',
-                            resizeHandleGuide: '留덉슦�� �쒕옒洹명븯�� 而щ읆 �덈퉬瑜� 議곗젙�� �� �덇퀬, �붾툝 �대┃�쇰줈 而щ읆 �덈퉬瑜� 珥덇린�뷀븷 �� �덉뒿�덈떎.',
+                            noData: 'ë°ì´í„°ê°€ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.',
+                            loadingData: 'ë°ì´í„°ë¥¼ ë¶ˆëŸ¬ì˜¤ëŠ” ì¤‘ìž…ë‹ˆë‹¤.',
+                            resizeHandleGuide: 'ë§ˆìš°ìŠ¤ ë“œëž˜ê·¸í•˜ì—¬ ì»¬ëŸ¼ ë„ˆë¹„ë¥¼ ì¡°ì •í•  ìˆ˜ ìžˆê³ , ë”ë¸” í´ë¦­ìœ¼ë¡œ ì»¬ëŸ¼ ë„ˆë¹„ë¥¼ ì´ˆê¸°í™”í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.',
                         },
                         net: {
-                            confirmCreate: '{{count}}嫄댁쓽 �곗씠�곕� �앹꽦�섍쿋�듬땲源�?',
-                            confirmUpdate: '{{count}}嫄댁쓽 �곗씠�곕� �섏젙�섍쿋�듬땲源�?',
-                            confirmDelete: '{{count}}嫄댁쓽 �곗씠�곕� ��젣�섍쿋�듬땲源�?',
-                            confirmModify: '{{count}}嫄댁쓽 �곗씠�곕� 泥섎━�섍쿋�듬땲源�?',
-                            noDataToCreate: '�앹꽦�� �곗씠�곌� �놁뒿�덈떎.',
-                            noDataToUpdate: '�섏젙�� �곗씠�곌� �놁뒿�덈떎.',
-                            noDataToDelete: '��젣�� �곗씠�곌� �놁뒿�덈떎.',
-                            noDataToModify: '泥섎━�� �곗씠�곌� �놁뒿�덈떎.',
-                            failResponse: '�곗씠�� �붿껌 以묒뿉 �먮윭媛� 諛쒖깮�섏��듬땲��.\n�ㅼ떆 �쒕룄�섏뿬 二쇱떆湲� 諛붾엻�덈떎.',
+                            confirmCreate: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ìƒì„±í•˜ê² ìŠµë‹ˆê¹Œ?',
+                            confirmUpdate: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ìˆ˜ì •í•˜ê² ìŠµë‹ˆê¹Œ?',
+                            confirmDelete: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ì‚­ì œí•˜ê² ìŠµë‹ˆê¹Œ?',
+                            confirmModify: '{{count}}ê±´ì˜ ë°ì´í„°ë¥¼ ì²˜ë¦¬í•˜ê² ìŠµë‹ˆê¹Œ?',
+                            noDataToCreate: 'ìƒì„±í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
+                            noDataToUpdate: 'ìˆ˜ì •í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
+                            noDataToDelete: 'ì‚­ì œí•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
+                            noDataToModify: 'ì²˜ë¦¬í•  ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.',
+                            failResponse: 'ë°ì´í„° ìš”ì²­ ì¤‘ì— ì—ëŸ¬ê°€ ë°œìƒí•˜ì˜€ìŠµë‹ˆë‹¤.\në‹¤ì‹œ ì‹œë„í•˜ì—¬ ì£¼ì‹œê¸° ë°”ëžë‹ˆë‹¤.',
                         },
                         filter: {
                             contains: 'Contains',
@@ -4648,13 +4649,13 @@ and limitations under the License.
                             emptyValue: 'Empty Value',
                         },
                         contextMenu: {
-                            copy: '蹂듭궗',
-                            copyColumns: '�� 蹂듭궗',
-                            copyRows: '�� 蹂듭궗',
-                            export: '�대낫�닿린',
-                            txtExport: 'Text濡� �대낫�닿린',
-                            csvExport: 'CSV濡� �대낫�닿린',
-                            excelExport: '�묒�濡� �대낫�닿린',
+                            copy: 'ë³µì‚¬',
+                            copyColumns: 'ì—´ ë³µì‚¬',
+                            copyRows: 'í–‰ ë³µì‚¬',
+                            export: 'ë‚´ë³´ë‚´ê¸°',
+                            txtExport: 'Textë¡œ ë‚´ë³´ë‚´ê¸°',
+                            csvExport: 'CSVë¡œ ë‚´ë³´ë‚´ê¸°',
+                            excelExport: 'ì—‘ì…€ë¡œ ë‚´ë³´ë‚´ê¸°',
                         },
                     },
                     nl: {
@@ -4703,7 +4704,7 @@ and limitations under the License.
                         display: {
                             noData: 'Nessun dato.',
                             loadingData: 'Caricamento dati.',
-                            resizeHandleGuide: '횊 possibile modificare la larghezza della colonna trascinando il mouse e inizializzare la larghezza facendo doppio clic.',
+                            resizeHandleGuide: 'Ãˆ possibile modificare la larghezza della colonna trascinando il mouse e inizializzare la larghezza facendo doppio clic.',
                         },
                         net: {
                             confirmCreate: 'Sei sicuro di voler creare {{count}} dati?',
@@ -4714,12 +4715,12 @@ and limitations under the License.
                             noDataToUpdate: 'Nessun dato da aggiornare.',
                             noDataToDelete: 'Nessun dato da eliminare.',
                             noDataToModify: 'Nessun dato da modificare.',
-                            failResponse: 'Si 챔 verificato un errore durante la richiesta dei dati.\nPer favore riprova.',
+                            failResponse: 'Si Ã¨ verificato un errore durante la richiesta dei dati.\nPer favore riprova.',
                         },
                         filter: {
                             contains: 'Contiene',
                             eq: 'Uguale',
-                            ne: 'Non 챔 uguale',
+                            ne: 'Non Ã¨ uguale',
                             start: 'Inizia con',
                             end: 'Finisce con',
                             after: 'Dopo',
@@ -5791,14 +5792,14 @@ and limitations under the License.
                 var column_1 = __webpack_require__(12);
                 var sort_2 = __webpack_require__(46);
                 var rowSpan_1 = __webpack_require__(24);
-                function createSoretedViewData(rawData) {
+                function createSortedViewData(rawData) {
                     return rawData.map(function (_a) {
                         var rowKey = _a.rowKey, sortKey = _a.sortKey, uniqueKey = _a.uniqueKey;
                         return ({ rowKey: rowKey, sortKey: sortKey, uniqueKey: uniqueKey });
                     });
                 }
                 function sortData(store) {
-                    var data = store.data, column = store.column;
+                    var data = store.data, column = store.column, viewport = store.viewport;
                     var sortState = data.sortState, rawData = data.rawData, viewData = data.viewData, pageRowRange = data.pageRowRange;
                     var columns = sortState.columns;
                     var sortedColumns = columns.map(function (sortedColumn) {
@@ -5809,16 +5810,29 @@ and limitations under the License.
                         // should sort the sliced data which is displayed in viewport in case of client infinite scrolling
                         var targetRawData = rawData.slice.apply(rawData, pageRowRange);
                         targetRawData.sort(sort_1.sortRawData(sortedColumns));
-                        var targetViewData = createSoretedViewData(targetRawData);
+                        var targetViewData = createSortedViewData(targetRawData);
                         data.rawData = targetRawData.concat(rawData.slice(pageRowRange[1]));
                         data.viewData = targetViewData.concat(viewData.slice(pageRowRange[1]));
                     }
                     else {
                         rawData.sort(sort_1.sortRawData(sortedColumns));
-                        data.viewData = createSoretedViewData(rawData);
+                        data.viewData = createSortedViewData(rawData);
                     }
-                    data.rawData.forEach(function (rawRow) {
-                        observable_1.unobservable(rawRow);
+                    var rowKeysInViewport = viewport.rows.map(function (_a) {
+                        var rowKey = _a.rowKey;
+                        return rowKey;
+                    });
+                    data.rawData.forEach(function (rawRow, index) {
+                        var rowKey = rawRow.rowKey;
+                        if (observable_1.isObservable(rawRow) || rowKeysInViewport.includes(rowKey)) {
+                            data_1.makeObservable({
+                                store: store,
+                                rowIndex: index,
+                                silent: false,
+                                lazyObservable: false,
+                                forced: true,
+                            });
+                        }
                     });
                 }
                 function setInitialSortState(data) {
@@ -7892,7 +7906,7 @@ and limitations under the License.
                     var rowList = [];
                     for (var i = start; i <= end; i += 1) {
                         if (!observable_1.isObservable(filteredViewData[i].valueMap)) {
-                            data_1.makeObservable(store, i, true);
+                            data_1.makeObservable({ store: store, rowIndex: i, silent: true });
                             if (i === end) {
                                 observable_1.notify(store.data, 'rawData', 'filteredRawData', 'viewData', 'filteredViewData');
                             }
@@ -9947,36 +9961,36 @@ and limitations under the License.
                             };
                             break;
                         /**
-                         *혻Occurs혻before혻unfiltering
-                         *혻@event혻Grid#beforeUnfilter
-                         *혻@property혻{Grid}혻instance혻-혻Current혻grid혻instance
-                         *혻@property혻{string} columnName - Target column name
-                         *혻@property혻{Object} filterState -혻Current filter state
+                         *Â OccursÂ beforeÂ unfiltering
+                         *Â @eventÂ Grid#beforeUnfilter
+                         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
+                         *Â @propertyÂ {string} columnName - Target column name
+                         *Â @propertyÂ {Object} filterState -Â Current filter state
                          */
                         case 'beforeUnfilter':
                         /**
-                         *혻Occurs혻after혻filtering
+                         *Â OccursÂ afterÂ filtering
                          * @deprecated
-                         *혻@event혻Grid#filter
-                         *혻@property혻{Grid}혻instance혻-혻Current혻grid혻instance
-                         *혻@property혻{string} columnName - Target column name
-                         *혻@property혻{Object} filterState -혻Current filter state
+                         *Â @eventÂ Grid#filter
+                         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
+                         *Â @propertyÂ {string} columnName - Target column name
+                         *Â @propertyÂ {Object} filterState -Â Current filter state
                          */
                         case 'filter':
                         /**
-                         *혻Occurs혻after혻filtering
-                         *혻@event혻Grid#afterFilter
-                         *혻@property혻{Grid}혻instance혻-혻Current혻grid혻instance
-                         *혻@property혻{string} columnName - Target column name
-                         *혻@property혻{Object} filterState -혻Current filter state
+                         *Â OccursÂ afterÂ filtering
+                         *Â @eventÂ Grid#afterFilter
+                         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
+                         *Â @propertyÂ {string} columnName - Target column name
+                         *Â @propertyÂ {Object} filterState -Â Current filter state
                          */
                         case 'afterFilter':
                         /**
-                         *혻Occurs혻after혻unfiltering
-                         *혻@event혻Grid#afterUnfilter
-                         *혻@property혻{Grid}혻instance혻-혻Current혻grid혻instance
-                         *혻@property혻{string} columnName - Target column name
-                         *혻@property혻{Object} filterState -혻Current filter state
+                         *Â OccursÂ afterÂ unfiltering
+                         *Â @eventÂ Grid#afterUnfilter
+                         *Â @propertyÂ {Grid}Â instanceÂ -Â CurrentÂ gridÂ instance
+                         *Â @propertyÂ {string} columnName - Target column name
+                         *Â @propertyÂ {Object} filterState -Â Current filter state
                          */
                         case 'afterUnfilter':
                             props = {
@@ -22037,7 +22051,7 @@ and limitations under the License.
                                         _this.saveAndFinishEditing(true);
                                     }
                                     else {
-                                        _this.moveTabAndEnterFocus(ev, moveDirectionOnEnter);
+                                        _this.moveTabAndEnterFocus(ev, moveDirectionOnEnter, true);
                                     }
                                     break;
                                 case 'esc':
@@ -22064,10 +22078,11 @@ and limitations under the License.
                         };
                         return _this;
                     }
-                    EditingLayerComp.prototype.moveTabAndEnterFocus = function (ev, command) {
+                    EditingLayerComp.prototype.moveTabAndEnterFocus = function (ev, command, moveFocusByEnter) {
+                        if (moveFocusByEnter === void 0) { moveFocusByEnter = false; }
                         var dispatch = this.props.dispatch;
                         ev.preventDefault();
-                        dispatch('moveTabAndEnterFocus', command);
+                        dispatch('moveTabAndEnterFocus', command, moveFocusByEnter);
                         dispatch('setScrollToFocus');
                     };
                     EditingLayerComp.prototype.getEditingCellInfo = function () {
@@ -23614,7 +23629,8 @@ and limitations under the License.
                     }
                 }
                 exports.editFocus = editFocus;
-                function moveTabAndEnterFocus(store, command) {
+                function moveTabAndEnterFocus(store, command, moveFocusByEnter) {
+                    if (moveFocusByEnter === void 0) { moveFocusByEnter = false; }
                     var focus = store.focus, data = store.data, column = store.column, id = store.id;
                     var visibleColumnsWithRowHeader = column.visibleColumnsWithRowHeader;
                     var rowKey = focus.rowKey, columnName = focus.columnName, rowIndex = focus.rowIndex, columnIndex = focus.totalColumnIndex;
@@ -23624,15 +23640,19 @@ and limitations under the License.
                     var _a = keyboard_1.getNextCellIndex(store, command, [rowIndex, columnIndex]), nextRowIndex = _a[0], nextColumnIndex = _a[1];
                     var nextRowKey = data_1.getRowKeyByIndexWithPageRange(data, nextRowIndex);
                     var nextColumnName = visibleColumnsWithRowHeader[nextColumnIndex].name;
+                    var moveAndEditFromLastCellByEnter = rowIndex === nextRowIndex && columnIndex === nextColumnIndex && moveFocusByEnter;
                     if (!column_1.isRowHeader(nextColumnName)) {
                         focus.navigating = true;
                         focus_1.changeFocus(store, nextRowKey, nextColumnName, id);
-                        if (focus.tabMode === 'moveAndEdit' &&
-                            focus.rowKey === nextRowKey &&
-                            focus.columnName === nextColumnName) {
-                            setTimeout(function () {
-                                focus_1.startEditing(store, nextRowKey, nextColumnName);
-                            });
+                        if (focus.tabMode === 'moveAndEdit') {
+                            if (moveAndEditFromLastCellByEnter) {
+                                focus_1.saveAndFinishEditing(store);
+                            }
+                            else if (focus.rowKey === nextRowKey && focus.columnName === nextColumnName) {
+                                setTimeout(function () {
+                                    focus_1.startEditing(store, nextRowKey, nextColumnName);
+                                });
+                            }
                         }
                     }
                 }
@@ -25158,7 +25178,7 @@ and limitations under the License.
                     data.rawData.forEach(function (row, rowIndex) {
                         var needToValidateRow = !rowKeys || rowKeys.includes(row.rowKey);
                         if (!observable_1.isObservable(row) && needToValidateRow) {
-                            data_1.makeObservable(store, rowIndex, true);
+                            data_1.makeObservable({ store: store, rowIndex: rowIndex, silent: true });
                         }
                     });
                     data.viewData.forEach(function (_a) {
@@ -25476,7 +25496,6 @@ and limitations under the License.
                     }
                 }
                 function readData(config, page, data, resetData) {
-                    debugger;
                     if (data === void 0) { data = {}; }
                     if (resetData === void 0) { resetData = false; }
                     var store = config.store, getLastRequiredData = config.getLastRequiredData;

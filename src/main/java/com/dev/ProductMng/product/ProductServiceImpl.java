@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
+import static com.dev.ProductMng.config.handler.DateTimeCustomFormatter.DateTimeCustomFormatter;
+
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
@@ -27,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     @Transactional(readOnly = true)
     public List<Map<String, Object>> getProductList(Map<String, Object> params) {
         try {
-            return productDAO.getProductList(params);
+            return DateTimeCustomFormatter(productDAO.getProductList(params), new String[]{"UPDATE_DT", "CREATE_DT"}, "yyyy-MM-dd HH:mm");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

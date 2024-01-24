@@ -6,7 +6,8 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/list.css" />
+    <link rel="stylesheet" type="text/css" href="/css/product/list.css" />
+    <link rel="stylesheet" type="text/css" href="/css/product/info-modal.css" />
     <link rel="stylesheet" href="/css/tui-grid.css" type="text/css" />
     <script src="/js/tui-grid.js"></script>
 </head>
@@ -45,6 +46,7 @@
         <input type="button" id="updateProductBtn" value="수정" />
     </div>
 </div>
+
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
 
@@ -108,6 +110,54 @@
         </form>
     </div>
 </div>
+
+<!-- 재고 모달 -->
+<div class="info-modal">
+
+    <!-- Title -->
+    <div class="info-title-text">
+        <div> 상세 정보 </div>
+    </div>
+    <div class="close-btn"><img src="/images/close.png"></div>
+
+    <!-- VIEW -->
+    <div class="info-text">[ 상품 정보 ]</div>
+
+    <div id="infoProduct">
+
+        <div>바코드</div>
+        <div id="ifBarCode"> </div>
+
+        <div>상품분류</div>
+        <div id="ifProductTypeNM"> </div>
+
+        <div>상품명</div>
+        <div id="ifProductName"> </div>
+
+        <div>수량</div>
+        <div id="ifProductTotQty"> </div>
+
+        <div>가격</div>
+        <div id="ifProductPrice"> </div>
+
+        <div>매입가</div>
+        <div id="ifPurchasePrice"> </div>
+
+        <div>거래처</div>
+        <div id="ifSupplier"> </div>
+
+        <div>상품등록일</div>
+        <div id="ifCreateDT"> </div>
+
+        <!-- <div> Name </div>
+        <div id="ifName"> NULL </div> -->
+
+    </div>
+    <div class="info-text">[ 재고 정보 ]</div>
+    <div id="infoGrid"></div>
+</div>
+<div class="backon"></div>
+<!-- 재고 모달 종료 -->
 
 </body>
 
