@@ -12,17 +12,17 @@
 </head>
 <body>
 <div class="page-title">
-    <h4>[상품관리화면]</h4>
+    <h4>[상품판매관리화면]</h4>
 </div>
 
 <div class="list-search">
     <table class="list-search-table">
         <tr>
-            <td>등록일</td>
+            <td>조회일자</td>
             <td id="listSearchDate">
-                <input type="date" id="date1" class="list-date"/>
+                <input type="date" id="startDt" class="list-date"/>
                 <span> ~ </span>
-                <input type="date" id="date2" class="list-date"/>
+                <input type="date" id="endDt" class="list-date"/>
             </td>
             <td>상품분류</td>
             <td>
@@ -129,11 +129,20 @@
             <div class="modal-body">
                 <!-- 엑셀 양식 다운로드 링크 추가 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">양식 다운로드</label>
-                    <div class="col-sm-9 ml-60"> <!-- text-align 스타일 직접 적용 -->
-                        <input type="button" class="form-control" name="downTemplate" value="양식다운로드" />
+                    <label class="col-sm-4 col-form-label">기간</label>
+                    <div class="col-sm-9 ml-60">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <input type="date" id="sellStartDt" class="form-control" style="width: 100%" />
+                            </div>
+                            <span> ~ </span>
+                            <div class="col-md-6">
+                                <input type="date" id="sellEndDt" class="form-control" style="width: 100%" />
+                            </div>
+                        </div>
                     </div>
                 </div>
+
 
                 <!-- 엑셀파일 업로드 -->
                     <div class="mb-3 row">
@@ -160,6 +169,6 @@
 
 </body>
 
-<script type="text/javascript" src="/js/item/itemListForm/grid.js?ver=${currentTime}"></script>
-<script type="text/javascript" src="/js/item/itemListForm/init.js?ver=${currentTime}"></script>
-<script type="text/javascript" src="/js/item/itemListForm/excel.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSellListForm/grid.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSellListForm/init.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSellListForm/excel.js?ver=${currentTime}"></script>

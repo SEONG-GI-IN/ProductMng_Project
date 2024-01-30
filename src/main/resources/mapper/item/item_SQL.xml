@@ -4,21 +4,15 @@
     <!-- 상품 정보 저장 -->
     <insert id="insertItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
-            SUPPLIER_CD,
             ITEM_NM,
-            SUPPLIER,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
-            PURCHASE_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
-            #{supplierCd},
             #{itemNm},
-            #{supplier},
             #{itemTypeCd},
             #{itemTypeNm},
-            #{purchasePrice},
             NOW(),
             NOW()
         )
@@ -27,25 +21,20 @@
     <!-- 상품 조회 -->
     <select id="getItemList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
-            SUPPLIER_CD,
+            BAR_CODE,
             ITEM_NM,
-            SUPPLIER,
             ITEM_TYPE_CD,
-            ITEM_TYPE_NM,
-            PURCHASE_PRICE
+            ITEM_TYPE_NM
         FROM T_ITEM_DTL
         WHERE 1=1
         <if test="itemTypeCd != null and itemTypeCd != ''">
             AND ITEM_TYPE_CD = #{itemTypeCd}
         </if>
-        <if test="supplierCd != null and supplierCd != ''">
-            AND SUPPLIER_CD = #{supplierCd}
-        </if>
         <if test="itemNm != null and itemNm != ''">
             AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
         </if>
         <if test="page != null and pageSize != null">
-            LIMIT #{page}, #{pageSize}
+            LIMIT #{pageNum}, #{pageSize}
         </if>
     </select>
 
@@ -57,9 +46,6 @@
         WHERE 1=1
         <if test="itemTypeCd != null and itemTypeCd != ''">
             AND ITEM_TYPE_CD = #{itemTypeCd}
-        </if>
-        <if test="supplierCd != null and supplierCd != ''">
-            AND SUPPLIER_CD = #{supplierCd}
         </if>
         <if test="itemNm != null and itemNm != ''">
             AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
@@ -86,37 +72,150 @@
 
     <insert id="uploadItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
-            SUPPLIER_CD,
+            BAR_CODE,
             ITEM_NM,
-            SUPPLIER,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
-            PURCHASE_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
-             #{SUPPLIER_CD},
+             #{BAR_CODE},
              #{ITEM_NM},
-             #{SUPPLIER},
              #{ITEM_TYPE_CD},
              #{ITEM_TYPE_NM},
-             #{PURCHASE_PRICE},
              NOW(),
              NOW()
          ) ON DUPLICATE KEY UPDATE
             ITEM_TYPE_CD = #{ITEM_TYPE_CD},
             ITEM_TYPE_NM = #{ITEM_TYPE_NM},
-            PURCHASE_PRICE = #{PURCHASE_PRICE},
             UPDATE_DT = NOW()
     </insert>
-
 
     <delete id="deleteItem" parameterType="java.util.List">
         DELETE FROM T_ITEM_DTL
         WHERE 1=1
         <foreach collection="list" item="item" separator=" OR " open=" AND (" close=")">
-            (SUPPLIER_CD = #{item.SUPPLIER_CD} AND ITEM_NM = #{item.ITEM_NM})
+            BAR_CODE = #{item.BAR_CODE}})
         </foreach>
     </delete>
+
+    <select id="getItemStockList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(STOCK_DT, '%Y-%m-%d') AS STOCK_DT,
+            BAR_CODE,
+            ITEM_NM,
+            SUPPLIER_CD,
+            SUPPLIER,
+            ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
+            PURCHASE_PRICE,
+            IN_CNT,
+            REMAIN_CNT
+        FROM T_ITEM_STOCK
+        WHERE 1=1
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="page != null and pageSize != null">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="getItemStockListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_STOCK
+        WHERE 1=1
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+    </select>
+
+    <insert id="uploadItemStock" parameterType="java.util.Map">
+        INSERT INTO T_ITEM_STOCK (
+            STOCK_DT,
+            BAR_CODE,
+            ITEM_NM,
+            SUPPLIER_CD,
+            SUPPLIER,
+            ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
+            PURCHASE_PRICE,
+            IN_CNT,
+            CREATE_DT,
+            UPDATE_DT
+        ) VALUES (
+             #{STOCK_DT},
+             #{BAR_CODE},
+             #{ITEM_NM},
+             #{SUPPLIER_CD},
+             #{SUPPLIER},
+             #{ITEM_TYPE_CD},
+             #{ITEM_TYPE_NM},
+             #{PURCHASE_PRICE},
+             #{IN_CNT},
+             NOW(),
+             NOW()
+         ) ON DUPLICATE KEY UPDATE
+            PURCHASE_PRICE = #{PURCHASE_PRICE},
+            IN_CNT = #{IN_CNT},
+            UPDATE_DT = NOW()
+    </insert>
+
+    <select id="getItemSellList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            DATE_FORMAT(START_DT, '%Y-%m-%d') AS START_DT,
+            DATE_FORMAT(END_DT, '%Y-%m-%d') AS END_DT,
+            BAR_CODE,
+            ITEM_NM,
+            SELL_CNT
+        FROM T_ITEM_SELL
+        WHERE 1=1
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="page != null and pageSize != null">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="getItemSellListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_SELL
+        WHERE 1=1
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+    </select>
+
+    <insert id="uploadItemSell" parameterType="java.util.Map">
+        INSERT INTO T_ITEM_SELL (
+            START_DT,
+            END_DT,
+            BAR_CODE,
+            ITEM_NM,
+            SELL_CNT
+        ) VALUES (
+             REPLACE(#{startDt}, '-', ''),
+             REPLACE(#{endDt}, '-', ''),
+             #{barCode},
+             #{itemNm},
+             #{sellCnt}
+         ) ON DUPLICATE KEY UPDATE
+            SELL_CNT = #{sellCnt}
+    </insert>
 
 </mapper>

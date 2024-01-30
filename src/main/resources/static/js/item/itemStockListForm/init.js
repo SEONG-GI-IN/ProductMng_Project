@@ -135,7 +135,7 @@ function eventbing() {
                 return;
             }
 
-            CommonUtil.fileUpload("/item/uploadItem", formData).then(function (result) {
+            CommonUtil.fileUpload("/item/uploadItemStock", formData).then(function (result) {
                 if (result == "success") {
                     alert("업로드 되었습니다.");
                     $('#uploadDialog').modal('hide');

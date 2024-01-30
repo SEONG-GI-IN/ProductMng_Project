@@ -2,14 +2,12 @@ let currentPageNumber = 1;
 
 const params = {
     itemNm: $("input#itemNm").val(),
-    itemTypeCd: $("#itemTypeCd").val(),
-    supplierCd: $("#supplierCd").val()
 }
 
 const dataSource = {
     api: {
         readData: {
-            url: '/item/getItemList',
+            url: '/item/getItemSellList',
             method: 'get',
             params: params,
             pageOptions: {
@@ -33,14 +31,14 @@ const grid = new tui.Grid({
     },
     data: dataSource,
     columns: [
+        { header: '판매일자', align: 'center',
+            formatter: function (data) {
+                return data.row.START_DT + " ~ " + data.row.END_DT;
+            }
+        },
         { header: '바코드', name: 'BAR_CODE', align: 'center' },
         { header: '상품명', name: 'ITEM_NM', align: 'center' },
-        { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
-        // { header: '매입가', align: 'center',
-        //     formatter: function (data) {
-        //         return data.row.PURCHASE_PRICE + "원";
-        //     }
-        // },
+        { header: '판매량', name: 'SELL_CNT', align: 'center' }
     ],
 });
 
@@ -60,13 +58,11 @@ function refreshGrid() {
 
     // AJAX 요청
     $.ajax({
-        url: '/item/getItemList',
+        url: '/item/getItemSellList',
         method: 'GET',
         contentType: 'application/json',
         data: {
             itemNm: itemNm,
-            itemTypeCd: itemTypeCd,
-            supplierCd: supplierCd,
             perPage: 10,
             page: 1,
         },

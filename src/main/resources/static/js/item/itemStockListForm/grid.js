@@ -9,7 +9,7 @@ const params = {
 const dataSource = {
     api: {
         readData: {
-            url: '/item/getItemList',
+            url: '/item/getItemStockList',
             method: 'get',
             params: params,
             pageOptions: {
@@ -33,14 +33,18 @@ const grid = new tui.Grid({
     },
     data: dataSource,
     columns: [
+        { header: '입고일자', name: 'STOCK_DT', align: 'center' },
         { header: '바코드', name: 'BAR_CODE', align: 'center' },
         { header: '상품명', name: 'ITEM_NM', align: 'center' },
+        { header: '거래처', name: 'SUPPLIER', align: 'center' },
         { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
-        // { header: '매입가', align: 'center',
-        //     formatter: function (data) {
-        //         return data.row.PURCHASE_PRICE + "원";
-        //     }
-        // },
+        { header: '매입가', align: 'center',
+            formatter: function (data) {
+                return data.row.PURCHASE_PRICE + "원";
+            }
+        },
+        { header: '입고량', name: 'IN_CNT', align: 'center' },
+        { header: '재고량', name: 'REMAIN_CNT', align: 'center' }
     ],
 });
 
@@ -60,7 +64,7 @@ function refreshGrid() {
 
     // AJAX 요청
     $.ajax({
-        url: '/item/getItemList',
+        url: '/item/getItemStockList',
         method: 'GET',
         contentType: 'application/json',
         data: {

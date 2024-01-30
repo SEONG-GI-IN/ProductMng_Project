@@ -11,7 +11,8 @@ public class PageUtil {
 
         if (page != null && pageSize != null) {
             int pageNum = (page - 1) * pageSize;
-            params.put("page", pageNum);
+            params.put("pageNum", pageNum);
+            params.put("page", page);
             params.put("pageSize", pageSize);
         }
     }

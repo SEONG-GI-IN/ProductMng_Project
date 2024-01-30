@@ -23442,6 +23442,7 @@ and limitations under the License.
                         paginationHolder.setPagination(this.tuiPagination);
                     };
                     PaginationComp.prototype.addEventListener = function () {
+                        debugger;
                         var _a = this.props, dataProvider = _a.dataProvider, pageOptions = _a.pageOptions, dispatch = _a.dispatch, eventBus = _a.eventBus;
                         this.tuiPagination.on('beforeMove', function (ev) {
                             var page = ev.page;

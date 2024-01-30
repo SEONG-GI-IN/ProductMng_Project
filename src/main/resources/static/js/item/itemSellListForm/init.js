@@ -1,4 +1,8 @@
 $(function () {
+
+    $("#startDt").val(moment().startOf('week').format('YYYY-MM-DD'));
+    $("#endDt").val(moment().endOf('week').format('YYYY-MM-DD'));
+
     eventbing();
 });
 
@@ -127,7 +131,15 @@ function eventbing() {
     $('#uploadDialog #uploadBtn').click(function () {
         if (confirm("업로드 하시겠습니까?")) {
             var formData = new FormData();
+
+            var params = {
+                startDt: $("#sellStartDt").val(),
+                endDt: $("#sellEndDt").val()
+            }
+
             formData.append("excelFile", $('#file')[0].files[0]);
+            formData.append("startDt", $("#sellStartDt").val());
+            formData.append("endDt", $("#sellEndDt").val());
 
             // 파일이 없을 때
             if ($('#file')[0].files[0] == null) {
@@ -135,7 +147,7 @@ function eventbing() {
                 return;
             }
 
-            CommonUtil.fileUpload("/item/uploadItem", formData).then(function (result) {
+            CommonUtil.fileUpload("/item/uploadItemSell", formData).then(function (result) {
                 if (result == "success") {
                     alert("업로드 되었습니다.");
                     $('#uploadDialog').modal('hide');

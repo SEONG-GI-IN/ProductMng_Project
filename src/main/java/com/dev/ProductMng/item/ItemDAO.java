@@ -43,4 +43,28 @@ public class ItemDAO {
     public void deleteItem(List<Map<String, Object>> list) {
         sqlSession.delete("com.dev.ProductMng.item.ItemDAO.deleteItem", list);
     }
+
+    public Map<String, Object> getItemStockList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{
+                "list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemStockList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemStockListTotal", params)
+        });
+        return result;
+    }
+
+    public void uploadItemStock(Map<String, Object> rowData) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.uploadItemStock", rowData);
+    }
+
+    public Map<String, Object> getItemSellList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{
+                "list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemSellList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemSellListTotal", params)
+        });
+        return result;
+    }
+
+    public void uploadItemSell(Map<String, Object> rowData) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.uploadItemSell", rowData);
+    }
 }
