@@ -1,9 +1,7 @@
 $(function () {
 
     initializeGrid();
-
     $('.list-date').val(moment().format('YYYY-MM-DD'));
-
     eventbing();
 });
 
@@ -58,7 +56,23 @@ function eventbing() {
             }
         }
     });
+
+    /* stock 필요 영역 */
+
+    $("body").on("click", function (event) {
+        if (event.target.className == 'backon') {
+            showHideInfoModal(false);
+        }
+    });
+
+    $(".close-btn img").on("click", function (event) {
+        showHideInfoModal(false);
+    });
+
+
+
 }
+
 
 function validation() {
     // 저장 할 때 유효성 검사
@@ -94,3 +108,32 @@ function validation() {
 
     return result;
 }
+
+
+/* **** Stock 필요 영역 **** */
+function displayInfoDetails(productData, qty) {
+    document.getElementById('ifBarCode').textContent = productData.BAR_CODE;
+    document.getElementById('ifProductName').textContent = productData.PRODUCT_NAME;
+    document.getElementById('ifProductPrice').textContent = productData.PRODUCT_PRICE;
+    document.getElementById('ifCreateDT').textContent = productData.CREATE_DT;
+    document.getElementById('ifProductTotQty').textContent = qty;
+    document.getElementById('ifProductTypeNM').textContent = productData.PRODUCT_TYPE_NM;
+    document.getElementById('ifSupplier').textContent = productData.SUPPLIER;
+    document.getElementById('ifPurchasePrice').textContent = productData.PURCHASE_PRICE;
+    // document.getElementById('*').textContent = productData.PRODUCT_TYPE_CD;
+    // document.getElementById('*').textContent = productData.UPDATE_DT;
+}
+
+/* Stock History + INFO 모달 뷰 */
+function showHideInfoModal(isVisible) {
+    if (isVisible) {
+        $(".info-modal").show();
+        $(".backon").show();
+    } else {
+        $(".info-modal").hide();
+        $(".backon").hide();
+    }
+
+}
+
+/* **** ************ **** */
