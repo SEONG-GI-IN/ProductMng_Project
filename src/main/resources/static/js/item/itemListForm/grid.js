@@ -3,7 +3,8 @@ let currentPageNumber = 1;
 const params = {
     itemNm: $("input#itemNm").val(),
     itemTypeCd: $("#itemTypeCd").val(),
-    supplierCd: $("#supplierCd").val()
+    supplierCd: $("#supplierCd").val(),
+    barCode: $("input#barCode").val(),
 }
 
 const dataSource = {
@@ -52,6 +53,7 @@ grid.on('afterPageMove', function (ev) {
 
     // 검색 조건을 가져오기
     const itemNm = $("input#itemNm").val();
+    const barCode = $("input#barCode").val();
     const itemTypeCd = $("#itemTypeCd").val();
     const supplierCd = $("#supplierCd").val();
 
@@ -64,6 +66,7 @@ grid.on('afterPageMove', function (ev) {
             itemNm: itemNm,
             itemTypeCd: itemTypeCd,
             supplierCd: supplierCd,
+            barCode: barCode,
             perPage: 10,
             page: currentPageNumber,
         },
@@ -84,6 +87,7 @@ function refreshGrid() {
     const itemNm = $("input#itemNm").val();
     const itemTypeCd = $("#itemTypeCd").val();
     const supplierCd = $("#supplierCd").val();
+    const barCode = $("input#barCode").val();
 
     // AJAX 요청
     $.ajax({
@@ -94,6 +98,7 @@ function refreshGrid() {
             itemNm: itemNm,
             itemTypeCd: itemTypeCd,
             supplierCd: supplierCd,
+            barCode: barCode,
             perPage: 10,
             page: 1,
         },

@@ -1,5 +1,15 @@
 $(function () {
     eventbing();
+
+    /* 날짜 셋팅 moment */
+    // 시작일 default = 1일
+    // 종료일 default 월 마지막일
+    var startDate = moment().startOf('month').format('YYYY-MM-DD');
+    var endDate = moment().endOf('month').format('YYYY-MM-DD');
+
+    $('#startDt').val(startDate);
+    $('#endDt').val(endDate);
+
 });
 
 function eventbing() {

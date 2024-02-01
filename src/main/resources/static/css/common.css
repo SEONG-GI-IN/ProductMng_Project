@@ -1,5 +1,64 @@
-.list-search {
-    padding : 20px;
+.search-container {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #f2f2f2; /* Light gray background color */
+    /*padding: 15px; !* Add padding for better spacing *!*/
+    margin-bottom: 20px; /* Optional: Add margin to the bottom */
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    padding-top: 15px;
+    padding-left: 15px;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    flex-direction: row; /* Set flex-direction to row */
+}
+
+dt {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+dd {
+    margin-right: 20px;
+}
+
+span {
+    margin-right: 10px;
+}
+.form-control,
+.form-select {
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.date-range {
+    display: flex;
+    align-items: center;
+}
+
+.date-range input {
+    margin-right: 5px;
+}
+
+#searchBtn {
+    padding: 8px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 4px; /* Optional: Add border-radius for rounded button */
+    margin-top: -10px;
+}
+
+#searchBtn:hover {
+    background-color: #0056b3;
 }
 
 /* ul li 영역 */
@@ -89,9 +148,25 @@ li {
 
 .right-btn{
     margin-top: 15px;
-    margin-bottom: -30px;
+    margin-bottom: -10px;
     margin-right : 20px;
     text-align: right;
+}
+
+.right-btn input[type="button"] {
+    padding: 4px 9px;
+    margin-right: 10px;
+    background-color: #fff; /* White background for all buttons */
+    color: #000; /* Black text color for all buttons */
+    border: 1px solid #000; /* Blue border for all buttons */
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.right-btn input[type="button"]:hover {
+    background-color: #007bff; /* Blue background on hover */
+    color: #fff; /* White text color on hover */
 }
 
 .grid-container {

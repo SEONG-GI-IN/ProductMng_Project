@@ -6,7 +6,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="/css/list.css" />
     <link rel="stylesheet" href="/css/tui-grid.css" type="text/css" />
     <script src="/js/tui-grid.js"></script>
 </head>
@@ -18,12 +17,6 @@
 <div class="list-search">
     <table class="list-search-table">
         <tr>
-            <td>등록일</td>
-            <td id="listSearchDate">
-                <input type="date" id="date1" class="list-date"/>
-                <span> ~ </span>
-                <input type="date" id="date2" class="list-date"/>
-            </td>
             <td>상품분류</td>
             <td>
                 <!-- 상품분류 셀렉트박스 forEach-->
@@ -44,6 +37,8 @@
                     </c:forEach>
                 </select>
             </td>
+            <td>바코드</td>
+            <td> <input type="text" id="barCode"/> </td>
             <td>상품명</td>
             <td> <input type="text" id="itemNm"/> </td>
             <td> <input type="button" id="searchBtn" value="검색"/></td>
