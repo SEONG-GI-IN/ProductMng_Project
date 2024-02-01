@@ -9,7 +9,7 @@ const params = {
 const dataSource = {
     api: {
         readData: {
-            url: '/item/getItemList',
+            url: '/item/getItemSmartList',
             method: 'get',
             params: params,
             pageOptions: {
@@ -19,6 +19,7 @@ const dataSource = {
         initialRequest: false, // 디폴트 값은 true
         contentType: 'application/json',
         headers: { 'x-custom-header': 'custom-header' },
+        // attributes
     }
 }
 
@@ -32,16 +33,64 @@ const grid = new tui.Grid({
         perPage: 10
     },
     data: dataSource,
+    header: {
+        complexColumns: [
+            {
+                header: '마진율',
+                name: 'MARGIN_RATE',
+                childNames: ['MARGIN_50', 'MARGIN_45', 'MARGIN_40', 'MARGIN_35', 'MARGIN_30']
+            }
+        ],
+        height: 80
+    },
     columns: [
+        { header: '거래처', name: 'SUPPLIER', align: 'center' },
         { header: '바코드', name: 'BAR_CODE', align: 'center' },
         { header: '상품명', name: 'ITEM_NM', align: 'center' },
         { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
-        { header: '판매가', align: 'center',
+        { header: '매입가', align: 'center',
             formatter: function (data) {
-                return data.row.ITEM_PRICE + " 원";
+                return data.row.PURCHASE_PRICE + "원";
             }
         },
-    ],
+        { header: '30%', align: 'center', name: 'MARGIN_30',
+            formatter: function (data) {
+                return CommonUtil.calculateMargin(data.row.PURCHASE_PRICE, 30) + "원";
+            }
+        },
+        { header: '35%', align: 'center', name: 'MARGIN_35',
+            formatter: function (data) {
+                return CommonUtil.calculateMargin(data.row.PURCHASE_PRICE, 35) + "원";
+            }
+        },
+        { header: '40%', align: 'center', name: 'MARGIN_40',
+            formatter: function (data) {
+                return CommonUtil.calculateMargin(data.row.PURCHASE_PRICE, 40) + "원";
+            }
+        },
+        { header: '45%', align: 'center', name: 'MARGIN_45',
+            formatter: function (data) {
+                return CommonUtil.calculateMargin(data.row.PURCHASE_PRICE, 45) + "원";
+            }
+        },
+        { header: '50%', align: 'center', name: 'MARGIN_50',
+            formatter: function (data) {
+                return CommonUtil.calculateMargin(data.row.PURCHASE_PRICE, 50) + "원";
+            }
+        },
+        { header: '판매가', align: 'center',
+            className: 'ITEM_PRICE',
+            formatter: function (data) {
+                return data.row.ITEM_PRICE + "원";
+            },
+            renderer: {
+                styles: {
+                    color: '#ff0000',
+                    fontWeight: 'bold'
+                }
+            }
+        }
+    ]
 });
 
 //페이지 버튼 클릭 이벤트
@@ -57,7 +106,7 @@ grid.on('afterPageMove', function (ev) {
 
     // AJAX 요청
     $.ajax({
-        url: '/item/getItemList',
+        url: '/item/getItemSmartList',
         method: 'GET',
         contentType: 'application/json',
         data: {
@@ -76,7 +125,6 @@ grid.on('afterPageMove', function (ev) {
         }
     });
 });
-
 const currentPage = grid.getPagination()._currentPage;
 
 function refreshGrid() {
@@ -87,7 +135,7 @@ function refreshGrid() {
 
     // AJAX 요청
     $.ajax({
-        url: '/item/getItemList',
+        url: '/item/getItemSmartList',
         method: 'GET',
         contentType: 'application/json',
         data: {

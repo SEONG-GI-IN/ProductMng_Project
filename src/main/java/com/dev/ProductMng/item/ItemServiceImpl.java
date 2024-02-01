@@ -80,17 +80,17 @@ public class ItemServiceImpl implements ItemService {
             if (i > 1) {
                 Map<String, Object> cell = new HashMap();
                 Map<String, Object> row = (Map)dataList.get(i - 1);
-                if (row != null && row.get("A") != null && !"".equals(row.get("A"))) {
+                if (row != null && row.get("C") != null && !"".equals(row.get("C"))) {
 
-                    if (row.get("A") == null || String.valueOf(row.get("A")).equals("")) {
+                    if (row.get("C") == null || String.valueOf(row.get("C")).equals("")) {
                         throw new APIException("ITEM001", "(" + (i + 1) + "번째줄) 바코드를 입력해주세요.");
                     }
 
-                    if (row.get("B") == null || String.valueOf(row.get("B")).equals("")) {
+                    if (row.get("D") == null || String.valueOf(row.get("D")).equals("")) {
                         throw new APIException("ITEM002", "(" + (i + 1) + "번째줄) 상품명을 입력해주세요.");
                     }
 
-                    if (row.get("C") == null || String.valueOf(row.get("C")).equals("")) {
+                    if (row.get("A") == null || String.valueOf(row.get("A")).equals("")) {
                         throw new APIException("ITEM003", "(" + (i + 1) + "번째줄) 상품분류를 입력해주세요.");
                     }
 
@@ -104,11 +104,11 @@ public class ItemServiceImpl implements ItemService {
 
                     // 상품타입명으로 상품타입코드 조회 하여 result에 추가
                     Map<String, Object> itemTypeParams = new HashMap();
-                    itemTypeParams.put("CODE_NM", row.get("C"));
+                    itemTypeParams.put("CODE_NM", row.get("A"));
                     itemTypeParams.put("UP_CODE_CD", "ITEM_TYPE");
                     Map<String, Object> itemType = commonDAO.getCodeCd(itemTypeParams);
                     cell.put("ITEM_TYPE_CD", itemType.get("CODE_CD"));
-                    cell.put("ITEM_TYPE_NM", row.get("C"));
+                    cell.put("ITEM_TYPE_NM", row.get("A"));
 
                     // 매입가는 row.get("E") 나누기 row.get("D") 값으로 result에 추가
 //                    int unit = (int) Double.parseDouble(String.valueOf(row.get("D")));
@@ -122,8 +122,9 @@ public class ItemServiceImpl implements ItemService {
 //                    cell.put("PURCHASE_PRICE", purchasePrice);
 
                     // 나머지 CELL 값 result에 추가
-                    cell.put("BAR_CODE", row.get("A"));
-                    cell.put("ITEM_NM", row.get("B"));
+                    cell.put("BAR_CODE", row.get("C"));
+                    cell.put("ITEM_NM", row.get("D"));
+                    cell.put("ITEM_PRICE", row.get("M"));
 
                     result.add(cell);
                 }
@@ -268,5 +269,15 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void uploadItemSell(Map<String, Object> rowData) {
         itemDAO.uploadItemSell(rowData);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getItemSmartList(Map<String, Object> params) {
+        try {
+            return itemDAO.getItemSmartList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

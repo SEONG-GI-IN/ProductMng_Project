@@ -7,12 +7,14 @@
             ITEM_NM,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
+            ITEM_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
             #{itemNm},
             #{itemTypeCd},
             #{itemTypeNm},
+            #{itemPrice},
             NOW(),
             NOW()
         )
@@ -24,7 +26,8 @@
             BAR_CODE,
             ITEM_NM,
             ITEM_TYPE_CD,
-            ITEM_TYPE_NM
+            ITEM_TYPE_NM,
+            ITEM_PRICE
         FROM T_ITEM_DTL
         WHERE 1=1
         <if test="itemTypeCd != null and itemTypeCd != ''">
@@ -76,6 +79,7 @@
             ITEM_NM,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
+            ITEM_PRICE,
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
@@ -83,11 +87,13 @@
              #{ITEM_NM},
              #{ITEM_TYPE_CD},
              #{ITEM_TYPE_NM},
+             #{ITEM_PRICE},
              NOW(),
              NOW()
          ) ON DUPLICATE KEY UPDATE
             ITEM_TYPE_CD = #{ITEM_TYPE_CD},
             ITEM_TYPE_NM = #{ITEM_TYPE_NM},
+            ITEM_PRICE = #{ITEM_PRICE},
             UPDATE_DT = NOW()
     </insert>
 
@@ -95,7 +101,7 @@
         DELETE FROM T_ITEM_DTL
         WHERE 1=1
         <foreach collection="list" item="item" separator=" OR " open=" AND (" close=")">
-            BAR_CODE = #{item.BAR_CODE}})
+            BAR_CODE = #{item.BAR_CODE}
         </foreach>
     </delete>
 
@@ -122,6 +128,7 @@
         <if test="itemNm != null and itemNm != ''">
             AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
         </if>
+        ORDER BY STOCK_DT DESC, SUPPLIER_CD ASC
         <if test="page != null and pageSize != null">
             LIMIT #{pageNum}, #{pageSize}
         </if>
@@ -218,4 +225,65 @@
             SELL_CNT = #{sellCnt}
     </insert>
 
+    <select id="getItemSmartList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            S.BAR_CODE,
+            S.ITEM_NM,
+            DATE_FORMAT(S.STOCK_DT, '%Y-%M-%D') AS STOCK_DT,
+            S.SUPPLIER_CD,
+            S.SUPPLIER,
+            DTL.ITEM_PRICE,
+            S.ITEM_TYPE_CD,
+            S.ITEM_TYPE_NM,
+            S.PURCHASE_PRICE,
+            S.IN_CNT,
+            S.REMAIN_CNT
+        FROM T_ITEM_STOCK S
+        JOIN (
+            SELECT
+                BAR_CODE,
+                MIN(PURCHASE_PRICE) AS MIN_PURCHASE_PRICE
+            FROM T_ITEM_STOCK
+            GROUP BY BAR_CODE
+        ) AS M ON S.BAR_CODE = M.BAR_CODE
+        JOIN T_ITEM_DTL AS DTL ON DTL.BAR_CODE = M.BAR_CODE
+        WHERE 1 = 1
+        AND S.PURCHASE_PRICE = M.MIN_PURCHASE_PRICE
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND S.ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND S.SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND S.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="page != null and pageSize != null">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="getItemSmartListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_STOCK S
+        JOIN (
+            SELECT
+                BAR_CODE,
+                MIN(PURCHASE_PRICE) AS MIN_PURCHASE_PRICE
+            FROM T_ITEM_STOCK
+            GROUP BY BAR_CODE
+        ) AS M ON S.BAR_CODE = M.BAR_CODE
+        WHERE 1 = 1
+        AND S.PURCHASE_PRICE = M.MIN_PURCHASE_PRICE
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND S.ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND S.SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND S.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+    </select>
 </mapper>

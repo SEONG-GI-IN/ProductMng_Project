@@ -67,4 +67,12 @@ public class ItemDAO {
     public void uploadItemSell(Map<String, Object> rowData) {
         sqlSession.insert("com.dev.ProductMng.item.ItemDAO.uploadItemSell", rowData);
     }
+
+    public Map<String, Object> getItemSmartList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{
+                "list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemSmartList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemSmartListTotal", params)
+        });
+        return result;
+    }
 }

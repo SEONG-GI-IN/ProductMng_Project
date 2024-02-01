@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 
- <div id="layoutSidenav-nav">
+ <div id="layoutSidenav-nav" style="width: 200px">
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
@@ -27,10 +27,13 @@
                             <a class="nav-link" href="/item/itemListForm">상품관리화면</a>
                         </nav>
                         <nav class="sb-sidenav-menu-nested nav">
-                            <a class="nav-link" href="/item/itemStockListForm">상품재고관리화면</a>
+                            <a class="nav-link" href="/item/itemStockListForm">상품입고관리화면</a>
                         </nav>
                         <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/item/itemSellListForm">상품판매관리화면</a>
+                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/item/itemSmartListForm">스마트 상품관리화면</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">

@@ -31,4 +31,6 @@ public interface ItemService {
     List<Map<String, Object>> uploadItemSellExcel(List<Map<String, Object>> list);
 
     void uploadItemSell(Map<String, Object> rowData);
+
+    Map<String, Object> getItemSmartList(Map<String, Object> params);
 }

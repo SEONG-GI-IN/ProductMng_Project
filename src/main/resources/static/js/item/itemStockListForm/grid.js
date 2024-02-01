@@ -53,7 +53,34 @@ grid.on('afterPageMove', function (ev) {
     currentPageNumber = grid.getPagination()._currentPage;
     // Update the display of the current page number
     document.getElementById('currentPageNumber').innerText = `Current Page: ${currentPageNumber}`;
+
+    // 검색 조건을 가져오기
+    const itemNm = $("input#itemNm").val();
+    const itemTypeCd = $("#itemTypeCd").val();
+    const supplierCd = $("#supplierCd").val();
+
+    // AJAX 요청
+    $.ajax({
+        url: '/item/getItemStockList',
+        method: 'GET',
+        contentType: 'application/json',
+        data: {
+            itemNm: itemNm,
+            itemTypeCd: itemTypeCd,
+            supplierCd: supplierCd,
+            perPage: 10,
+            page: currentPageNumber,
+        },
+        success: function(result) {
+            grid.resetData(result.data.contents, { pageState: { page: currentPageNumber, totalCount: result.data.pagination.totalCount, perPage: 10} });
+        },
+        error: function(error) {
+            // 오류 시 처리
+            console.error(error);
+        }
+    });
 });
+
 const currentPage = grid.getPagination()._currentPage;
 
 function refreshGrid() {
@@ -75,7 +102,7 @@ function refreshGrid() {
             page: 1,
         },
         success: function(result) {
-            grid.resetData(result.data.contents, { pageState: { page: currentPage, totalCount: result.data.pagination.totalCount, perPage: 3} });
+            grid.resetData(result.data.contents, { pageState: { page: currentPage, totalCount: result.data.pagination.totalCount, perPage: 10} });
         },
         error: function(error) {
             // 오류 시 처리

@@ -47,3 +47,11 @@ CommonUtil.getClickedRowData = function (_this) {
     const rowIndex = _this.index();
     return grid.getRow(rowIndex);
 };
+
+/**
+ * 마진 계산
+ * ex) 매입가가 1000원이고 마진율이 50%일 때, 1000 + 1000 * 50% = 1500원
+ */
+CommonUtil.calculateMargin = function (purchasePrice, marginRate) {
+    return purchasePrice + purchasePrice * marginRate / 100;
+}

@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="page-title">
-    <h4>[입고관리화면]</h4>
+    <h4>[스마트 상품관리화면]</h4>
 </div>
 
 <div class="list-search">
@@ -160,6 +160,6 @@
 
 </body>
 
-<script type="text/javascript" src="/js/item/itemStockListForm/grid.js?ver=${currentTime}"></script>
-<script type="text/javascript" src="/js/item/itemStockListForm/init.js?ver=${currentTime}"></script>
-<script type="text/javascript" src="/js/item/itemStockListForm/excel.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSmartListForm/grid.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSmartListForm/init.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemSmartListForm/excel.js?ver=${currentTime}"></script>
