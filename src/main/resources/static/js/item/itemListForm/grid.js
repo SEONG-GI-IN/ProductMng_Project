@@ -1,4 +1,8 @@
 let currentPageNumber = 1;
+const listItems = [];
+$("#itemTypeCdDiv option").each(function (index, obj) {
+    listItems.push({text: $(obj).text(), value: $(obj).val()});
+});
 
 const params = {
     itemNm: $("input#itemNm").val(),
@@ -19,10 +23,9 @@ const dataSource = {
         },
         initialRequest: false, // 디폴트 값은 true
         contentType: 'application/json',
-        headers: { 'x-custom-header': 'custom-header' },
+        headers: {'x-custom-header': 'custom-header'},
     }
 }
-
 
 const grid = new tui.Grid({
     el: document.getElementById('grid'),
@@ -34,14 +37,28 @@ const grid = new tui.Grid({
     },
     data: dataSource,
     columns: [
-        { header: '바코드', name: 'BAR_CODE', align: 'center' },
-        { header: '상품명', name: 'ITEM_NM', align: 'center' },
-        { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
-        { header: '판매가', align: 'center',
+        {header: '바코드', name: 'BAR_CODE', align: 'center'},
+        {header: '상품명', name: 'ITEM_NM', align: 'center', editor: 'text'},
+        {
+            header: '상품분류', name: 'ITEM_TYPE_CD', align: 'center',
+            formatter: 'listItemText',
+            editor: {
+                type: 'select',
+                options: {
+                   listItems
+                }
+            },
+            copyOptions: {
+                useListItemText: true
+            }
+        },
+        {
+            header: '판매가', align: 'center', editor: 'text', name: 'ITEM_PRICE',
             formatter: function (data) {
                 return data.row.ITEM_PRICE + " 원";
             }
         },
+        {header: '상품분류명', name: 'ITEM_TYPE_NM', hidden: true},
     ],
 });
 
@@ -70,10 +87,16 @@ grid.on('afterPageMove', function (ev) {
             perPage: 10,
             page: currentPageNumber,
         },
-        success: function(result) {
-            grid.resetData(result.data.contents, { pageState: { page: currentPageNumber, totalCount: result.data.pagination.totalCount, perPage: 10} });
+        success: function (result) {
+            grid.resetData(result.data.contents, {
+                pageState: {
+                    page: currentPageNumber,
+                    totalCount: result.data.pagination.totalCount,
+                    perPage: 10
+                }
+            });
         },
-        error: function(error) {
+        error: function (error) {
             // 오류 시 처리
             console.error(error);
         }
@@ -102,10 +125,16 @@ function refreshGrid() {
             perPage: 10,
             page: 1,
         },
-        success: function(result) {
-            grid.resetData(result.data.contents, { pageState: { page: currentPage, totalCount: result.data.pagination.totalCount, perPage: 10} });
+        success: function (result) {
+            grid.resetData(result.data.contents, {
+                pageState: {
+                    page: currentPage,
+                    totalCount: result.data.pagination.totalCount,
+                    perPage: 10
+                }
+            });
         },
-        error: function(error) {
+        error: function (error) {
             // 오류 시 처리
             console.error(error);
         }

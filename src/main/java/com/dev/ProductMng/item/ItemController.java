@@ -127,6 +127,24 @@ public class ItemController {
     }
 
     /**
+     * 상품 List 수정
+     */
+    @RequestMapping(value = ("/updateItem"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView updateItem (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.updateItem(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
      * 재고 관리 화면
      */
     @GetMapping("/itemStockListForm")

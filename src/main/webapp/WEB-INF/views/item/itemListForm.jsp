@@ -14,52 +14,58 @@
     <h4>[상품관리화면]</h4>
 </div>
 
-<div class="list-search">
-    <table class="list-search-table">
-        <tr>
-            <td>상품분류</td>
-            <td>
-                <!-- 상품분류 셀렉트박스 forEach-->
-                <select id="itemTypeCd" class="list-select" style="width: 150px">
-                    <option value="">전체</option>
-                    <c:forEach var="item" items="${itemTypeList}">
-                        <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                    </c:forEach>
-                </select>
-            </td>
-            <td>거래처</td>
-            <td>
-                <!-- 상품분류 셀렉트박스 forEach-->
-                <select id="supplierCd" class="list-select" style="width: 150px">
-                    <option value="">전체</option>
-                    <c:forEach var="item" items="${supplierList}">
-                        <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                    </c:forEach>
-                </select>
-            </td>
-            <td>바코드</td>
-            <td> <input type="text" id="barCode"/> </td>
-            <td>상품명</td>
-            <td> <input type="text" id="itemNm"/> </td>
-            <td> <input type="button" id="searchBtn" value="검색"/></td>
-        </tr>
-    </table>
+<div class="search-container">
+    <dl class="form-group">
 
-    <!-- 등록 삭제 수정 -->
-    <div class="right-btn">
-        <input type="button" id="addBtn" value="등록" />
-        <input type="button" id="delBtn" value="삭제" />
-        <input type="button" id="updateBtn" value="수정" />
-        <input type="button" id="uploadBtn" value="엑셀업로드" />
-        <input type="button" id="excelBtn" value="엑셀다운" />
-    </div>
+        <dt>상품분류</dt>
+        <dd>
+            <select id="itemTypeCd" class="form-select" style="width: 250px">
+                <option value="">전체</option>
+                <c:forEach var="item" items="${itemTypeList}">
+                    <option value="${item.CODE_CD}">${item.CODE_NM}</option>
+                </c:forEach>
+            </select>
+        </dd>
+
+        <dt>거래처</dt>
+        <dd>
+            <select id="supplierCd" class="form-select" style="width: 250px">
+                <option value="">전체</option>
+                <c:forEach var="item" items="${supplierList}">
+                    <option value="${item.CODE_CD}">${item.CODE_NM}</option>
+                </c:forEach>
+            </select>
+        </dd>
+
+        <dt>바코드</dt>
+        <dd>
+            <input type="text" id="barCode" class="form-control" placeholder="바코드를 입력하세요" />
+        </dd>
+
+        <dt>상품명</dt>
+        <dd>
+            <input type="text" id="itemNm" class="form-control" placeholder="상품명을 입력하세요" />
+        </dd>
+
+        <button type="button" id="searchBtn">검색</button>
+    </dl>
 </div>
+
+<!-- 등록 삭제 수정 -->
+<div class="right-btn">
+    <input type="button" id="addBtn" value="등록" />
+    <input type="button" id="delBtn" value="삭제" />
+    <input type="button" id="updateBtn" value="수정" />
+    <input type="button" id="uploadBtn" value="엑셀업로드" />
+    <input type="button" id="excelBtn" value="엑셀다운" />
+</div>
+
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
 <div id="currentPageNumber" class="page-number">Current Page: 1</div>
 
 <!-- MODAL -->
-<div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="addDialog" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <form class="modal-content">
             <div class="modal-header">
@@ -67,6 +73,13 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <!-- 바코드 입력 -->
+                <div class="mb-3 row">
+                    <label class="col-sm-4 col-form-label">바코드</label>
+                    <div class="col-sm-9 ml-60">
+                        <input type="text" class="form-control" name="barCode" />
+                    </div>
+                </div>
                 <!-- 상품명 입력 -->
                 <div class="mb-3 row">
                     <label class="col-sm-4 col-form-label">상품명</label>
@@ -76,9 +89,9 @@
                 </div>
                 <!-- 상품가격 입력 -->
                 <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">매입가</label>
+                    <label class="col-sm-4 col-form-label">판매가</label>
                     <div class="col-sm-9 ml-60">
-                        <input type="text" class="form-control" name="purchasePrice"/>
+                        <input type="text" class="form-control" name="itemPrice" onkeyup="validateNumericInput(this);"/>
                     </div>
                 </div>
                 <!-- 상품분류 입력 -->
@@ -88,18 +101,6 @@
                         <select id="itemTypeCdDiv" class="form-select" style="width: 150px">
                             <option value="">전체</option>
                             <c:forEach var="item" items="${itemTypeList}">
-                                <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                </div>
-                <!-- 거래처 입력 -->
-                <div class="mb-3 row">
-                    <label class="col-sm-4 col-form-label">거래처</label>
-                    <div class="col-sm-9 ml-60">
-                        <select id="supplierCdDiv" class="form-select" style="width: 150px">
-                            <option value="">전체</option>
-                            <c:forEach var="item" items="${supplierList}">
                                 <option value="${item.CODE_CD}">${item.CODE_NM}</option>
                             </c:forEach>
                         </select>

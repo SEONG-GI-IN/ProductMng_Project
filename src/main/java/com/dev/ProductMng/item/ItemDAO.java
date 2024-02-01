@@ -75,4 +75,8 @@ public class ItemDAO {
         });
         return result;
     }
+
+    public void updateItem(List<Map<String, Object>> list) {
+        sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateItem", list);
+    }
 }

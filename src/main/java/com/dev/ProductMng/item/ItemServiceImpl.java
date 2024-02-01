@@ -94,14 +94,6 @@ public class ItemServiceImpl implements ItemService {
                         throw new APIException("ITEM003", "(" + (i + 1) + "번째줄) 상품분류를 입력해주세요.");
                     }
 
-                    // 거래처명으로 거래처코드 조회 하여 result에 추가
-//                    Map<String, Object> supplierParams = new HashMap();
-//                    supplierParams.put("CODE_NM", row.get("B"));
-//                    supplierParams.put("UP_CODE_CD", "SUPPLIER");
-//                    Map<String, Object> supplier = commonDAO.getCodeCd(supplierParams);
-//                    cell.put("SUPPLIER_CD", supplier.get("CODE_CD"));
-//                    cell.put("SUPPLIER", row.get("B"));
-
                     // 상품타입명으로 상품타입코드 조회 하여 result에 추가
                     Map<String, Object> itemTypeParams = new HashMap();
                     itemTypeParams.put("CODE_NM", row.get("A"));
@@ -109,17 +101,6 @@ public class ItemServiceImpl implements ItemService {
                     Map<String, Object> itemType = commonDAO.getCodeCd(itemTypeParams);
                     cell.put("ITEM_TYPE_CD", itemType.get("CODE_CD"));
                     cell.put("ITEM_TYPE_NM", row.get("A"));
-
-                    // 매입가는 row.get("E") 나누기 row.get("D") 값으로 result에 추가
-//                    int unit = (int) Double.parseDouble(String.valueOf(row.get("D")));
-//                    int purchasePrice = (int) Double.parseDouble(String.valueOf(row.get("E")));
-//
-//                    purchasePrice = purchasePrice / unit;
-//
-//                    // purchasePrice 100원 단위 반올림
-//                    purchasePrice = (int) Math.round(purchasePrice / 100.0) * 100;
-//
-//                    cell.put("PURCHASE_PRICE", purchasePrice);
 
                     // 나머지 CELL 값 result에 추가
                     cell.put("BAR_CODE", row.get("C"));
@@ -279,5 +260,10 @@ public class ItemServiceImpl implements ItemService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void updateItem(List<Map<String, Object>> list) {
+        itemDAO.updateItem(list);
     }
 }

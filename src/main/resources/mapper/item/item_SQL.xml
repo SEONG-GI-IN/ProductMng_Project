@@ -310,4 +310,19 @@
             AND S.BAR_CODE = #{barCode}
         </if>
     </select>
+
+    <update id="updateItem" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE T_ITEM_DTL
+            SET
+                ITEM_NM = #{item.ITEM_NM},
+                ITEM_TYPE_CD = #{item.ITEM_TYPE_CD},
+                ITEM_TYPE_NM = #{item.ITEM_TYPE_NM},
+                ITEM_PRICE = #{item.ITEM_PRICE},
+                UPDATE_DT = NOW()
+            WHERE BAR_CODE = #{item.BAR_CODE}
+        </foreach>
+    </update>
+
+
 </mapper>

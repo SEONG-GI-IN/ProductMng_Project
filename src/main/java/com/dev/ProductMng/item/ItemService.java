@@ -33,4 +33,6 @@ public interface ItemService {
     void uploadItemSell(Map<String, Object> rowData);
 
     Map<String, Object> getItemSmartList(Map<String, Object> params);
+
+    void updateItem(List<Map<String, Object>> list);
 }

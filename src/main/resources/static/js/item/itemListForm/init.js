@@ -1,3 +1,5 @@
+let updateList = [];
+
 $(function () {
     eventbing();
 });
@@ -50,20 +52,6 @@ function eventbing() {
                     array.push({
                         name: "itemTypeNm",  // id에서 name으로 변경
                         value: itemTypeNm
-                    });
-                    return true;
-                }
-
-                if (id == "supplierCdDiv") {  // id에서 name으로 변경
-                    var supplierCd = value;
-                    var supplier = $(obj).find("option:selected").text();
-                    array.push({
-                        name: "supplierCd",  // id에서 name으로 변경
-                        value: supplierCd
-                    });
-                    array.push({
-                        name: "supplier",  // id에서 name으로 변경
-                        value: supplier
                     });
                     return true;
                 }
@@ -136,9 +124,9 @@ function eventbing() {
             }
 
             CommonUtil.fileUpload("/item/uploadItem", formData).then(function (result) {
-                    alert("업로드 되었습니다.");
-                    $('#uploadDialog').modal('hide');
-                    refreshGrid();
+                alert("업로드 되었습니다.");
+                $('#uploadDialog').modal('hide');
+                refreshGrid();
             }).fail(function(response) {
                try {
                    alert( JSON.parse(response.responseText).message );
@@ -167,6 +155,70 @@ function eventbing() {
         }
     });
 
+    /* 상품 분류 수정 될 때 */
+    // 그리드 데이터가 변경 될 때마다 호출
+    grid.on('afterChange', function (e) {
+        var columnName = e.changes[0].columnName;
+        var rowKey = e.changes[0].rowKey;
+
+        var updateItem = {};
+        var changedValue = e.changes[0].value;
+
+        switch (columnName) {
+            case "ITEM_TYPE_CD":
+                var itemTypeCd = changedValue;
+                var itemTypeNm = listItems.find(function (item) {
+                    return item.value == itemTypeCd;
+                }).text;
+
+                grid.setValue(rowKey, "ITEM_TYPE_NM", itemTypeNm);
+
+                if (!updateList.some(item => item.rowKey === rowKey)) {
+                    updateItem = grid.getRow(rowKey);
+                    updateList.push(updateItem);
+                }
+
+                break;
+            case "ITEM_PRICE":
+            case "ITEM_NM":
+                grid.setValue(rowKey, columnName, changedValue);
+                updateItem = grid.getRow(rowKey);
+                updateList.push(updateItem);
+                break;
+            default:
+                break;
+        }
+
+        /* 변경 된 데이터 cell 색상 변경 */
+        if (updateList.some(item => item.rowKey === rowKey)) {
+            // 변경된 행의 데이터 가져오기
+            const updatedRowData = updateList.find(item => item.rowKey === rowKey);
+
+            // 변경된 셀의 배경색을 변경
+            const cellElement = grid.getElement(rowKey, columnName);
+            if (cellElement) {
+                cellElement.style.backgroundColor = 'yellow';
+            }
+        }
+
+
+    });
+
+    // 수정 버튼 눌렀을 때
+    $('#updateBtn').click(function () {
+        if (confirm("수정하시겠습니까?")) {
+            CommonUtil.postAjax("/item/updateItem", {list : JSON.stringify(updateList)}).then(function (result) {
+                    alert("수정되었습니다.");
+                    refreshGrid();
+            }).fail(function(response) {
+                alert(JSON.parse(response.responseText).message);
+            }).always(function() {
+                // 수정된 데이터 초기화
+                updateList = [];
+            });
+        }
+    });
+
 }
 
 function validation() {
@@ -178,7 +230,11 @@ function validation() {
         var name = $(obj).attr("name");
         var value = $(obj).val();
 
-        if (name == "itemNm" && value == "") {
+        if (name == "barCode" && value == "") {
+            alert("바코드를 입력해주세요.");
+            result = false;
+            return false;
+        } else if (name == "itemNm" && value == "") {
             alert("상품명을 입력해주세요.");
             result = false;
             return false;
@@ -186,16 +242,18 @@ function validation() {
             alert("상품분류를 선택해주세요.");
             result = false;
             return false;
-        } else if (name == "supplierCd" && value == "") {
-            alert("거래처를 입력해주세요.");
-            result = false;
-            return false;
-        } else if (name == "purchasePrice" && value == "") {
-            alert("매입가를 입력해주세요.");
+        } else if (name == "itemPrice" && value == "") {
+            alert("판매가를 입력해주세요.");
             result = false;
             return false;
         }
     });
 
     return result;
+}
+
+/* 숫자만 입력 가능 */
+function validateNumericInput(input) {
+    // Remove non-numeric characters using a regular expression
+    input.value = input.value.replace(/[^0-9]/g, '');
 }
