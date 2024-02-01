@@ -7,7 +7,6 @@ $("#itemTypeCdDiv option").each(function (index, obj) {
 const params = {
     itemNm: $("input#itemNm").val(),
     itemTypeCd: $("#itemTypeCd").val(),
-    supplierCd: $("#supplierCd").val(),
     barCode: $("input#barCode").val(),
 }
 
@@ -29,6 +28,7 @@ const dataSource = {
 
 const grid = new tui.Grid({
     el: document.getElementById('grid'),
+    theme: 'clean',
     scrollX: false,
     scrollY: false,
     rowHeaders: ['checkbox'],
@@ -62,81 +62,27 @@ const grid = new tui.Grid({
     ],
 });
 
-//페이지 버튼 클릭 이벤트
-grid.on('afterPageMove', function (ev) {
-    currentPageNumber = grid.getPagination()._currentPage;
-    // Update the display of the current page number
-    document.getElementById('currentPageNumber').innerText = `Current Page: ${currentPageNumber}`;
-
-    // 검색 조건을 가져오기
-    const itemNm = $("input#itemNm").val();
-    const barCode = $("input#barCode").val();
-    const itemTypeCd = $("#itemTypeCd").val();
-    const supplierCd = $("#supplierCd").val();
-
-    // AJAX 요청
-    $.ajax({
-        url: '/item/getItemList',
-        method: 'GET',
-        contentType: 'application/json',
-        data: {
-            itemNm: itemNm,
-            itemTypeCd: itemTypeCd,
-            supplierCd: supplierCd,
-            barCode: barCode,
-            perPage: 10,
-            page: currentPageNumber,
-        },
-        success: function (result) {
-            grid.resetData(result.data.contents, {
-                pageState: {
-                    page: currentPageNumber,
-                    totalCount: result.data.pagination.totalCount,
-                    perPage: 10
-                }
-            });
-        },
-        error: function (error) {
-            // 오류 시 처리
-            console.error(error);
-        }
-    });
-});
-
-const currentPage = grid.getPagination()._currentPage;
-
 function refreshGrid() {
-    // 검색 조건을 가져오기
-    const itemNm = $("input#itemNm").val();
-    const itemTypeCd = $("#itemTypeCd").val();
-    const supplierCd = $("#supplierCd").val();
-    const barCode = $("input#barCode").val();
 
-    // AJAX 요청
-    $.ajax({
-        url: '/item/getItemList',
-        method: 'GET',
-        contentType: 'application/json',
-        data: {
-            itemNm: itemNm,
-            itemTypeCd: itemTypeCd,
-            supplierCd: supplierCd,
-            barCode: barCode,
-            perPage: 10,
-            page: 1,
-        },
-        success: function (result) {
-            grid.resetData(result.data.contents, {
-                pageState: {
-                    page: currentPage,
-                    totalCount: result.data.pagination.totalCount,
-                    perPage: 10
-                }
-            });
-        },
-        error: function (error) {
-            // 오류 시 처리
-            console.error(error);
-        }
+    var params = {
+        itemTypeCd: $("#itemTypeCd").val(),
+        barCode: $("input#barCode").val(),
+        itemNm: $("input#itemNm").val(),
+        perPage: 10,
+        page: currentPageNumber
+    }
+
+    CommonUtil.getAjax("/item/getItemList", params).then(function (result) {
+        grid.resetData(result.data.contents, {
+            pageState: {
+                page: currentPageNumber,
+                totalCount: result.data.pagination.totalCount,
+                perPage: 10
+            }
+        });
+    }).fail(function (error) {
+        console.error(error);
+    }).always(function () {
+
     });
-};
+}

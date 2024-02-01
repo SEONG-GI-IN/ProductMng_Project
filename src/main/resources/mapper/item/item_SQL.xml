@@ -125,6 +125,9 @@
             REMAIN_CNT
         FROM T_ITEM_STOCK
         WHERE 1=1
+        <if test="startDt != null and startDt != ''">
+            AND STOCK_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
+        </if>
         <if test="itemTypeCd != null and itemTypeCd != ''">
             AND ITEM_TYPE_CD = #{itemTypeCd}
         </if>
@@ -148,6 +151,9 @@
             COUNT(1)
         FROM T_ITEM_STOCK
         WHERE 1=1
+        <if test="startDt != null and startDt != ''">
+            AND STOCK_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
+        </if>
         <if test="itemTypeCd != null and itemTypeCd != ''">
             AND ITEM_TYPE_CD = #{itemTypeCd}
         </if>

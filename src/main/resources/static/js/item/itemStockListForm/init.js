@@ -1,5 +1,4 @@
 $(function () {
-    eventbing();
 
     /* 날짜 셋팅 moment */
     // 시작일 default = 1일
@@ -9,6 +8,11 @@ $(function () {
 
     $('#startDt').val(startDate);
     $('#endDt').val(endDate);
+
+    grid();
+
+    eventbing();
+
 
 });
 
@@ -164,7 +168,7 @@ function eventbing() {
     // 삭제버튼 눌렀을 때
     $('#delBtn').click(function () {
         if (confirm("삭제하시겠습니까?")) {
-            var array = grid.getCheckedRows();
+            var array = tuiGrid.getCheckedRows();
 
             CommonUtil.postAjax("/item/deleteItem", {list : JSON.stringify(array)}).then(function (result) {
                 if (result) {

@@ -27,16 +27,6 @@
             </select>
         </dd>
 
-        <dt>거래처</dt>
-        <dd>
-            <select id="supplierCd" class="form-select" style="width: 250px">
-                <option value="">전체</option>
-                <c:forEach var="item" items="${supplierList}">
-                    <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                </c:forEach>
-            </select>
-        </dd>
-
         <dt>바코드</dt>
         <dd>
             <input type="text" id="barCode" class="form-control" placeholder="바코드를 입력하세요" />

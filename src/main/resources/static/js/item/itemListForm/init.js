@@ -72,8 +72,6 @@ function eventbing() {
                 }
             });
 
-            console.log(array);
-
             // 유효성 검사
             if (validation()) {
                 CommonUtil.postAjax("/item/insertItem", array).then(function (result) {
@@ -91,7 +89,7 @@ function eventbing() {
 
     // 양식다운로드 버튼 눌렀을 때
     $("input[name='downTemplate']").click(function () {
-        excel();
+        excelTemplate();
     });
 
     // 업로드 버튼 눌렀을 때
@@ -200,8 +198,6 @@ function eventbing() {
                 cellElement.style.backgroundColor = 'yellow';
             }
         }
-
-
     });
 
     // 수정 버튼 눌렀을 때
@@ -217,6 +213,11 @@ function eventbing() {
                 updateList = [];
             });
         }
+    });
+
+    /* 엑셀다운 눌렀을 때 */
+    $('#excelBtn').click(function () {
+        excel();
     });
 
 }
@@ -254,6 +255,5 @@ function validation() {
 
 /* 숫자만 입력 가능 */
 function validateNumericInput(input) {
-    // Remove non-numeric characters using a regular expression
     input.value = input.value.replace(/[^0-9]/g, '');
 }
