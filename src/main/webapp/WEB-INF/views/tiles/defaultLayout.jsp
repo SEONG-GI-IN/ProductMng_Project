@@ -30,6 +30,16 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/excel/jszip-3.1.5.min.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/js/excel/FileSaver-1.2.2_1.js"></script>
 
+    <!-- jspdf -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jspdf/jspdf.min.js"></script>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jspdf/jspdf.plugin.autotable.js"></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jspdf/jspdf.plugin.addimage.js"></script>--%>
+<%--    <script type="text/javascript" src="${pageContext.request.contextPath}/js/jspdf/jspdf.plugin.cell.js"></script>--%>
+
+    <!-- fonts -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/malgun.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/malgunbd.js"></script>
+
 </head>
 
 <script>

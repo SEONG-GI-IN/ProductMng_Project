@@ -86,3 +86,12 @@ function refreshGrid() {
 
     });
 }
+
+//페이지 버튼 클릭 이벤트
+grid.on('afterPageMove', function (ev) {
+    currentPageNumber = grid.getPagination()._currentPage;
+    // Update the display of the current page number
+    document.getElementById('currentPageNumber').innerText = `Current Page: ${currentPageNumber}`;
+
+    refreshGrid();
+});

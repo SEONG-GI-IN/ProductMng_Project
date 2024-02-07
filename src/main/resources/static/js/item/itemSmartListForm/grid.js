@@ -48,7 +48,7 @@ const grid = new tui.Grid({
         { header: '바코드', name: 'BAR_CODE', align: 'center' },
         { header: '상품명', name: 'ITEM_NM', align: 'center' },
         { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
-        { header: '매입가', align: 'center',
+        { header: '매입가', align: 'center', name: 'PURCHASE_PRICE',
             formatter: function (data) {
                 return data.row.PURCHASE_PRICE + "원";
             }
@@ -93,38 +93,44 @@ const grid = new tui.Grid({
     ]
 });
 
-//페이지 버튼 클릭 이벤트
-grid.on('afterPageMove', function (ev) {
+function updateGridData() {
+    // 현재 페이지 번호 가져오기
     currentPageNumber = grid.getPagination()._currentPage;
+
     // Update the display of the current page number
     document.getElementById('currentPageNumber').innerText = `Current Page: ${currentPageNumber}`;
 
-    // 검색 조건을 가져오기
-    const itemNm = $("input#itemNm").val();
-    const itemTypeCd = $("#itemTypeCd").val();
-    const supplierCd = $("#supplierCd").val();
+    // 검색 조건 가져오기
+    var itemNm = $("input#itemNm").val();
+    var itemTypeCd = $("#itemTypeCd").val();
+    var supplierCd = $("#supplierCd").val();
 
     // AJAX 요청
-    $.ajax({
-        url: '/item/getItemSmartList',
-        method: 'GET',
-        contentType: 'application/json',
-        data: {
-            itemNm: itemNm,
-            itemTypeCd: itemTypeCd,
-            supplierCd: supplierCd,
-            perPage: 10,
-            page: currentPageNumber,
-        },
-        success: function(result) {
-            grid.resetData(result.data.contents, { pageState: { page: currentPageNumber, totalCount: result.data.pagination.totalCount, perPage: 10} });
-        },
-        error: function(error) {
-            // 오류 시 처리
-            console.error(error);
-        }
+    CommonUtil.getAjax("/item/getItemSmartList", {
+        itemNm: itemNm,
+        itemTypeCd: itemTypeCd,
+        supplierCd: supplierCd,
+        perPage: 10,
+        page: currentPageNumber
+    }).then(function (result) {
+        grid.resetData(result.data.contents, {
+            pageState: {
+                page: currentPageNumber,
+                totalCount: result.data.pagination.totalCount,
+                perPage: 10
+            }
+        });
     });
+}
+
+grid.on('beforePageMove' , function (ev) {
+    updateGridData();
 });
+
+grid.on('afterPageMove', function (ev) {
+    updateGridData();
+});
+
 const currentPage = grid.getPagination()._currentPage;
 
 function refreshGrid() {
@@ -134,23 +140,19 @@ function refreshGrid() {
     const supplierCd = $("#supplierCd").val();
 
     // AJAX 요청
-    $.ajax({
-        url: '/item/getItemSmartList',
-        method: 'GET',
-        contentType: 'application/json',
-        data: {
-            itemNm: itemNm,
-            itemTypeCd: itemTypeCd,
-            supplierCd: supplierCd,
-            perPage: 10,
-            page: 1,
-        },
-        success: function(result) {
-            grid.resetData(result.data.contents, { pageState: { page: currentPage, totalCount: result.data.pagination.totalCount, perPage: 10} });
-        },
-        error: function(error) {
-            // 오류 시 처리
-            console.error(error);
-        }
+    CommonUtil.getAjax("/item/getItemSmartList", {
+        itemNm: itemNm,
+        itemTypeCd: itemTypeCd,
+        supplierCd: supplierCd,
+        perPage: 10,
+        page: currentPage
+    }).then(function (result) {
+        grid.resetData(result.data.contents, {
+            pageState: {
+                page: currentPage,
+                totalCount: result.data.pagination.totalCount,
+                perPage: 10
+            }
+        });
     });
 };

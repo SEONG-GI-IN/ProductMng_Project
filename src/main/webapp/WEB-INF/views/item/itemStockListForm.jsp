@@ -66,6 +66,7 @@
     <input type="button" id="updateBtn" value="수정" />
     <input type="button" id="uploadBtn" value="엑셀업로드" />
     <input type="button" id="excelBtn" value="엑셀다운" />
+    <input type="button" id="priceBtn" value="가격표생성" />
 </div>
 
 <!-- toast grid -->
@@ -169,6 +170,8 @@
 
 </body>
 
-<script type="text/javascript" src="/js/item/itemStockListForm/grid.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemStockListForm/grid.js"></script>
+<%--<script type="text/javascript" src="/js/item/itemStockListForm/grid.js?ver=${currentTime}"></script>--%>
 <script type="text/javascript" src="/js/item/itemStockListForm/init.js?ver=${currentTime}"></script>
 <script type="text/javascript" src="/js/item/itemStockListForm/excel.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemStockListForm/hwp.js?ver=${currentTime}"></script>

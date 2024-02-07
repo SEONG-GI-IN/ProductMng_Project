@@ -189,9 +189,6 @@ function eventbing() {
 
         /* 변경 된 데이터 cell 색상 변경 */
         if (updateList.some(item => item.rowKey === rowKey)) {
-            // 변경된 행의 데이터 가져오기
-            const updatedRowData = updateList.find(item => item.rowKey === rowKey);
-
             // 변경된 셀의 배경색을 변경
             const cellElement = grid.getElement(rowKey, columnName);
             if (cellElement) {
@@ -205,12 +202,20 @@ function eventbing() {
         if (confirm("수정하시겠습니까?")) {
             CommonUtil.postAjax("/item/updateItem", {list : JSON.stringify(updateList)}).then(function (result) {
                     alert("수정되었습니다.");
+                    // 그리드 데이터 초기화
                     refreshGrid();
+
             }).fail(function(response) {
                 alert(JSON.parse(response.responseText).message);
             }).always(function() {
                 // 수정된 데이터 초기화
                 updateList = [];
+                // 변경된 셀의 배경색을 변경
+                const cellElement = grid.getElement();
+                if (cellElement) {
+                    cellElement.style.backgroundColor = '';
+                }
+
             });
         }
     });
@@ -218,6 +223,11 @@ function eventbing() {
     /* 엑셀다운 눌렀을 때 */
     $('#excelBtn').click(function () {
         excel();
+    });
+
+    /* 가격표 생성 버튼 눌렀을 때 */
+    $('#priceBtn').click(function () {
+        createPdf();
     });
 
 }

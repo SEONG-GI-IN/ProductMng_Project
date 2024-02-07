@@ -266,4 +266,14 @@ public class ItemServiceImpl implements ItemService {
     public void updateItem(List<Map<String, Object>> list) {
         itemDAO.updateItem(list);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getItemRemainList(Map<String, Object> params) {
+        try {
+            return itemDAO.getItemRemainList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

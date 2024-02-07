@@ -30,6 +30,9 @@
                             <a class="nav-link" href="/item/itemStockListForm">상품입고관리화면</a>
                         </nav>
                         <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/item/itemRemainListForm">상품재고관리화면</a>
+                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/item/itemSellListForm">상품판매관리화면</a>
                         </nav>
                         <nav class="sb-sidenav-menu-nested nav">

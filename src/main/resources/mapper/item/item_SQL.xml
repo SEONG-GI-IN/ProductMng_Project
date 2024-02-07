@@ -113,32 +113,34 @@
 
     <select id="getItemStockList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
-            DATE_FORMAT(STOCK_DT, '%Y-%m-%d') AS STOCK_DT,
-            BAR_CODE,
-            ITEM_NM,
-            SUPPLIER_CD,
-            SUPPLIER,
-            ITEM_TYPE_CD,
-            ITEM_TYPE_NM,
-            PURCHASE_PRICE,
-            IN_CNT,
-            REMAIN_CNT
-        FROM T_ITEM_STOCK
+            DATE_FORMAT(STOCK.STOCK_DT, '%Y-%m-%d') AS STOCK_DT,
+            STOCK.BAR_CODE,
+            STOCK.ITEM_NM,
+            STOCK.SUPPLIER_CD,
+            STOCK.SUPPLIER,
+            STOCK.ITEM_TYPE_CD,
+            STOCK.ITEM_TYPE_NM,
+            STOCK.PURCHASE_PRICE,
+            STOCK.IN_CNT,
+            STOCK.REMAIN_CNT,
+            DTL.ITEM_PRICE
+        FROM T_ITEM_STOCK AS STOCK
+        LEFT JOIN T_ITEM_DTL AS DTL ON STOCK.BAR_CODE = DTL.BAR_CODE
         WHERE 1=1
         <if test="startDt != null and startDt != ''">
-            AND STOCK_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
+            AND STOCK.STOCK_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
         </if>
         <if test="itemTypeCd != null and itemTypeCd != ''">
-            AND ITEM_TYPE_CD = #{itemTypeCd}
+            AND STOCK.ITEM_TYPE_CD = #{itemTypeCd}
         </if>
         <if test="supplierCd != null and supplierCd != ''">
-            AND SUPPLIER_CD = #{supplierCd}
+            AND STOCK.SUPPLIER_CD = #{supplierCd}
         </if>
         <if test="itemNm != null and itemNm != ''">
-            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+            AND STOCK.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
         </if>
         <if test="barCode != null and barCode != ''">
-            AND BAR_CODE = #{barCode}
+            AND STOCK.BAR_CODE = #{barCode}
         </if>
         ORDER BY STOCK_DT DESC, SUPPLIER_CD ASC
         <if test="page != null and pageSize != null">
@@ -259,8 +261,7 @@
             DTL.ITEM_PRICE,
             S.ITEM_TYPE_CD,
             S.ITEM_TYPE_NM,
-            S.PURCHASE_PRICE,
-            S.IN_CNT,
+            M.MIN_PURCHASE_PRICE AS PURCHASE_PRICE,
             S.REMAIN_CNT
         FROM T_ITEM_STOCK S
         JOIN (
@@ -330,5 +331,28 @@
         </foreach>
     </update>
 
+    <select id="getItemRemainList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            BAR_CODE,
+            ITEM_NM,
+            ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
+            ITEM_PRICE,
+            REMAIN_CNT
+        FROM T_ITEM_DTL
+        WHERE 1=1
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="barCode != null and barCode != ''">
+            AND BAR_CODE = #{barCode}
+        </if>
+        <if test="page != null and pageSize != null">
+            LIMIT #{pageNum}, #{pageSize}
+        </if>
+    </select>
 
 </mapper>

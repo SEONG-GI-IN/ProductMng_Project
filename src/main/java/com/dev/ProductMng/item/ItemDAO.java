@@ -79,4 +79,12 @@ public class ItemDAO {
     public void updateItem(List<Map<String, Object>> list) {
         sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateItem", list);
     }
+
+    public Map<String, Object> getItemRemainList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{
+                "list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemRemainList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemRemainListTotal", params)
+        });
+        return result;
+    }
 }

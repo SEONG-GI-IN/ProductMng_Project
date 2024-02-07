@@ -35,4 +35,6 @@ public interface ItemService {
     Map<String, Object> getItemSmartList(Map<String, Object> params);
 
     void updateItem(List<Map<String, Object>> list);
+
+    Map<String, Object> getItemRemainList(Map<String, Object> params);
 }

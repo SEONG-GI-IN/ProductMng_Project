@@ -3,29 +3,21 @@ package com.dev.ProductMng.util;
 import com.dev.ProductMng.config.APIException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.awt.*;
 import java.io.*;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @Component
 public class FileUtil {
@@ -160,4 +152,66 @@ public class FileUtil {
         return list;
     }
 
+    public void createPriceBoard(Map<String, Object> params, HttpServletRequest request, HttpServletResponse response) {
+        String html = (String)params.get("html");
+        String fileName = "가격표.pdf";
+        String filePath = "C:\\dev\\IntelliJ\\ProductMng\\src\\main\\resources\\static\\assets\\upload\\pdf\\";
+        File saveFolder = new File(filePath);
+        if ((!saveFolder.exists() || saveFolder.isFile()) && !saveFolder.mkdirs()) {
+            throw new APIException("폴더 생성도중 에러발생");
+        } else {
+            try {
+                String fullPath = filePath + fileName;
+                File file = new File(fullPath);
+                if (file.exists() && !file.delete()) {
+                    throw new APIException("파일 삭제도중 에러발생");
+                } else {
+                    FileOutputStream fos = new FileOutputStream(fullPath);
+                    fos.write(html.getBytes());
+                    fos.write(html.getBytes("UTF-8"));
+                    fos.close();
+                    File pdfFile = new File(fullPath);
+                    if (pdfFile.exists()) {
+                        response.setContentType("application/pdf;charset=UTF-8");
+                        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+                        FileInputStream fis = new FileInputStream(pdfFile);
+                        BufferedInputStream bis = new BufferedInputStream(fis);
+                        BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+                        byte[] buffer = new byte[8192];
+
+                        int length;
+                        while((length = bis.read(buffer)) > 0) {
+                            bos.write(buffer, 0, length);
+                        }
+
+                        bos.flush();
+                        bos.close();
+                        bis.close();
+                        fis.close();
+                        if (pdfFile.exists() && !pdfFile.delete()) {
+                            throw new APIException("파일 삭제도중 에러발생");
+                        }
+
+                        // PDF 파일 열기
+                        openPdfFileInBrowser(response, fileName);
+                    }
+
+                }
+            } catch (IOException var20) {
+                throw new APIException(var20.getMessage());
+            }
+        }
+    }
+
+    // PDF 파일을 브라우저에서 열기 위한 JavaScript 코드를 추가하는 메서드
+    private void openPdfFileInBrowser(HttpServletResponse response, String fileName) throws IOException {
+        // 수정된 코드
+        response.setContentType("text/html; charset=UTF-8");  // 인코딩 설정
+        PrintWriter out = response.getWriter();
+        out.println("<html><head><title>PDF Open</title></head><body>");
+        out.println("<script type=\"text/javascript\">");
+        out.println("window.open('/assets/upload/pdf/" + fileName + "','_blank');");
+        out.println("</script>");
+        out.println("</body></html>");
+    }
 }
