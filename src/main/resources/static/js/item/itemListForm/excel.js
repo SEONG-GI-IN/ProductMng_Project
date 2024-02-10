@@ -60,33 +60,29 @@ function excel(){
         page: 1
     }
 
-    CommonUtil.getAjax("/item/getItemList", params).then(function (result) {
-        var dataSource = result.data.contents;
+    CommonUtil.fetchData('/item/getItemList', params)
+        .then(result => {
 
-        excel.set(0, 0, 0, "바코드", headerStyle);
-        excel.set(0, 1, 0, "상품명", headerStyle);
-        excel.set(0, 2, 0, "상품분류", headerStyle);
-        excel.set(0, 3, 0, "판매가", headerStyle);
+            excel.set(0, 0, 0, "바코드", headerStyle);
+            excel.set(0, 1, 0, "상품명", headerStyle);
+            excel.set(0, 2, 0, "상품분류", headerStyle);
+            excel.set(0, 3, 0, "판매가", headerStyle);
 
-        for (var i = 0; i < dataSource.length; i++) {
-            excel.set(0, 0, i + 1, dataSource[i].BAR_CODE, cellStyle);
-            excel.set(0, 1, i + 1, dataSource[i].ITEM_NM, cellStyle);
-            excel.set(0, 2, i + 1, dataSource[i].ITEM_TYPE_NM, cellStyle);
-            excel.set(0, 3, i + 1, dataSource[i].ITEM_PRICE, cellStyle);
-        }
+            for (var i = 0; i < result.length; i++) {
+                excel.set(0, 0, i + 1, result[i].BAR_CODE, cellStyle);
+                excel.set(0, 1, i + 1, result[i].ITEM_NM, cellStyle);
+                excel.set(0, 2, i + 1, result[i].ITEM_TYPE_NM, cellStyle);
+                excel.set(0, 3, i + 1, result[i].ITEM_PRICE, cellStyle);
+            }
 
-        excel.setColumnWidth(0, 0, 29.5);
-        excel.setColumnWidth(0, 1, 29.5);
-        excel.setColumnWidth(0, 2, 15);
-        excel.setColumnWidth(0, 3, 15);
+            excel.setColumnWidth(0, 0, 29.5);
+            excel.setColumnWidth(0, 1, 29.5);
+            excel.setColumnWidth(0, 2, 15);
+            excel.setColumnWidth(0, 3, 15);
 
-        excel.generate("상품관리.xlsx", null, null);
+            excel.generate("상품관리.xlsx", null, null);
 
-    }).fail(function (error) {
-        console.error(error);
-    }).always(function () {
-
-    });
-
-
+        }).catch(function (error) {
+            console.error(error);
+        });
 }

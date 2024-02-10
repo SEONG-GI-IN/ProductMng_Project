@@ -57,27 +57,12 @@ public class ItemController {
      */
     @RequestMapping(value = ("/getItemList"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Map<String, Object> getItemList(@RequestParam Map<String, Object> params) {
+    public List<Map<String, Object>> getItemList(@RequestBody Map<String, Object> params) {
         try {
-            PageUtil.setPaging(params);
-            Map<String, Object> result = itemService.getItemList(params);
-            Map<String, Object> data = new HashMap<>();
-
-            data.put("contents", result.get("list"));
-
-            Map<String, Object> pagination = new HashMap<>();
-            pagination.put("page", params.get("page")); // 현재 페이지
-            pagination.put("totalCount", result.get("total")); // 전체 개수
-            data.put("pagination", pagination);
-
-            result.put("data", data);
-            result.put("result", true);
-
-            return result;
+            return itemService.getItemList(params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 예외 처리를 적절히 수행하고, 에러 응답을 반환하거나 로깅합니다.
-            return Collections.singletonMap("error", "An error occurred while processing the request.");
+            return null;
         }
     }
 
@@ -154,27 +139,12 @@ public class ItemController {
      */
     @RequestMapping(value = ("/getItemStockList"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Map<String, Object> getItemStockList(@RequestParam Map<String, Object> params) {
+    public List<Map<String, Object>> getItemStockList(@RequestBody Map<String, Object> params) {
         try {
-            PageUtil.setPaging(params);
-            Map<String, Object> result = itemService.getItemStockList(params);
-            Map<String, Object> data = new HashMap<>();
-
-            data.put("contents", result.get("list"));
-
-            Map<String, Object> pagination = new HashMap<>();
-            pagination.put("page", params.get("page")); // 현재 페이지
-            pagination.put("totalCount", result.get("total")); // 전체 개수
-            data.put("pagination", pagination);
-
-            result.put("data", data);
-            result.put("result", true);
-
-            return result;
+            return itemService.getItemStockList(params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 예외 처리를 적절히 수행하고, 에러 응답을 반환하거나 로깅합니다.
-            return Collections.singletonMap("error", "An error occurred while processing the request.");
+            return null;
         }
     }
 
@@ -214,27 +184,12 @@ public class ItemController {
      */
     @RequestMapping(value = ("/getItemSellList"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Map<String, Object> getItemSellList(@RequestParam Map<String, Object> params) {
+    public List<Map<String, Object>> getItemSellList(@RequestBody Map<String, Object> params) {
         try {
-            PageUtil.setPaging(params);
-            Map<String, Object> result = itemService.getItemSellList(params);
-            Map<String, Object> data = new HashMap<>();
-
-            data.put("contents", result.get("list"));
-
-            Map<String, Object> pagination = new HashMap<>();
-            pagination.put("page", params.get("page")); // 현재 페이지
-            pagination.put("totalCount", result.get("total")); // 전체 개수
-            data.put("pagination", pagination);
-
-            result.put("data", data);
-            result.put("result", true);
-
-            return result;
+            return itemService.getItemSellList(params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 예외 처리를 적절히 수행하고, 에러 응답을 반환하거나 로깅합니다.
-            return Collections.singletonMap("error", "An error occurred while processing the request.");
+            return null;
         }
     }
 
@@ -277,27 +232,12 @@ public class ItemController {
      */
     @RequestMapping(value = ("/getItemSmartList"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Map<String, Object> getItemSmartList(@RequestParam Map<String, Object> params) {
+    public List<Map<String, Object>> getItemSmartList(@RequestBody Map<String, Object> params) {
         try {
-            PageUtil.setPaging(params);
-            Map<String, Object> result = itemService.getItemSmartList(params);
-            Map<String, Object> data = new HashMap<>();
-
-            data.put("contents", result.get("list"));
-
-            Map<String, Object> pagination = new HashMap<>();
-            pagination.put("page", params.get("page")); // 현재 페이지
-            pagination.put("totalCount", result.get("total")); // 전체 개수
-            data.put("pagination", pagination);
-
-            result.put("data", data);
-            result.put("result", true);
-
-            return result;
+            return itemService.getItemSmartList(params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 예외 처리를 적절히 수행하고, 에러 응답을 반환하거나 로깅합니다.
-            return Collections.singletonMap("error", "An error occurred while processing the request.");
+            return null;
         }
     }
 
@@ -327,27 +267,12 @@ public class ItemController {
      */
     @RequestMapping(value = ("/getItemRemainList"), method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public Map<String, Object> getItemRemainList(@RequestParam Map<String, Object> params) {
+    public List<Map<String, Object>> getItemRemainList(@RequestBody Map<String, Object> params) {
         try {
-            PageUtil.setPaging(params);
-            Map<String, Object> result = itemService.getItemRemainList(params);
-            Map<String, Object> data = new HashMap<>();
-
-            data.put("contents", result.get("list"));
-
-            Map<String, Object> pagination = new HashMap<>();
-            pagination.put("page", params.get("page")); // 현재 페이지
-            pagination.put("totalCount", result.get("total")); // 전체 개수
-            data.put("pagination", pagination);
-
-            result.put("data", data);
-            result.put("result", true);
-
-            return result;
+            return itemService.getItemRemainList(params);
         } catch (Exception e) {
             e.printStackTrace();
-            // 예외 처리를 적절히 수행하고, 에러 응답을 반환하거나 로깅합니다.
-            return Collections.singletonMap("error", "An error occurred while processing the request.");
+            return null;
         }
     }
 }

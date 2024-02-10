@@ -1,4 +1,7 @@
 $(function () {
+
+    initializeGrid();
+
     eventbing();
 });
 

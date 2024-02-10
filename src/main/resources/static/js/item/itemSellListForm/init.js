@@ -3,7 +3,7 @@ $(function () {
     $("#startDt").val(moment().startOf('week').format('YYYY-MM-DD'));
     $("#endDt").val(moment().endOf('week').format('YYYY-MM-DD'));
 
-    grid();
+    initializeGrid();
 
     eventbing();
 });

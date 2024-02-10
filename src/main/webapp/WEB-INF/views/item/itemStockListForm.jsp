@@ -8,6 +8,7 @@
 <head>
     <link rel="stylesheet" href="/css/tui-grid.css" type="text/css" />
     <script src="/js/tui-grid.js"></script>
+    <script type="text/javascript" src="/js/item/itemStockListForm/init.js?ver=${currentTime}"></script>
 </head>
 <body>
 <div class="page-title">
@@ -168,10 +169,9 @@
     </div>
 </div>
 
-</body>
-
-<script type="text/javascript" src="/js/item/itemStockListForm/grid.js"></script>
 <%--<script type="text/javascript" src="/js/item/itemStockListForm/grid.js?ver=${currentTime}"></script>--%>
-<script type="text/javascript" src="/js/item/itemStockListForm/init.js?ver=${currentTime}"></script>
+<script type="text/javascript" src="/js/item/itemStockListForm/grid.js"></script>
 <script type="text/javascript" src="/js/item/itemStockListForm/excel.js?ver=${currentTime}"></script>
 <script type="text/javascript" src="/js/item/itemStockListForm/hwp.js?ver=${currentTime}"></script>
+</body>
+

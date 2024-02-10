@@ -71,3 +71,19 @@ CommonUtil.getClickedRowData = function (_this) {
 CommonUtil.calculateMargin = function (purchasePrice, marginRate) {
     return purchasePrice + purchasePrice * marginRate / 100;
 }
+
+CommonUtil.fetchData = function (url, params) {
+    return fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // 설정에 따라 다를 수 있음
+        },
+        body: JSON.stringify(params),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        });
+}

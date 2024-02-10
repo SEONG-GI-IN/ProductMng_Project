@@ -35,7 +35,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> getItemList(Map<String, Object> params) {
+    public List<Map<String, Object>> getItemList(Map<String, Object> params) {
         try {
             return itemDAO.getItemList(params);
         } catch (Exception e) {
@@ -125,7 +125,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> getItemStockList(Map<String, Object> params) {
+    public List<Map<String, Object>> getItemStockList(Map<String, Object> params) {
         try {
             return itemDAO.getItemStockList(params);
         } catch (Exception e) {
@@ -218,7 +218,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> getItemSellList(Map<String, Object> params) {
+    public List<Map<String, Object>> getItemSellList(Map<String, Object> params) {
         try {
             return itemDAO.getItemSellList(params);
         } catch (Exception e) {
@@ -254,7 +254,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> getItemSmartList(Map<String, Object> params) {
+    public List<Map<String, Object>> getItemSmartList(Map<String, Object> params) {
         try {
             return itemDAO.getItemSmartList(params);
         } catch (Exception e) {
@@ -269,7 +269,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     @Transactional(readOnly = true)
-    public Map<String, Object> getItemRemainList(Map<String, Object> params) {
+    public List<Map<String, Object>> getItemRemainList(Map<String, Object> params) {
         try {
             return itemDAO.getItemRemainList(params);
         } catch (Exception e) {

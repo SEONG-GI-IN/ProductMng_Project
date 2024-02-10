@@ -1,6 +1,9 @@
 let updateList = [];
 
 $(function () {
+
+    initializeGrid();
+
     eventbing();
 });
 
@@ -150,50 +153,6 @@ function eventbing() {
                     alert("삭제에 실패하였습니다.");
                 }
             });
-        }
-    });
-
-    /* 상품 분류 수정 될 때 */
-    // 그리드 데이터가 변경 될 때마다 호출
-    grid.on('afterChange', function (e) {
-        var columnName = e.changes[0].columnName;
-        var rowKey = e.changes[0].rowKey;
-
-        var updateItem = {};
-        var changedValue = e.changes[0].value;
-
-        switch (columnName) {
-            case "ITEM_TYPE_CD":
-                var itemTypeCd = changedValue;
-                var itemTypeNm = listItems.find(function (item) {
-                    return item.value == itemTypeCd;
-                }).text;
-
-                grid.setValue(rowKey, "ITEM_TYPE_NM", itemTypeNm);
-
-                if (!updateList.some(item => item.rowKey === rowKey)) {
-                    updateItem = grid.getRow(rowKey);
-                    updateList.push(updateItem);
-                }
-
-                break;
-            case "ITEM_PRICE":
-            case "ITEM_NM":
-                grid.setValue(rowKey, columnName, changedValue);
-                updateItem = grid.getRow(rowKey);
-                updateList.push(updateItem);
-                break;
-            default:
-                break;
-        }
-
-        /* 변경 된 데이터 cell 색상 변경 */
-        if (updateList.some(item => item.rowKey === rowKey)) {
-            // 변경된 셀의 배경색을 변경
-            const cellElement = grid.getElement(rowKey, columnName);
-            if (cellElement) {
-                cellElement.style.backgroundColor = 'yellow';
-            }
         }
     });
 
