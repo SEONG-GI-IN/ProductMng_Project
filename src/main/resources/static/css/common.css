@@ -1,3 +1,17 @@
+@media screen and (max-width: 768px) {
+    /* 화면 너비가 768px 이하일 때 적용되는 스타일 */
+    .search-container .form-group dt,
+    .search-container .form-group dd {
+        width: 100%; /* 폼 요소들을 세로로 나열하도록 변경 */
+        margin-bottom: 10px; /* 각 요소들 사이의 간격 조정 */
+    }
+
+    .right-btn {
+        justify-content: center; /* 버튼들을 중앙 정렬 */
+    }
+}
+
+
 .search-container {
     display: flex;
     flex-wrap: wrap;
@@ -180,3 +194,143 @@ li {
 .btn_div .left_div{float:left;}
 .btn_div .right_div{float:right;}
 .twinbox{border:solid #eaeaea;border-width: 0 1px;}
+
+a {cursor: pointer;}
+
+/* 팝업 스타일 */
+.popup {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.popup-content {
+    background-color: #fefefe;
+    margin: 10% auto;
+    width: 80%;
+    display: flex;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    flex-direction: column;
+}
+
+.popup-content .row {
+    margin-bottom: 15px;
+}
+
+.popup-content .field {
+    margin-bottom: 20px;
+}
+
+.popup-content .form-label {
+    text-align: right;
+    margin-bottom: 0;
+}
+
+.popup-content p.product-description {
+    margin-top: 0;
+}
+
+.popup-content input[type="text"] {
+    width: 100%;
+}
+
+.popup-content label {
+    font-weight: bold;
+    color: #333;
+}
+
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 좌측 컬럼 */
+.left-column {
+    flex: 1;
+}
+
+#productImagePreview {
+    text-align: center;
+}
+
+#productImagePreview img {
+    max-width: 100%;
+    height: auto;
+    cursor: pointer;
+}
+
+/* 우측 컬럼 */
+.right-column {
+    flex: 1;
+    padding-left: 20px;
+}
+
+.field {
+    margin-bottom: 10px;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.pagination {
+    display: inline-block;
+}
+
+.pagination a {
+    color: #000;
+    float: left;
+    text-decoration: none;
+    padding: 8px 16px;
+    transition: background-color .3s;
+    border: 1px solid #ddd;
+    margin: 0 2px;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
+}
+
+#dataList {
+    width: 98%;
+    margin-top: 30px;
+    margin-left: 20px;
+    max-height: 350px; /* 원하는 높이로 조절하세요 */
+    overflow-y: auto;
+}
+
+#dataList td, #dataList th {
+    padding: 4px; /* 패딩을 조정하세요 */
+}
+
+ .list-group-item {
+     position: sticky; /* 또는 position: fixed; */
+     top: 0;
+     background-color: #fff; /* 필요에 따라 배경색을 조정할 수 있습니다. */
+     z-index: 1; /* 다른 요소 위에 표시되도록 z-index를 설정합니다. */
+ }

@@ -9,7 +9,13 @@ function createGrid() {
                 { header: '상품명', name: 'ITEM_NM', align: 'center' },
                 { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
                 { header: '재고조정', name: 'ITEM_REMAIN_ADD_CNT', align: 'center', editor: 'text' },
-                { header: '재고량', name: 'ITEM_REMAIN_CNT', align: 'center' },
+                { header: '안전재고', name: 'SAFE_REMAIN_CNT', align: 'center', editor: 'text' },
+                {
+                    header: '재고량', align: 'center', name: 'REMAIN_CNT',
+                    formatter: function (data) {
+                        return (Number(data.row.REMAIN_CNT) + Number(data.row.ITEM_REMAIN_ADD_CNT)) + " 개";
+                    }
+                }
 
             ],
             pageOptions: {
@@ -26,11 +32,10 @@ function initializeGrid() {
         var params = {
             itemTypeCd: $("#itemTypeCd").val(),
             itemNm: $("input#itemNm").val(),
-            barCode: $("input#barCode").val(),
-            supplierCd: $("#supplierCd").val(),
+            barCode: $("input#barCode").val()
         }
 
-        CommonUtil.fetchData('/item/getItemStockList', params)
+        CommonUtil.fetchData('/item/getItemRemainList', params)
             .then(result => {
                 createGrid().then(() => {
                     grid.resetData(result);
@@ -44,32 +49,14 @@ function initializeGrid() {
                     var updateItem = {};
                     var changedValue = e.changes[0].value;
 
-                    // 변경된 데이터를 updateList에 저장
-                    updateItem.rowKey = rowKey;
-                    updateItem.columnName = columnName;
-                    updateItem.changedValue = changedValue;
-
-                    // updateList에 해당 rowKey가 있는지 확인
-                    var existingItem = updateList.find(function(item) {
-                        return item.rowKey === rowKey;
-                    });
-
-                    // 이미 해당 rowKey가 있다면 배열로 유지하도록 처리
-                    if (existingItem) {
-                        existingItem.columnName = [existingItem.columnName, columnName];
-                        existingItem.changedValue = [existingItem.changedValue, changedValue];
-                    } else {
+                    if(columnName === "ITEM_REMAIN_ADD_CNT") {
+                        grid.setValue(rowKey, columnName, changedValue);
+                        updateItem = grid.getRow(rowKey);
                         updateList.push(updateItem);
-                    }
-
-                    /* 변경 된 데이터 cell 색상 변경 */
-                    if (updateList.some(item => item.rowKey === rowKey)) {
-
-                        // 변경된 셀의 배경색을 변경
-                        const cellElement = grid.getElement(rowKey, columnName);
-                        if (cellElement) {
-                            cellElement.style.backgroundColor = 'yellow';
-                        }
+                    } else if (columnName === "SAFE_REMAIN_CNT") {
+                        grid.setValue(rowKey, columnName, changedValue);
+                        updateItem = grid.getRow(rowKey);
+                        updateList.push(updateItem);
                     }
                 });
 
@@ -89,12 +76,13 @@ function refreshGrid() {
         itemTypeCd: $("#itemTypeCd").val(),
         itemNm: $("input#itemNm").val(),
         barCode: $("input#barCode").val(),
-        supplierCd: $("#supplierCd").val(),
     }
 
-    fetchData('/item/getItemStockList', params)
+    CommonUtil.fetchData('/item/getItemRemainList', params)
         .then(result => {
-            grid.resetData(result);
+            //grid.resetData(result);
+            // 현재 페이지로 리로드
+            grid.resetData(result, { pageState: { page: grid.getPagination().getCurrentPage(), totalCount: result.length, perPage: 10 }});
         })
         .catch(err => {
             console.error(err);

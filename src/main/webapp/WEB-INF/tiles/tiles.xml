@@ -12,12 +12,31 @@
         <put-attribute name="body" value=""/>
     </definition>
 
+    <definition name=".popup" template="/WEB-INF/views/tiles/defaultLayout2.jsp">
+        <put-attribute name="css" expression="/WEB-INF/views/tiles/css.jsp" />
+        <put-attribute name="script" expression="/WEB-INF/views/tiles/script.jsp" />
+        <put-attribute name="body" value=""/>
+    </definition>
+
     <!-- main layout -->
+<!--    <definition name="*.tiles" extends=".contents">-->
+<!--        <put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>-->
+<!--    </definition>-->
+
     <definition name="*.tiles" extends=".contents">
         <put-attribute name="body" value="/WEB-INF/views/{1}.jsp"></put-attribute>
     </definition>
 
-    <definition name="*/*.tiles" extends=".contents">
-        <put-attribute name="body" value="/WEB-INF/views/{1}/{2}.jsp"></put-attribute>
+    <definition name="item/*.tiles" extends=".contents">
+        <put-attribute name="body" value="/WEB-INF/views/item/{1}.jsp"></put-attribute>
     </definition>
+
+    <definition name="common/*.tiles" extends=".contents">
+        <put-attribute name="body" value="/WEB-INF/views/common/{1}.jsp"></put-attribute>
+    </definition>
+
+    <definition name="popup/*.tiles" extends=".popup">
+        <put-attribute name="body" value="/WEB-INF/views/popup/{1}.jsp"></put-attribute>
+    </definition>
+
 </tiles-definitions>

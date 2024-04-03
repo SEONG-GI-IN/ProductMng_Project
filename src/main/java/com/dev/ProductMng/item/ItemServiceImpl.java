@@ -194,7 +194,7 @@ public class ItemServiceImpl implements ItemService {
                     purchasePrice = purchasePrice / unit;
 
                     // purchasePrice 소수점 절상
-                    purchasePrice = (int) Math.round(purchasePrice / 100.0) * 100;
+                    purchasePrice = (int) Math.round(purchasePrice / 10.0) * 10;
 
                     cell.put("PURCHASE_PRICE", purchasePrice);
 
@@ -214,6 +214,33 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public void uploadItemStock(Map<String, Object> rowData) {
         itemDAO.uploadItemStock(rowData);
+    }
+
+    @Override
+    public void updateItemStock(List<Map<String, Object>> list) {
+
+        // list에서 ITEM_NM, ITEM_TAG_NM1, ITEM_TAG_NM2는 다른 리스트에 담기
+        List<Map<String, Object>> itemNmList = new ArrayList();
+
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> itemNm = new HashMap();
+
+            itemNm.put("BAR_CODE", list.get(i).get("BAR_CODE"));
+            itemNm.put("ITEM_NM", list.get(i).get("ITEM_NM"));
+            itemNm.put("ITEM_TAG_NM1", list.get(i).get("ITEM_TAG_NM1"));
+            itemNm.put("ITEM_TAG_NM2", list.get(i).get("ITEM_TAG_NM2"));
+            itemNm.put("ITEM_TYPE_CD", list.get(i).get("ITEM_TYPE_CD"));
+            itemNm.put("ITEM_TYPE_NM", list.get(i).get("ITEM_TYPE_NM"));
+            itemNm.put("ITEM_PRICE", list.get(i).get("ITEM_PRICE"));
+            itemNm.put("SAFE_REMAIN_CNT", list.get(i).get("SAFE_REMAIN_CNT"));
+            itemNm.put("REMAIN_CHECK_YN", list.get(i).get("REMAIN_CHECK_YN"));
+
+            itemNmList.add(itemNm);
+        }
+        this.updateItem(itemNmList);
+
+        // list에서 나머지 값들은 ITEM_STOCK 테이블에 업데이트
+        itemDAO.updateItemStock(list);
     }
 
     @Override
@@ -275,5 +302,90 @@ public class ItemServiceImpl implements ItemService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public void updateItemRemainCnt(List<Map<String, Object>> list) {
+
+        List<Map<String, Object>> itemNmList = new ArrayList();
+
+        for (int i = 0; i < list.size(); i++) {
+            Map<String, Object> itemNm = new HashMap();
+
+            if(!"".equals(list.get(i).get("SAFE_REMAIN_CNT")) && list.get(i).get("SAFE_REMAIN_CNT") != null) {
+                itemNm.put("SAFE_REMAIN_CNT", list.get(i).get("SAFE_REMAIN_CNT"));
+                itemNm.put("BAR_CODE", list.get(i).get("BAR_CODE"));
+            } else {
+                itemNm.put("SAFE_REMAIN_CNT", 0);
+                itemNm.put("BAR_CODE", list.get(i).get("BAR_CODE"));
+            }
+
+
+            itemNmList.add(itemNm);
+        }
+
+        itemDAO.updateSafeRemainCnt(itemNmList);
+
+        itemDAO.updateItemRemainCnt(list);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getCashFlowList(Map<String, Object> params) {
+        try {
+            return itemDAO.getCashFlowList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateItemDtl(Map<String, Object> params) {
+        itemDAO.updateItemDtl(params);
+    }
+
+    @Override
+    public void insertPriceTag(List<Map<String, Object>> list) {
+        itemDAO.insertPriceTag(list);
+    }
+
+    @Override
+    public Map<String, Object> getPriceTagList(Map<String, Object> params) {
+        return itemDAO.getPriceTagList(params);
+    }
+
+    @Override
+    public void deletePriceTag(List<Map<String, Object>> list) {
+        itemDAO.deletePriceTag(list);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, Object> getItemBuyList(Map<String, Object> params) {
+        try {
+            return itemDAO.getItemBuyList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void insertItemBuyList() {
+        itemDAO.insertItemBuyList();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Map<String, Object>> getItemNmList(Map<String, Object> params) {
+        try {
+            return itemDAO.getItemNmList(params);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void updateItemBuyList(List<Map<String, Object>> list) {
+        itemDAO.updateItemBuyList(list);
     }
 }

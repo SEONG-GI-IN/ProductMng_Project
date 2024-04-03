@@ -4,20 +4,24 @@ function createGrid() {
             el: document.getElementById('grid'),
             scrollX: false,
             scrollY: false,
+            rowHeaders: ['checkbox'],
             columns: [
-                { header: '입고일자', name: 'STOCK_DT', align: 'center' },
-                { header: '바코드', name: 'BAR_CODE', align: 'center' },
-                { header: '상품명', name: 'ITEM_NM', align: 'center' },
-                { header: '거래처', name: 'SUPPLIER', align: 'center' },
-                { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center' },
+                { header: '입고일자', name: 'STOCK_DT', align: 'center'},
+                { header: '바코드', name: 'BAR_CODE', align: 'center'},
+                { header: '상품명', name: 'ITEM_NM', align: 'center', editor: 'text'},
+                {header: '가격표명1', name: 'ITEM_TAG_NM1', align: 'center', editor: 'text'},
+                {header: '가격표명2', name: 'ITEM_TAG_NM2', align: 'center', editor: 'text'},
+                { header: '거래처', name: 'SUPPLIER', align: 'center'},
+                { header: '상품분류', name: 'ITEM_TYPE_NM', align: 'center'},
                 {
-                    header: '매입가', align: 'center',
+                    header: '매입가', name: 'PURCHASE_PRICE', align: 'center', editor: { type: 'text' },
                     formatter: function (data) {
                         return data.row.PURCHASE_PRICE + "원";
                     }
                 },
-                { header: '입고량', name: 'IN_CNT', align: 'center' },
+                { header: '입고량', name: 'IN_CNT', align: 'center', editor: { type: 'text' } },
                 { header: '판매가', name: 'ITEM_PRICE', align: 'center', hidden: true },
+                { header: '판매가', name: 'REMAIN_CHECK_YN', align: 'center', hidden: true },
             ],
             pageOptions: {
                 useClient: true,
@@ -54,33 +58,52 @@ function initializeGrid() {
                     var updateItem = {};
                     var changedValue = e.changes[0].value;
 
-                    // 변경된 데이터를 updateList에 저장
-                    updateItem.rowKey = rowKey;
-                    updateItem.columnName = columnName;
-                    updateItem.changedValue = changedValue;
+                    switch (columnName) {
+                        case "ITEM_TYPE_CD":
+                            var itemTypeCd = changedValue;
+                            var itemTypeNm = listItems.find(function (item) {
+                                return item.value == itemTypeCd;
+                            }).text;
 
-                    // updateList에 해당 rowKey가 있는지 확인
-                    var existingItem = updateList.find(function(item) {
-                        return item.rowKey === rowKey;
-                    });
+                            grid.setValue(rowKey, "ITEM_TYPE_NM", itemTypeNm);
 
-                    // 이미 해당 rowKey가 있다면 배열로 유지하도록 처리
-                    if (existingItem) {
-                        existingItem.columnName = [existingItem.columnName, columnName];
-                        existingItem.changedValue = [existingItem.changedValue, changedValue];
-                    } else {
-                        updateList.push(updateItem);
+                            if (!updateList.some(item => item.rowKey === rowKey)) {
+                                updateItem = grid.getRow(rowKey);
+                                updateList.push(updateItem);
+                            }
+
+                            break;
+                        case "PURCHASE_PRICE":
+                        case "ITEM_PRICE":
+                        case "ITEM_NM":
+                        case "ITEM_TAG_NM1":
+                        case "ITEM_TAG_NM2":
+                        case "IN_CNT":
+                        case "REMAIN_CHECK_YN":
+                            grid.setValue(rowKey, columnName, changedValue);
+                            updateItem = grid.getRow(rowKey);
+                            updateList.push(updateItem);
+                            break;
+                        default:
+                            break;
                     }
 
-                    /* 변경 된 데이터 cell 색상 변경 */
-                    if (updateList.some(item => item.rowKey === rowKey)) {
+                });
 
-                        // 변경된 셀의 배경색을 변경
-                        const cellElement = grid.getElement(rowKey, columnName);
-                        if (cellElement) {
-                            cellElement.style.backgroundColor = 'yellow';
-                        }
-                    }
+                grid.on('check', function () {
+                    updatePriceCartButtonState();
+                });
+
+                grid.on('uncheck', function () {
+                    updatePriceCartButtonState();
+                });
+
+                grid.on('checkAll', function () {
+                    updatePriceCartButtonState();
+                });
+
+                grid.on('uncheckAll', function () {
+                    updatePriceCartButtonState();
                 });
 
                 resolve();
@@ -105,7 +128,7 @@ function refreshGrid() {
 
     CommonUtil.fetchData('/item/getItemStockList', params)
         .then(result => {
-            grid.resetData(result);
+            grid.resetData(result, { pageState: { page: grid.getPagination().getCurrentPage(), totalCount: result.length, perPage: 10 }});
         }).catch(error => {
             console.log(error);
         });

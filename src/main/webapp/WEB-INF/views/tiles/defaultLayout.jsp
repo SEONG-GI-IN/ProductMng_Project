@@ -36,6 +36,15 @@
     <!-- fonts -->
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/malgun.js"></script>
     <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/malgunbd.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/Cafe24Ohsquare-v2.0.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/assets/fonts/Cafe24Ohsquare2-v2.0.js"></script>
+
+    <!-- awesomeplete -->
+    <script type="text/javascript" src="${pageContext.request.contextPath}/js/awesomplete/awesomplete.js"></script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/awesomplete/awesomplete.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/awesomplete/awesomplete.base.css" />
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/js/awesomplete/awesomplete.theme.css" />
+
 
 </head>
 

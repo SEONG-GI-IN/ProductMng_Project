@@ -13,8 +13,8 @@ function eventbing() {
     });
 
     /* 엔터 키 눌렀을 때 */
-    $('#itemNm').keydown(function(key) {
-        if (key.keyCode == 13) {
+    $('#barCode, #itemNm').keypress(function (e) {
+        if (e.keyCode == 13) {
             refreshGrid();
         }
     });

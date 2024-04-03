@@ -4,6 +4,7 @@
     <!-- 상품 정보 저장 -->
     <insert id="insertItem" parameterType="java.util.Map">
         INSERT INTO T_ITEM_DTL (
+            BAR_CODE,
             ITEM_NM,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
@@ -11,6 +12,7 @@
             CREATE_DT,
             UPDATE_DT
         ) VALUES (
+            #{barCode},
             #{itemNm},
             #{itemTypeCd},
             #{itemTypeNm},
@@ -27,7 +29,11 @@
             ITEM_NM,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
-            ITEM_PRICE
+            ITEM_PRICE,
+            ITEM_TAG_NM1,
+            ITEM_TAG_NM2,
+            SAFE_REMAIN_CNT,
+            REMAIN_CHECK_YN
         FROM T_ITEM_DTL
         WHERE 1=1
         <if test="itemTypeCd != null and itemTypeCd != ''">
@@ -39,6 +45,7 @@
         <if test="barCode != null and barCode != ''">
             AND BAR_CODE = #{barCode}
         </if>
+        ORDER BY CREATE_DT DESC
         <if test="page != null and pageSize != null">
             LIMIT #{pageNum}, #{pageSize}
         </if>
@@ -83,6 +90,8 @@
         INSERT INTO T_ITEM_DTL (
             BAR_CODE,
             ITEM_NM,
+            ITEM_TAG_NM1,
+            ITEM_TAG_NM2,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
             ITEM_PRICE,
@@ -91,12 +100,21 @@
         ) VALUES (
              #{BAR_CODE},
              #{ITEM_NM},
+             #{ITEM_TAG_NM1},
+             #{ITEM_TAG_NM2},
              #{ITEM_TYPE_CD},
              #{ITEM_TYPE_NM},
              #{ITEM_PRICE},
              NOW(),
              NOW()
          ) ON DUPLICATE KEY UPDATE
+            ITEM_NM = #{ITEM_NM},
+             <if test="ITEM_TAG_NM1 != null and ITEM_TAG_NM1 != ''">
+                ITEM_TAG_NM1 = #{ITEM_TAG_NM1},
+            </if>
+            <if test="ITEM_TAG_NM2 != null and ITEM_TAG_NM2 != ''">
+                ITEM_TAG_NM2 = #{ITEM_TAG_NM2},
+            </if>
             ITEM_TYPE_CD = #{ITEM_TYPE_CD},
             ITEM_TYPE_NM = #{ITEM_TYPE_NM},
             ITEM_PRICE = #{ITEM_PRICE},
@@ -123,7 +141,10 @@
             STOCK.PURCHASE_PRICE,
             STOCK.IN_CNT,
             STOCK.REMAIN_CNT,
-            DTL.ITEM_PRICE
+            DTL.ITEM_PRICE,
+            DTL.ITEM_TAG_NM1,
+            DTL.ITEM_TAG_NM2,
+            DTL.REMAIN_CHECK_YN
         FROM T_ITEM_STOCK AS STOCK
         LEFT JOIN T_ITEM_DTL AS DTL ON STOCK.BAR_CODE = DTL.BAR_CODE
         WHERE 1=1
@@ -137,7 +158,7 @@
             AND STOCK.SUPPLIER_CD = #{supplierCd}
         </if>
         <if test="itemNm != null and itemNm != ''">
-            AND STOCK.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+            AND STOCK.ITEM_NM LIKE CONCAT('%',#{itemNm},'%')
         </if>
         <if test="barCode != null and barCode != ''">
             AND STOCK.BAR_CODE = #{barCode}
@@ -211,27 +232,19 @@
         FROM T_ITEM_SELL
         WHERE 1=1
         <if test="itemNm != null and itemNm != ''">
-            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+            AND ITEM_NM LIKE CONCAT('%',#{itemNm},'%')
         </if>
         <if test="barCode != null and barCode != ''">
             AND BAR_CODE = #{barCode}
         </if>
-        <if test="page != null and pageSize != null">
-            LIMIT #{pageNum}, #{pageSize}
+        <if test="startDt != null and startDt != ''">
+            AND (
+                START_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
+                OR
+                END_DT BETWEEN REPLACE(#{startDt}, '-', '') AND REPLACE(#{endDt}, '-', '')
+            )
         </if>
-    </select>
-
-    <select id="getItemSellListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
-        SELECT
-            COUNT(1)
-        FROM T_ITEM_SELL
-        WHERE 1=1
-        <if test="itemNm != null and itemNm != ''">
-            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
-        </if>
-        <if test="barCode != null and barCode != ''">
-            AND BAR_CODE = #{barCode}
-        </if>
+        ORDER BY START_DT DESC
     </select>
 
     <insert id="uploadItemSell" parameterType="java.util.Map">
@@ -252,70 +265,49 @@
     </insert>
 
     <select id="getItemSmartList" parameterType="java.util.Map" resultType="java.util.Map">
-        SELECT
-            S.BAR_CODE,
-            S.ITEM_NM,
-            DATE_FORMAT(S.STOCK_DT, '%Y-%M-%D') AS STOCK_DT,
-            S.SUPPLIER_CD,
-            S.SUPPLIER,
-            DTL.ITEM_PRICE,
-            S.ITEM_TYPE_CD,
-            S.ITEM_TYPE_NM,
-            M.MIN_PURCHASE_PRICE AS PURCHASE_PRICE,
-            S.REMAIN_CNT
-        FROM T_ITEM_STOCK S
-        JOIN (
-            SELECT
-                BAR_CODE,
-                MIN(PURCHASE_PRICE) AS MIN_PURCHASE_PRICE
-            FROM T_ITEM_STOCK
-            GROUP BY BAR_CODE
-        ) AS M ON S.BAR_CODE = M.BAR_CODE
-        JOIN T_ITEM_DTL AS DTL ON DTL.BAR_CODE = M.BAR_CODE
-        WHERE 1 = 1
-        AND S.PURCHASE_PRICE = M.MIN_PURCHASE_PRICE
-        <if test="itemTypeCd != null and itemTypeCd != ''">
-            AND S.ITEM_TYPE_CD = #{itemTypeCd}
-        </if>
-        <if test="supplierCd != null and supplierCd != ''">
-            AND S.SUPPLIER_CD = #{supplierCd}
-        </if>
-        <if test="itemNm != null and itemNm != ''">
-            AND S.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
-        </if>
-        <if test="barCode != null and barCode != ''">
-            AND S.BAR_CODE = #{barCode}
-        </if>
-        <if test="page != null and pageSize != null">
-            LIMIT #{pageNum}, #{pageSize}
-        </if>
-    </select>
 
-    <select id="getItemSmartListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
         SELECT
-            COUNT(1)
-        FROM T_ITEM_STOCK S
-        JOIN (
+            V.BAR_CODE,
+            V.ITEM_NM,
+            V.ITEM_TYPE_CD,
+            V.ITEM_TYPE_NM,
+            V.SUPPLIER_CD,
+            V.SUPPLIER,
+            V.PURCHASE_PRICE,
+            MAX(V.STOCK_DT) AS STOCK_DT,
+            V.ITEM_PRICE
+        FROM V_ITEM_STOCK AS V
+        INNER JOIN (
             SELECT
                 BAR_CODE,
                 MIN(PURCHASE_PRICE) AS MIN_PURCHASE_PRICE
-            FROM T_ITEM_STOCK
+            FROM V_ITEM_STOCK
             GROUP BY BAR_CODE
-        ) AS M ON S.BAR_CODE = M.BAR_CODE
+        ) AS MIN_PRICE ON V.BAR_CODE = MIN_PRICE.BAR_CODE
+        AND V.PURCHASE_PRICE = MIN_PRICE.MIN_PURCHASE_PRICE
+        INNER JOIN (
+            SELECT
+                BAR_CODE,
+                PURCHASE_PRICE,
+                MAX(STOCK_DT) AS MAX_STOCK_DT
+            FROM V_ITEM_STOCK
+            GROUP BY BAR_CODE, PURCHASE_PRICE
+        ) AS MAX_STOCK_DT ON V.BAR_CODE = MAX_STOCK_DT.BAR_CODE AND V.PURCHASE_PRICE = MAX_STOCK_DT.PURCHASE_PRICE AND V.STOCK_DT = MAX_STOCK_DT.MAX_STOCK_DT
         WHERE 1 = 1
-        AND S.PURCHASE_PRICE = M.MIN_PURCHASE_PRICE
         <if test="itemTypeCd != null and itemTypeCd != ''">
-            AND S.ITEM_TYPE_CD = #{itemTypeCd}
+            AND V.ITEM_TYPE_CD = #{itemTypeCd}
         </if>
         <if test="supplierCd != null and supplierCd != ''">
-            AND S.SUPPLIER_CD = #{supplierCd}
+            AND V.SUPPLIER_CD = #{supplierCd}
         </if>
         <if test="itemNm != null and itemNm != ''">
-            AND S.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+            AND V.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
         </if>
         <if test="barCode != null and barCode != ''">
-            AND S.BAR_CODE = #{barCode}
+            AND V.BAR_CODE = #{barCode}
         </if>
+        GROUP BY V.BAR_CODE, V.ITEM_NM, V.ITEM_TYPE_CD, V.ITEM_TYPE_NM, V.SUPPLIER_CD, V.PURCHASE_PRICE
+        ORDER BY V.SUPPLIER_CD, V.ITEM_TYPE_CD, V.ITEM_NM
     </select>
 
     <update id="updateItem" parameterType="java.util.List">
@@ -323,9 +315,13 @@
             UPDATE T_ITEM_DTL
             SET
                 ITEM_NM = #{item.ITEM_NM},
+                ITEM_TAG_NM1 = #{item.ITEM_TAG_NM1},
+                ITEM_TAG_NM2 = #{item.ITEM_TAG_NM2},
                 ITEM_TYPE_CD = #{item.ITEM_TYPE_CD},
                 ITEM_TYPE_NM = #{item.ITEM_TYPE_NM},
                 ITEM_PRICE = #{item.ITEM_PRICE},
+                REMAIN_CHECK_YN = #{item.REMAIN_CHECK_YN},
+                SAFE_REMAIN_CNT = #{item.SAFE_REMAIN_CNT},
                 UPDATE_DT = NOW()
             WHERE BAR_CODE = #{item.BAR_CODE}
         </foreach>
@@ -333,16 +329,180 @@
 
     <select id="getItemRemainList" parameterType="java.util.Map" resultType="java.util.Map">
         SELECT
+            DTL.BAR_CODE,
+            DTL.ITEM_NM,
+            DTL.ITEM_TYPE_NM,
+            IFNULL(SUM(STOCK.IN_CNT), 0) - IFNULL((SELL.SELL_CNT), 0) AS REMAIN_CNT,
+            IFNULL(DTL.ITEM_REMAIN_ADD_CNT, 0) AS ITEM_REMAIN_ADD_CNT,
+            IFNULL(SUM(STOCK.IN_CNT), 0) - IFNULL((SELL.SELL_CNT), 0) + IFNULL(DTL.ITEM_REMAIN_ADD_CNT, 0) AS TOTAL,
+            DTL.SAFE_REMAIN_CNT
+        FROM T_ITEM_DTL AS DTL
+        LEFT JOIN
+        (
+            SELECT
+                BAR_CODE,
+                SUM(SELL_CNT) AS SELL_CNT
+            FROM t_item_sell
+            WHERE 1 = 1
+            AND START_DT <![CDATA[>=]]> '19000101'
+            AND END_DT <![CDATA[<=]]> '29991231'
+            GROUP BY BAR_CODE
+        ) SELL ON DTL.BAR_CODE = SELL.BAR_CODE
+        INNER JOIN T_ITEM_STOCK AS STOCK ON STOCK.BAR_CODE = DTL.BAR_CODE
+        AND STOCK.STOCK_DT <![CDATA[<=]]> DATE_FORMAT(NOW(), '%Y%m%d')
+        WHERE STOCK.IN_CNT <![CDATA[>]]> 0
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND DTL.ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND DTL.ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="barCode != null and barCode != ''">
+            AND DTL.BAR_CODE = #{barCode}
+        </if>
+        AND DTL.REMAIN_CHECK_YN = 'Y'
+        GROUP BY DTL.BAR_CODE
+        ORDER BY TOTAL
+    </select>
+
+    <update id="updateItemRemainCnt" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE T_ITEM_DTL
+            SET
+                ITEM_REMAIN_ADD_CNT = #{item.ITEM_REMAIN_ADD_CNT}
+            WHERE BAR_CODE = #{item.BAR_CODE}
+        </foreach>
+    </update>
+
+    <update id="updateItemStock" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE T_ITEM_STOCK
+            SET
+                ITEM_NM = #{item.ITEM_NM},
+                PURCHASE_PRICE = #{item.PURCHASE_PRICE},
+                IN_CNT = #{item.IN_CNT},
+                UPDATE_DT = NOW()
+            WHERE BAR_CODE = #{item.BAR_CODE}
+            AND STOCK_DT = REPLACE(#{item.STOCK_DT}, '-', '')
+        </foreach>
+    </update>
+
+    <select id="getCashFlowList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            MONTH,
+            COALESCE(SUM(PURCHASE_PRICE), 0) AS PURCHASE_PRICE,
+            COALESCE(SUM(SELL_PRICE), 0) AS SELL_PRICE
+        FROM (
+            SELECT
+                DATE_FORMAT(STR_TO_DATE(STOCK_DT, '%Y%m%d'), '%Y-%m') AS MONTH,
+                SUM(PURCHASE_PRICE * IN_CNT) AS PURCHASE_PRICE,
+                0 AS SELL_PRICE
+            FROM T_ITEM_STOCK
+            WHERE YEAR(STR_TO_DATE(STOCK_DT, '%Y%m%d')) = #{year}
+            GROUP BY MONTH
+
+            UNION ALL
+
+            SELECT
+                DATE_FORMAT(STR_TO_DATE(START_DT, '%Y%m%d'), '%Y-%m') AS MONTH,
+                0 AS PURCHASE_PRICE,
+                SUM(SELL_CNT * ITEM_PRICE) AS SELL_PRICE
+            FROM T_ITEM_SELL AS SELL
+            JOIN T_ITEM_DTL AS DTL ON DTL.BAR_CODE = SELL.BAR_CODE
+            WHERE YEAR(STR_TO_DATE(START_DT, '%Y%m%d')) = #{year}
+            GROUP BY MONTH
+             ) AS Z
+        GROUP BY MONTH
+    </select>
+
+    <update id="updateItemDtl" parameterType="java.util.Map">
+        UPDATE T_ITEM_DTL
+        SET
+            ITEM_NM = #{itemNm},
+            ITEM_TAG_NM1 = #{itemTagNm1},
+            ITEM_TAG_NM2 = #{itemTagNm2},
+            ITEM_TYPE_CD = #{itemTypeCd},
+            ITEM_TYPE_NM = #{itemTypeNm},
+            ITEM_PRICE = #{itemPrice},
+            SAFE_REMAIN_CNT = #{safeRemainCnt},
+            REMAIN_CHECK_YN = #{remainCheckYn},
+            UPDATE_DT = NOW()
+        WHERE BAR_CODE = #{barCode}
+    </update>
+
+    <insert id="insertPriceTag" parameterType="java.util.Map">
+        <foreach collection="list" item="item" separator=";">
+            INSERT INTO T_ITEM_TAG (
+                BAR_CODE,
+                ITEM_NM,
+                ITEM_TYPE_CD,
+                ITEM_TYPE_NM,
+                ITEM_TAG_NM1,
+                ITEM_TAG_NM2,
+                ITEM_PRICE
+            ) VALUES (
+                #{item.BAR_CODE},
+                #{item.ITEM_NM},
+                #{item.ITEM_TYPE_CD},
+                #{item.ITEM_TYPE_NM},
+                #{item.ITEM_TAG_NM1},
+                #{item.ITEM_TAG_NM2},
+                #{item.ITEM_PRICE}
+            )
+        </foreach>
+        <selectKey keyProperty="idx" resultType="java.lang.Integer" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <select id="getPriceTagList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            IDX,
             BAR_CODE,
             ITEM_NM,
             ITEM_TYPE_CD,
             ITEM_TYPE_NM,
-            ITEM_PRICE,
-            REMAIN_CNT
-        FROM T_ITEM_DTL
+            ITEM_TAG_NM1,
+            IFNULL(ITEM_TAG_NM2, '') AS ITEM_TAG_NM2,
+            ITEM_PRICE
+        FROM T_ITEM_TAG
+        WHERE 1=1
+        ORDER BY ITEM_TAG_NM1
+    </select>
+
+    <select id="getPriceTagTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_TAG
+        WHERE 1=1
+    </select>
+
+    <delete id="deletePriceTag" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            DELETE FROM T_ITEM_TAG
+            WHERE BAR_CODE = #{item.BAR_CODE}
+        </foreach>
+    </delete>
+
+    <select id="getItemBuyList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            BAR_CODE,
+            ITEM_NM,
+            SUPPLIER_CD,
+            SUPPLIER,
+            ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
+            PURCHASE_PRICE,
+            REMAIN_CNT,
+            IFNULL(BUY_CNT, 0) AS BUY_CNT,
+            IFNULL(BUY_UNIT, '') AS BUY_UNIT
+        FROM T_ITEM_BUY
         WHERE 1=1
         <if test="itemTypeCd != null and itemTypeCd != ''">
             AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
         </if>
         <if test="itemNm != null and itemNm != ''">
             AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
@@ -350,9 +510,84 @@
         <if test="barCode != null and barCode != ''">
             AND BAR_CODE = #{barCode}
         </if>
-        <if test="page != null and pageSize != null">
-            LIMIT #{pageNum}, #{pageSize}
+        ORDER BY SUPPLIER_CD, ITEM_TYPE_CD, REMAIN_CNT ASC
+        LIMIT #{pageNum}, #{pageSize}
+    </select>
+
+    <select id="getItemBuyListTotal" parameterType="java.util.Map" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM T_ITEM_BUY
+        WHERE 1=1
+        <if test="itemTypeCd != null and itemTypeCd != ''">
+            AND ITEM_TYPE_CD = #{itemTypeCd}
+        </if>
+        <if test="supplierCd != null and supplierCd != ''">
+            AND SUPPLIER_CD = #{supplierCd}
+        </if>
+        <if test="itemNm != null and itemNm != ''">
+            AND ITEM_NM LIKE CONCAT('%', #{itemNm}, '%')
+        </if>
+        <if test="barCode != null and barCode != ''">
+            AND BAR_CODE = #{barCode}
         </if>
     </select>
 
+    <!-- P_INSERT_ITEM_BUY_LIST 프로시져 호출 -->
+    <insert id="insertItemBuyList" parameterType="java.util.Map">
+        {CALL P_INSERT_ITEM_BUY()}
+    </insert>
+
+    <update id="updateSafeRemainCnt" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            UPDATE T_ITEM_DTL
+            SET
+            SAFE_REMAIN_CNT = #{item.SAFE_REMAIN_CNT},
+            UPDATE_DT = NOW()
+            WHERE BAR_CODE = #{item.BAR_CODE}
+        </foreach>
+    </update>
+
+    <select id="getItemNmList" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            ITEM_NM,
+            BAR_CODE
+        FROM T_ITEM_DTL
+        WHERE 1=1
+        <if test="itemNm != null and itemNm != ''">
+            AND REPLACE(ITEM_NM, ' ', '') LIKE CONCAT('%', REPLACE(#{itemNm}, ' ', ''), '%')
+        </if>
+    </select>
+
+    <insert id="updateItemBuyList" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            INSERT INTO T_ITEM_BUY (
+                BAR_CODE,
+                ITEM_NM,
+                SUPPLIER_CD,
+                SUPPLIER,
+                ITEM_TYPE_CD,
+                ITEM_TYPE_NM,
+                PURCHASE_PRICE,
+                REMAIN_CNT,
+                BUY_CNT,
+                BUY_UNIT
+            ) VALUES (
+                #{item.barCode},
+                #{item.itemNm},
+                #{item.supplierCd},
+                #{item.supplier},
+                #{item.itemTypeCd},
+                #{item.itemTypeNm},
+                #{item.purchasePrice},
+                #{item.remainCnt},
+                #{item.buyCnt},
+                #{item.buyUnit}
+            ) ON DUPLICATE KEY UPDATE
+                REMAIN_CNT = #{item.remainCnt},
+                BUY_CNT = #{item.buyCnt},
+                BUY_UNIT = #{item.buyUnit},
+                UPDATE_DT = NOW()
+        </foreach>
+    </insert>
 </mapper>

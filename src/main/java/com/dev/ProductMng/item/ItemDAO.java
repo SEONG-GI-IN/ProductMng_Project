@@ -66,4 +66,58 @@ public class ItemDAO {
     public List<Map<String, Object>> getItemRemainList(Map<String, Object> params) {
         return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemRemainList", params);
     }
+
+    public void updateItemRemainCnt(List<Map<String, Object>> list) {
+        sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateItemRemainCnt", list);
+    }
+
+    public void updateItemStock(List<Map<String, Object>> list) {
+        sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateItemStock", list);
+    }
+
+    public List<Map<String, Object>> getCashFlowList(Map<String, Object> params) {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getCashFlowList", params);
+    }
+
+    public void updateItemDtl(Map<String, Object> params) {
+        sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateItemDtl", params);
+    }
+
+    public void insertPriceTag(List<Map<String, Object>> list) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.insertPriceTag", list);
+    }
+
+    public Map<String, Object> getPriceTagList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{"list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getPriceTagList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getPriceTagTotal", params),
+                "currentPage", params.get("page")});
+        return result;
+    }
+
+    public void deletePriceTag(List<Map<String, Object>> list) {
+        sqlSession.delete("com.dev.ProductMng.item.ItemDAO.deletePriceTag", list);
+    }
+
+    public Map<String, Object> getItemBuyList(Map<String, Object> params) {
+        Map<String, Object> result = MapUtil.kvPairsToMap(new Object[]{"list", sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemBuyList", params),
+                "total", sqlSession.selectOne("com.dev.ProductMng.item.ItemDAO.getItemBuyListTotal", params),
+        "currentPage", params.get("page")});
+        return result;
+    }
+
+    public void insertItemBuyList() {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.insertItemBuyList");
+    }
+
+    public void updateSafeRemainCnt(List<Map<String, Object>> list) {
+        sqlSession.update("com.dev.ProductMng.item.ItemDAO.updateSafeRemainCnt", list);
+    }
+
+    public List<Map<String, Object>> getItemNmList(Map<String, Object> params) {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemNmList", params);
+    }
+
+    public void updateItemBuyList(List<Map<String, Object>> list) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.updateItemBuyList", list);
+    }
 }

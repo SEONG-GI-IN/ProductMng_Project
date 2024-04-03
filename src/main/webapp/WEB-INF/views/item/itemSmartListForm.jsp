@@ -6,6 +6,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/tui-grid.css" type="text/css" />
     <script src="/js/tui-grid.js"></script>
 </head>
@@ -62,7 +63,6 @@
 </div>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
-<div id="currentPageNumber" class="page-number">Current Page: 1</div>
 
 <!-- MODAL -->
 <div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">

@@ -52,6 +52,9 @@ function createGrid() {
                     }
                 }
             ],
+            columnOptions: {
+              resizable: true,
+            },
             pageOptions: {
                 useClient: true,
                 perPage: 10
@@ -86,7 +89,8 @@ function refreshGrid() {
     var params = {
         itemNm: $("input#itemNm").val(),
         itemTypeCd: $("#itemTypeCd").val(),
-        supplierCd: $("#supplierCd").val()
+        supplierCd: $("#supplierCd").val(),
+        barCode: $("input#barCode").val()
     }
 
     CommonUtil.fetchData("/item/getItemSmartList", params)

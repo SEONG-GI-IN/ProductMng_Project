@@ -36,7 +36,13 @@
                             <a class="nav-link" href="/item/itemSellListForm">상품판매관리화면</a>
                         </nav>
                         <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/item/itemBuyListForm">상품구매관리화면</a>
+                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav">
                             <a class="nav-link" href="/item/itemSmartListForm">스마트 상품관리화면</a>
+                        </nav>
+                        <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="/item/cashFlowForm">매입매출관리화면</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">

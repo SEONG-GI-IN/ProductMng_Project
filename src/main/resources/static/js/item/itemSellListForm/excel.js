@@ -1,7 +1,7 @@
 function excel(){
     var excel = new JExcel("맑은 고딕 11 #333333");
 
-    excel.set({ sheet: 0,value: "상품 입고 내역 업로드" });
+    excel.set({ sheet: 0,value: "상품 판매 내역" });
     var headerStyle = excel.addStyle ({
         border: "thin,thin,thin,thin #000000",
         fill: "#dedede",
@@ -15,7 +15,7 @@ function excel(){
         //format: "#,##0.00"
     });
 
-    excel.set(0, 0, 0, "입고일자", headerStyle);
+    excel.set(0, 0, 0, "판매일자", headerStyle);
     excel.set(0, 1, 0, "바코드", headerStyle);
     excel.set(0, 2, 0, "상품명", headerStyle);
     excel.set(0, 3, 0, "거래처", headerStyle);

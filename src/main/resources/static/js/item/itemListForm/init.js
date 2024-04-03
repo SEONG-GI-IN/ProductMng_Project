@@ -1,8 +1,12 @@
 let updateList = [];
+let tagList = [];
+let drinkList = [];
 
 $(function () {
 
     initializeGrid();
+
+    getPriceTagList();
 
     eventbing();
 });
@@ -14,9 +18,9 @@ function eventbing() {
         refreshGrid();
     });
 
-    /* 엔터 키 눌렀을 때 */
-    $('#itemNm').keydown(function(key) {
-        if (key.keyCode == 13) {
+    /* input text에서 엔터 눌렀을 때 */
+    $('#barCode, #itemNm').keypress(function (e) {
+        if (e.keyCode == 13) {
             refreshGrid();
         }
     });
@@ -97,7 +101,6 @@ function eventbing() {
 
     // 업로드 버튼 눌렀을 때
     $('#uploadBtn').click(function () {
-        // ItemUploadForm modal 띄우기
         $('#uploadDialog').modal('show');
     });
 
@@ -163,18 +166,10 @@ function eventbing() {
                     alert("수정되었습니다.");
                     // 그리드 데이터 초기화
                     refreshGrid();
-
             }).fail(function(response) {
                 alert(JSON.parse(response.responseText).message);
             }).always(function() {
-                // 수정된 데이터 초기화
                 updateList = [];
-                // 변경된 셀의 배경색을 변경
-                const cellElement = grid.getElement();
-                if (cellElement) {
-                    cellElement.style.backgroundColor = '';
-                }
-
             });
         }
     });
@@ -186,9 +181,114 @@ function eventbing() {
 
     /* 가격표 생성 버튼 눌렀을 때 */
     $('#priceBtn').click(function () {
-        createPdf();
+        // 가격표 조회하기
+        getPriceTagList().then(result => {
+
+            // 데이터가 없을 경우
+            if (result.list.length == 0) {
+                alert("가격표 생성할 상품이 없습니다.");
+                $('#itemTagDialog').modal('hide');
+                return;
+            }
+
+            $('#itemTagDialog').modal('show');
+
+            // result.list에서 ITEM_TYPE_CD가 "DRINK"인 것만 필터링
+            const drinkArray = result.list.filter(function (item) {
+                return item.ITEM_TYPE_CD === "DRINK";
+            });
+
+            const array = result.list.filter(function (item) {
+                return item.ITEM_TYPE_CD !== "DRINK";
+            });
+
+            tagList = array;
+            drinkList = drinkArray;
+
+            $("#createDrinkTagBtn").val("음료 가격표 생성 (" + drinkArray.length + ")");
+            $("#createTagBtn").val("가격표 생성 (" + array.length + ")");
+        }).catch(error => {
+            console.error(error);
+        });
     });
 
+    /* 가격표 담기 버튼 눌렀을 때 */
+    $('#priceCartBtn').click(function () {
+
+        var array = grid.getCheckedRows();
+
+        if (array.length == 0) {
+            alert("상품을 선택해주세요.");
+            return;
+        }
+
+        // array에서 ITEM_TAG_NM1이 있는 row만 추출
+        array = array.filter(function (item) {
+            return item.ITEM_TAG_NM1 !== "" && item.ITEM_TAG_NM1 !== "undefined" && item.ITEM_TAG_NM1 !== null && item.ITEM_TAG_NM1 !== undefined;
+        });
+
+        CommonUtil.postAjax("/item/insertPriceTag", {list : JSON.stringify(array)}).then(function (result) {
+           alert("가격표 담기에 성공하였습니다.");
+           grid.uncheckAll();
+            getPriceTagList();
+        }).fail(function(response) {
+            alert(JSON.parse(response.responseText).message);
+        });
+    });
+
+    /* 바코드 링크 눌렀을 때 */
+    /* 상품 상세정보 모달 창 */
+    $(document).on("click", "a[name='barCode']", function () {
+        var currentPage = grid.getPagination().getCurrentPage();
+        var idx = $(this).closest("tr").index();
+
+        if (currentPage > 1) {
+            idx = (currentPage - 1) * 10 + idx;
+        } else {
+            idx = idx;
+        }
+        var rowData = grid.getRow(idx);
+        var params = {
+            barCode: rowData.BAR_CODE,
+            itemNm: rowData.ITEM_NM,
+            itemTagNm1: rowData.ITEM_TAG_NM1,
+            itemTagNm2: rowData.ITEM_TAG_NM2,
+            itemTypeNm: rowData.ITEM_TYPE_NM,
+            itemTypeCd: rowData.ITEM_TYPE_CD,
+            itemPrice: rowData.ITEM_PRICE,
+            remainCheckYn: rowData.REMAIN_CHECK_YN,
+            safeRemainCnt: rowData.SAFE_REMAIN_CNT
+        }
+        CommonUtil.openPopup("/item/itemDtlForm", params, "상품 상세정보", 850, 600);
+    });
+
+    /* tagGrid selectAll 전체 체크박스 */
+    $('#tagGrid').on('click', 'thead input[type="checkbox"]', function () {
+        var checkboxes = document.querySelectorAll(".selectItem");
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.getElementById("selectAll").checked;
+        });
+    });
+
+    /* createTagBtn 눌렀을 때 */
+    $('#createTagBtn').click(function () {
+        // 데이터가 없을 경우
+        if (tagList.length == 0) {
+            alert("가격표 생성할 상품이 없습니다.");
+            return;
+        }
+        createPdf(tagList);
+    });
+
+    /* createDrinkTagBtn 눌렀을 때 */
+    $('#createDrinkTagBtn').click(function () {
+        // 데이터가 없을 경우
+        if (drinkList.length == 0) {
+            alert("음료 가격표 생성할 상품이 없습니다.");
+            return;
+        }
+        createDrinkPdf(drinkList);
+    });
 }
 
 function validation() {
@@ -225,4 +325,137 @@ function validation() {
 /* 숫자만 입력 가능 */
 function validateNumericInput(input) {
     input.value = input.value.replace(/[^0-9]/g, '');
+}
+
+// 가격표 담기 버튼 텍스트 업데이트 함수
+function updatePriceCartButtonText(count) {
+    var button = $('#priceCartBtn');
+    if (count > 0) {
+        button.val("가격표담기 (" + count + ")");
+    } else {
+        button.val("가격표담기");
+    }
+}
+
+// 체크박스 체크 상태 변경 시 호출되는 함수
+function updatePriceCartButtonState() {
+    var checkedCount = grid.getCheckedRows().length;
+    updatePriceCartButtonText(checkedCount);
+}
+
+/* 가격표 조회하기 */
+function getPriceTagList(page = 1) {
+    return new Promise(function (resolve, reject) {
+        const pageSize = 10; // 페이지당 항목 수
+        const params = {
+            page: page,
+            pageSize: pageSize
+        };
+        CommonUtil.fetchData('/item/getPriceTagList', params)
+            .then(result => {
+                let total = result.total;
+                let list = result.list;
+                tagList = list;
+
+                // 페이징 관련 변수 설정
+                const totalPages = Math.ceil(total / pageSize); // 전체 페이지 수 계산
+                const currentPage = result.currentPage;
+
+                $('#priceBtn').val("가격표 생성 (" + total + ")");
+
+                // 페이징 컨트롤 업데이트
+                updatePagination(totalPages, currentPage);
+
+                addPriceTagsToTable(result);
+
+                resolve(result);
+            });
+    });
+}
+
+/* 가격표 담기 삭제하기 */
+function deletePriceTag(itemTypeCd) {
+    var params = {
+        itemTypeCd: itemTypeCd
+    }
+    CommonUtil.postAjax("/item/deletePriceTag", params).then(function (result) {
+        getPriceTagList();
+    });
+}
+
+/* 가격표 table에 데이터 추가 */
+function addPriceTagsToTable(result) {
+    var $table = $('#tagGrid');
+    var $tbody = $table.find("tbody");
+    var $tfoot = $table.find("tfoot");
+    var len = $('#tagGrid thead th').length;
+
+    $tbody.empty(); // 기존 테이블 내용을 모두 제거합니다.
+
+    // 결과 리스트의 길이에 따라 처리합니다.
+    if (result.list.length > 0) {
+        $.each(result.list, function (i) {
+            var resultArr = this;
+            var $tr = $tfoot.find('tr').clone(true);
+            var basicInfoArr = $tr.find('span,input');
+
+            // 각 행에 데이터를 적용합니다.
+            basicInfoArr.each(function () {
+                var name = (this.nodeName == "SPAN") ? this.className : this.name;
+                var value = resultArr[name] ? resultArr[name] : (resultArr[name] == 0 ? resultArr[name] : '');
+                this.nodeName == "SPAN" ? this.innerHTML = value : this.value = value;
+
+                if (name == "ITEM_PRICE") {
+                    this.innerHTML = value + "원";
+                } else {
+                    this.innerHTML = value;
+                }
+            });
+            // 행을 tbody에 추가합니다.
+            $tbody.append($tr);
+        });
+    } else {
+        // 결과가 없는 경우 해당 내용을 출력합니다.
+        var text = "<tr><td colspan='" + len + "' text-align ='center'>데이터가 없습니다.</td></tr>";
+        $tbody.append(text);
+    }
+}
+
+// 페이징 컨트롤 업데이트 함수
+function updatePagination(totalPages, currentPage) {
+    var $pagination = $('.pagination');
+    $pagination.empty();
+
+    // 이전 페이지 버튼
+    var $prevPage = $('<button>').addClass('btn btn-sm btn-outline-secondary').text('이전');
+    $prevPage.on('click', function (event) {
+        event.preventDefault();
+        if (currentPage > 1) {
+            getPriceTagList(currentPage - 1);
+        }
+    });
+    $pagination.append($prevPage);
+
+    // 페이지 번호 버튼들
+    for (var i = 1; i <= totalPages; i++) {
+        var $pageBtn = $('<button>').addClass('btn btn-sm btn-outline-secondary').text(i);
+        if (i === currentPage) {
+            $pageBtn.addClass('active');
+        }
+        $pageBtn.on('click', function (event) {
+            event.preventDefault();
+            getPriceTagList(parseInt($(this).text()));
+        });
+        $pagination.append($pageBtn);
+    }
+
+    // 다음 페이지 버튼
+    var $nextPage = $('<button>').addClass('btn btn-sm btn-outline-secondary').text('다음');
+    $nextPage.on('click', function (event) {
+        event.preventDefault(); // 기본 동작 방지
+        if (currentPage < totalPages) {
+            getPriceTagList(currentPage + 1);
+        }
+    });
+    $pagination.append($nextPage);
 }

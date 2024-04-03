@@ -170,6 +170,24 @@ public class ItemController {
     }
 
     /**
+     * 상품 List 수정
+     */
+    @RequestMapping(value = ("/updateItemStock"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView updateItemStock (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.updateItemStock(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
      * 재고 관리 화면
      */
     @GetMapping("/itemSellListForm")
@@ -274,5 +292,206 @@ public class ItemController {
             e.printStackTrace();
             return null;
         }
+    }
+
+    /**
+     * 상품 재고 조정
+     */
+    @RequestMapping(value = ("/updateItemRemainCnt"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView updateItemRemainCnt (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.updateItemRemainCnt(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
+     * 매입매출 관리 화면
+     */
+    @GetMapping("/cashFlowForm")
+    public String cashFlowForm(Model model, @RequestParam Map<String, Object> params) throws Exception {
+        model.addAttribute("itemTypeList", itemService.getItemTypeList(params));
+        model.addAttribute("supplierList", itemService.getSupplierList(params));
+        return "item/cashFlowForm.tiles";
+    }
+
+    /**
+     * 매입매출 조회
+     */
+    @RequestMapping(value = ("/getCashFlowList"), method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public List<Map<String, Object>> getCashFlowList(@RequestBody Map<String, Object> params) {
+        try {
+            return itemService.getCashFlowList(params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 상품 상세 정보 팝업 화면
+     */
+    @GetMapping("/itemDtlForm")
+    public String itemDtlForm(Model model, @RequestParam Map<String, Object> params) throws Exception {
+        model.addAttribute("params", params);
+        model.addAttribute("itemTypeList", itemService.getItemTypeList(params));
+        return "popup/itemDtlForm.tiles";
+    }
+
+    /**
+     * 상품 상세 정보 저장
+     */
+    @RequestMapping(value = ("/updateItemDtl"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView updateItemDtl (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            itemService.updateItemDtl(params);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
+     * 가격표 담기 눌렀을 때 저장
+     */
+    @RequestMapping(value = ("/insertPriceTag"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView insertPriceTag (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.insertPriceTag(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
+     * 가격표 담기 조회하기
+     */
+    @RequestMapping(value = ("/getPriceTagList"), method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView getPriceTagList(@RequestBody Map<String, Object> params, ModelAndView mv) {
+        //PageUtil.setPaging(params);
+        mv.addAllObjects(itemService.getPriceTagList(params));
+        mv.setViewName("jsonView");
+        return mv;
+    }
+
+    /**
+     * 가격표 담기 삭제하기
+     */
+    @RequestMapping(value = ("/deletePriceTag"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView deletePriceTag (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.deletePriceTag(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
+     * 상품구매화면
+     */
+    @GetMapping("/itemBuyListForm")
+    public String itemBuyForm(Model model, @RequestParam Map<String, Object> params) throws Exception {
+        model.addAttribute("itemTypeList", itemService.getItemTypeList(params));
+        model.addAttribute("supplierList", itemService.getSupplierList(params));
+        return "item/itemBuyListForm.tiles";
+    }
+
+    /**
+     * 상품구매 조회
+     */
+    @RequestMapping(value = ("/getItemBuyList"), method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView getItemBuyList(@RequestBody Map<String, Object> params, ModelAndView mv, Model model) {
+        try {
+            PageUtil.setPaging(params);
+            model.addAttribute("itemTypeList", itemService.getItemTypeList(params));
+            model.addAttribute("supplierList", itemService.getSupplierList(params));
+
+            mv.addAllObjects(itemService.getItemBuyList(params));
+
+            // mv에 "itemTypeList"와 "supplierList"가 포함되도록 설정
+            mv.addObject("itemTypeList", model.asMap().get("itemTypeList"));
+            mv.addObject("supplierList", model.asMap().get("supplierList"));
+
+            mv.setViewName("jsonView");
+            return mv;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * P_INSERT_ITEM_BUY_LIST 프로시져 호출
+     */
+    @RequestMapping(value = ("/insertItemBuyList"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView insertItemBuyList (@RequestParam Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            itemService.insertItemBuyList();
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
+    }
+
+    /**
+     * 상품명 검색어 자동완성 조회
+     */
+    @RequestMapping(value = ("/getItemNmList"), method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public List<Map<String, Object>> getItemNmList(@RequestBody Map<String, Object> params) {
+        try {
+            return itemService.getItemNmList(params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * 구매관리 수정
+     */
+    @RequestMapping(value = ("/updateItemBuyList"), method = {RequestMethod.POST})
+    @ResponseBody
+    public ModelAndView updateItemBuyList (@RequestBody Map<String, Object> params) throws Exception {
+        ModelAndView mav = new ModelAndView("jsonView");
+        try {
+            List<Map<String, Object>> list = JsonUtil.convertToList(String.valueOf(params.get("list")));
+            itemService.updateItemBuyList(list);
+            mav.addObject("result", "success");
+        } catch (Exception e) {
+            mav.addObject("result", "fail");
+            mav.addObject("message", e.getMessage());
+        }
+        return mav;
     }
 }

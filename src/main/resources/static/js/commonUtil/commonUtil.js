@@ -87,3 +87,26 @@ CommonUtil.fetchData = function (url, params) {
             return response.json();
         });
 }
+
+// 옵션1 ) 금액에 천단위 콤마(,) 처리
+// 옵션2 ) 1234567 -> 123만4567처럼 4자리마다 '만'을 붙이기
+CommonUtil.priceFormat = function (x, option) {
+    if (option === "만") {
+        return x.toString().replace(/\B(?=(\d{4})+(?!\d))/g, '만');
+    } else if(option === ","){
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+}
+
+// 팝업 창 띄우기
+CommonUtil.openPopup = function (url, params, name, width, height) {
+    var popupX = (window.screen.width / 2) - (width / 2);
+    var popupY = (window.screen.height / 2) - (height / 2);
+    // 새로운 창 열기
+    var popupWindow = window.open(url + "?" + $.param(params), name, "width=" + width + ", height=" + height + ", left=" + popupX + ", top=" + popupY);
+
+    // 팝업 창을 화면 가운데로 이동
+    if (window.focus) {
+        popupWindow.focus();
+    }
+}

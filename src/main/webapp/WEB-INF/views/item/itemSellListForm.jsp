@@ -23,39 +23,17 @@
             <input type="date" id="endDt" class="form-control" />
         </dd>
 
-        <dt>상품분류</dt>
-        <dd>
-            <select id="itemTypeCd" class="form-select" style="width: 250px">
-                <option value="">전체</option>
-                <c:forEach var="item" items="${itemTypeList}">
-                    <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                </c:forEach>
-            </select>
-        </dd>
-
-        <dt>거래처</dt>
-        <dd>
-            <select id="supplierCd" class="form-select" style="width: 250px">
-                <option value="">전체</option>
-                <c:forEach var="item" items="${supplierList}">
-                    <option value="${item.CODE_CD}">${item.CODE_NM}</option>
-                </c:forEach>
-            </select>
-        </dd>
-
         <dt>상품명</dt>
         <dd>
             <input type="text" id="itemNm" class="form-control" placeholder="상품명을 입력하세요" />
         </dd>
 
-        <button type="button" id="searchBtn">검색</button>
-    </dl>
-
-    <dl class="form-group">
         <dt>바코드</dt>
         <dd>
             <input type="text" id="barCode" class="form-control" placeholder="바코드를 입력하세요" />
         </dd>
+
+        <button type="button" id="searchBtn">검색</button>
     </dl>
 </div>
 
@@ -69,7 +47,6 @@
 </div>
 <!-- toast grid -->
 <div id="grid" class="grid-class"></div>
-<div id="currentPageNumber" class="page-number">Current Page: 1</div>
 
 <!-- MODAL -->
 <div class="modal fade" id="addDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">

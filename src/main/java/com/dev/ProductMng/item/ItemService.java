@@ -37,4 +37,26 @@ public interface ItemService {
     void updateItem(List<Map<String, Object>> list);
 
     List<Map<String, Object>> getItemRemainList(Map<String, Object> params);
+
+    void updateItemRemainCnt(List<Map<String, Object>> list);
+
+    void updateItemStock(List<Map<String, Object>> list);
+
+    List<Map<String, Object>> getCashFlowList(Map<String, Object> params);
+
+    void updateItemDtl(Map<String, Object> params);
+
+    void insertPriceTag(List<Map<String, Object>> list);
+
+    Map<String, Object> getPriceTagList(Map<String, Object> params);
+
+    void deletePriceTag(List<Map<String, Object>> list);
+
+    Map<String, Object> getItemBuyList(Map<String, Object> params);
+
+    void insertItemBuyList();
+
+    List<Map<String, Object>> getItemNmList(Map<String, Object> params);
+
+    void updateItemBuyList(List<Map<String, Object>> list);
 }

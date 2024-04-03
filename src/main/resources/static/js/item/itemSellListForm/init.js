@@ -16,8 +16,8 @@ function eventbing() {
     });
 
     /* 엔터 키 눌렀을 때 */
-    $('#itemNm').keydown(function(key) {
-        if (key.keyCode == 13) {
+    $('#barCode, #itemNm').keypress(function (e) {
+        if (e.keyCode == 13) {
             refreshGrid();
         }
     });
@@ -150,13 +150,9 @@ function eventbing() {
             }
 
             CommonUtil.fileUpload("/item/uploadItemSell", formData).then(function (result) {
-                if (result == "success") {
                     alert("업로드 되었습니다.");
                     $('#uploadDialog').modal('hide');
                     refreshGrid();
-                } else {
-                    alert("업로드에 실패하였습니다.");
-                }
             }).fail(function(response) {
                try {
                    alert( JSON.parse(response.responseText).message );
