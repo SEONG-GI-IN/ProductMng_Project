@@ -236,6 +236,7 @@ function eventBinding() {
     $('#updateBtn').click(function () {
         const tbody = document.querySelector("#dataList tbody");
         const rows = tbody.querySelectorAll("tr");
+        const currentPage = parseInt(document.querySelector('.pagination button.active').textContent);
 
         const itemList = [];
         rows.forEach(row => {
@@ -263,7 +264,7 @@ function eventBinding() {
         CommonUtil.fetchData("/item/updateItemBuyList", params)
             .then(result => {
                 alert("저장 완료");
-                getBuyList();
+                getBuyList(currentPage);
             })
             .catch(error => {
                 console.error("Error occurred while updating item list:", error);

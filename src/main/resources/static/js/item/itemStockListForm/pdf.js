@@ -107,7 +107,7 @@ function createPdf(tagList) {
 
         pdf.save('priceBoard.pdf');
 
-        //deletePriceTag();
+        deletePriceTag();
     });
 }
 
@@ -123,7 +123,7 @@ function createDrinkPdf(tagList) {
 
     var pdf = new jsPDF();
     var img = new Image();
-    img.src = '/assets/img/drinkTag.png';
+    img.src = '/assets/img/priceTag.png';
 
     function loadImage(src) {
         return new Promise((resolve, reject) => {
@@ -141,14 +141,14 @@ function createDrinkPdf(tagList) {
 
     loadImage(img.src).then(function (loadedImg) {
         var imgWidth = 50;
-        var imgHeight = 30;
+        var imgHeight = 38;
         var positionX = 15;
         var positionY = 5;
         var pageWidth = 210;
         var pageHeight = 297;
         var margin = 5;
         var space = 1;
-        var imagesPerPage = 24; // 한 페이지에 들어갈 이미지 개수
+        var imagesPerPage = 18; // 한 페이지에 들어갈 이미지 개수
         var imagesCount = 0; // 페이지에 추가된 이미지 개수
 
         for (var i = 0; i < drinkArray.length; i++) {
@@ -185,40 +185,27 @@ function createDrinkPdf(tagList) {
 
             var itemTagNm1 = array[i].ITEM_TAG_NM1;
             var itemTagNm2 = array[i].ITEM_TAG_NM2;
-
-            // 중앙 위치 계산
-            var textWidth = pdf.getStringUnitWidth(itemTagNm1) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
-            var textX = positionX - 3 + (imgWidth - textWidth) / 2;
-
-            var textX2; // itemTagNm2의 x 위치를 저장할 변수
-
-            var itemPrice = array[i].ITEM_PRICE;
-            var itemPriceWidth = pdf.getStringUnitWidth(itemPrice) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
-            var itemPriceX = positionX - 3 + (imgWidth - itemPriceWidth) / 2;
-
-            /*if (drinkArray[i].ITEM_TAG_NM2 != "") {
-                var textWidth2 = pdf.getStringUnitWidth(itemTagNm2) * pdf.internal.getFontSize() / pdf.internal.scaleFactor;
-                textX2 = positionX - 3 + (imgWidth - textWidth2) / 2;
-                // ITEM_NM 출력 (중앙 정렬)
+            if(drinkArray[i].ITEM_TAG_NM2 != ""){
                 pdf.setFontSize(20); // ITEM_NM의 폰트 크기 설정
-                pdf.text(textX, positionY + 9, itemTagNm1); // ITEM_NM 출력
+                pdf.text(positionX + 6, positionY + 9, itemTagNm1); // ITEM_NM 출력
                 pdf.setFontSize(14); // ITEM_NM2의 폰트 크기 설정
-                pdf.text(textX2, positionY + 15, itemTagNm2); // ITEM_NM2 출력
+                pdf.text(positionX + 6, positionY + 15, itemTagNm2); // ITEM_NM2 출력
             } else {
-                // ITEM_NM 출력 (중앙 정렬)
                 pdf.setFontSize(24); // 기본 폰트 크기로 설정
-                pdf.text(textX, positionY + 13, itemTagNm1); // ITEM_NM 출력
-            }*/
-
-            pdf.setFontSize(24); // 기본 폰트 크기로 설정
-            pdf.text(textX, positionY + 13, itemTagNm1); // ITEM_NM 출력
+                pdf.text(positionX + 4, positionY + 13, itemTagNm1); // ITEM_NM 출력
+            }
 
 
             // ITEM_PRICE에 대한 폰트 및 스타일 설정 (빨간색)
             pdf.setTextColor(255, 0, 0); // 빨간색
             pdf.setFontSize(24);
-            pdf.text(itemPriceX, positionY + 23, array[i].ITEM_PRICE + "");
+            pdf.text(positionX + 10, positionY + 24, array[i].ITEM_PRICE + "원");
 
+            // 바코드 이미지 추가
+            //var barcodeDataUrl = createBarcode(array[i].BAR_CODE);
+            /var barcodeImg = new Image();
+            /barcodeImg.src = barcodeDataUrl;
+            //pdf.addImage(barcodeImg, 'PNG', (positionX + imgWidth / 2) - 27, (positionY + imgHeight + 5) -18, imgWidth - 5, (imgHeight / 2) - 5);
 
             // 원래의 폰트 크기로 되돌리기 (다음 루프에 영향을 주지 않게 하기 위해)
             pdf.setFontSize(20);

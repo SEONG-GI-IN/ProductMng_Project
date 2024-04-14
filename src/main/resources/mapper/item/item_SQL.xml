@@ -590,4 +590,114 @@
                 UPDATE_DT = NOW()
         </foreach>
     </insert>
+
+    <select id="getItemBuyList2" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            subquery.BAR_CODE,
+            subquery.ITEM_NM,
+            subquery.SUPPLIER,
+            subquery.SUPPLIER_CD,
+            subquery.ITEM_TYPE_CD,
+            subquery.ITEM_TYPE_NM,
+            subquery.PURCHASE_PRICE,
+            subquery.REMAIN_CNT,
+            subquery.TOTAL, -- Include TOTAL column
+            subquery.SAFE_REMAIN_CNT
+        FROM (
+            SELECT
+                DTL.BAR_CODE AS BAR_CODE,
+                DTL.ITEM_NM,
+                S.SUPPLIER,
+                S.SUPPLIER_CD,
+                DTL.ITEM_TYPE_CD,
+                DTL.ITEM_TYPE_NM,
+                MIN(S.PURCHASE_PRICE) AS PURCHASE_PRICE,
+                IFNULL(SUM(STOCK.IN_CNT), 0) - IFNULL((SELL.SELL_CNT), 0) AS REMAIN_CNT,
+                IFNULL(DTL.ITEM_REMAIN_ADD_CNT, 0) AS ITEM_REMAIN_ADD_CNT,
+                DTL.SAFE_REMAIN_CNT,
+                IFNULL(SUM(STOCK.IN_CNT), 0) - IFNULL((SELL.SELL_CNT), 0) + IFNULL(DTL.ITEM_REMAIN_ADD_CNT, 0) AS TOTAL -- Calculate TOTAL
+            FROM T_ITEM_DTL AS DTL
+            JOIN T_ITEM_STOCK AS S ON DTL.BAR_CODE = S.BAR_CODE
+            LEFT JOIN (
+                SELECT
+                    BAR_CODE,
+                    SUM(SELL_CNT) AS SELL_CNT
+                FROM t_item_sell
+                WHERE START_DT <![CDATA[ >= ]]> '19000101'
+                AND END_DT <![CDATA[ <= ]]> '29991231'
+            GROUP BY BAR_CODE
+            ) SELL ON DTL.BAR_CODE = SELL.BAR_CODE
+            INNER JOIN T_ITEM_STOCK AS STOCK ON STOCK.BAR_CODE = DTL.BAR_CODE
+            AND STOCK.STOCK_DT <![CDATA[ <= ]]> DATE_FORMAT(NOW(), '%Y%m%d')
+            WHERE STOCK.IN_CNT <![CDATA[ > ]]> 0
+            AND DTL.REMAIN_CHECK_YN = 'Y'
+            GROUP BY DTL.BAR_CODE, S.SUPPLIER_CD, S.STOCK_DT
+            HAVING (
+                DTL.BAR_CODE, MAX(S.STOCK_DT)
+                ) IN (
+                    SELECT
+                        BAR_CODE,
+                        MAX(STOCK_DT)
+                    FROM T_ITEM_STOCK
+                    GROUP BY BAR_CODE
+                    )
+                ) AS subquery
+            WHERE subquery.SAFE_REMAIN_CNT <![CDATA[ > ]]> subquery.TOTAL
+            ORDER BY subquery.SUPPLIER_CD, subquery.ITEM_TYPE_NM, subquery.BAR_CODE
+
+    </select>
+
+    <select id="getItemBuyInfo" parameterType="java.util.Map" resultType="java.util.Map">
+        SELECT
+            BAR_CODE,
+            ITEM_NM,
+            SUPPLIER_CD,
+            SUPPLIER,
+            ITEM_TYPE_CD,
+            ITEM_TYPE_NM,
+            PURCHASE_PRICE,
+            REMAIN_CNT,
+            BUY_CNT,
+            BUY_UNIT
+        FROM T_ITEM_BUY
+        WHERE 1=1
+    </select>
+
+    <delete id="deleteBuyList" parameterType="java.util.List">
+        <foreach collection="list" item="item" separator=";">
+            DELETE FROM T_ITEM_BUY
+            WHERE BAR_CODE = #{item.BAR_CODE}
+        </foreach>
+    </delete>
+
+    <insert id="updateItemBuyList2" parameterType="java.util.List">
+        <foreach collection="list" separator=";" item="item">
+            INSERT INTO T_ITEM_BUY (
+                BAR_CODE,
+                ITEM_NM,
+                SUPPLIER_CD,
+                SUPPLIER,
+                ITEM_TYPE_CD,
+                ITEM_TYPE_NM,
+                PURCHASE_PRICE,
+                REMAIN_CNT,
+                BUY_CNT,
+                BUY_UNIT
+            ) VALUES (
+                #{item.BAR_CODE},
+                #{item.ITEM_NM},
+                #{item.SUPPLIER_CD},
+                #{item.SUPPLIER},
+                #{item.ITEM_TYPE_CD},
+                #{item.ITEM_TYPE_NM},
+                #{item.PURCHASE_PRICE},
+                #{item.TOTAL},
+                #{item.BUY_CNT},
+                #{item.BUY_UNIT}
+            ) ON DUPLICATE KEY UPDATE
+                REMAIN_CNT = #{item.TOTAL},
+                UPDATE_DT = NOW()
+        </foreach>
+    </insert>
+
 </mapper>

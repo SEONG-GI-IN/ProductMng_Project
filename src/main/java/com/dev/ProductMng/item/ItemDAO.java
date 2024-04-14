@@ -120,4 +120,20 @@ public class ItemDAO {
     public void updateItemBuyList(List<Map<String, Object>> list) {
         sqlSession.insert("com.dev.ProductMng.item.ItemDAO.updateItemBuyList", list);
     }
+
+    public List<Map<String, Object>> getItemBuyList2() {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemBuyList2");
+    }
+
+    public List<Map<String, Object>> getItemBuyInfo() {
+        return sqlSession.selectList("com.dev.ProductMng.item.ItemDAO.getItemBuyInfo");
+    }
+
+    public void deleteBuyList(List<Map<String, Object>> delList) {
+        sqlSession.delete("com.dev.ProductMng.item.ItemDAO.deleteBuyList", delList);
+    }
+
+    public void updateItemBuyList2(List<Map<String, Object>> list) {
+        sqlSession.insert("com.dev.ProductMng.item.ItemDAO.updateItemBuyList2", list);
+    }
 }

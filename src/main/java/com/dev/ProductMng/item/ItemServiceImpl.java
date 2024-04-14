@@ -3,6 +3,7 @@ package com.dev.ProductMng.item;
 import com.dev.ProductMng.common.CommonDAO;
 import com.dev.ProductMng.config.APIException;
 import com.dev.ProductMng.util.FileUtil;
+import com.dev.ProductMng.util.JsonUtil;
 import com.dev.ProductMng.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -371,7 +372,37 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void insertItemBuyList() {
-        itemDAO.insertItemBuyList();
+        //itemDAO.insertItemBuyList();
+
+        // 재고수량이 안전재고 수량보다 적은 상품리스트 가져오기
+        List<Map<String, Object>> list = itemDAO.getItemBuyList2();
+        // 현재 t_buy_item 테이블에 있는 상품리스트 가져오기
+        List<Map<String, Object>> list2 = itemDAO.getItemBuyInfo();
+
+        // list2에는 있는데 list에는 없는 상품리스트 delList에 추가
+        List<Map<String, Object>> delList = new ArrayList();
+        for (int i = 0; i < list2.size(); i++) {
+            boolean isExist = false;
+            for (int j = 0; j < list.size(); j++) {
+                if (list2.get(i).get("BAR_CODE").equals(list.get(j).get("BAR_CODE"))) {
+                    isExist = true;
+                    break;
+                }
+            }
+            if (!isExist) {
+                delList.add(list2.get(i));
+            }
+        }
+
+        // delList에 있는 상품리스트 삭제
+        if (delList.size() > 0){
+            itemDAO.deleteBuyList(delList);
+        }
+
+        // list에 있는 상품리스트 추가
+        itemDAO.updateItemBuyList2(list);
+
+
     }
 
     @Override
